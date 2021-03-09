@@ -27,6 +27,7 @@ public class Room {
         return north;
     }
 
+
     public void setNorth(Room north) {
         this.north = north;
     }
@@ -54,4 +55,5 @@ public class Room {
     public void setEast(Room east) {
         this.east = east;
     }
+
 }

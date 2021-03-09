@@ -1,6 +1,6 @@
 package com.company;
 
-import java.sql.SQLOutput;
+
 import java.util.Scanner;
 
 public class Main {
@@ -21,6 +21,7 @@ public class Main {
         kitchen.setSouth(basement);
 
         Character player = new Character(100, name,basement);
+        Room possibleRoom;
 
         while (running) {
 
@@ -45,6 +46,50 @@ public class Main {
 
                 case "where":
                     System.out.println("You are in the "+ player.getRoom().getName());
+                    break;
+
+                case "walk south":
+                     possibleRoom = player.getRoom().getSouth();
+                    if(possibleRoom!=null){
+                        player.setRoom(possibleRoom);
+                        System.out.println("You are now in "+ player.getRoom().getName());
+                    }
+                    else{
+                        System.out.println("You cant go that way");
+                    }
+                    break;
+
+                case "walk east":
+                    possibleRoom = player.getRoom().getEast();
+                    if(possibleRoom!=null){
+                        player.setRoom(possibleRoom);
+                        System.out.println("You are now in "+ player.getRoom().getName());
+                    }
+                    else{
+                        System.out.println("You cant go that way");
+                    }
+                    break;
+
+                case "walk west":
+                    possibleRoom = player.getRoom().getWest();
+                    if(possibleRoom!=null){
+                        player.setRoom(possibleRoom);
+                        System.out.println("You are now in "+ player.getRoom().getName());
+                    }
+                    else{
+                        System.out.println("You cant go that way");
+                    }
+                    break;
+
+                case "walk north":
+                     possibleRoom = player.getRoom().getNorth();
+                    if(possibleRoom!=null){
+                        player.setRoom(possibleRoom);
+                        System.out.println("You are now in "+ player.getRoom().getName());
+                    }
+                    else{
+                        System.out.println("You cant go that way");
+                    }
                     break;
 
                 case "quit":
