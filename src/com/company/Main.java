@@ -2,7 +2,6 @@ package com.company;
 
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -56,13 +55,12 @@ public class Main {
 
         Room possibleRoom;
 
-
-
         while (running) {
 
+            String [] inputCommands = command.nextLine().split(" ", 2);
+            System.out.println(inputCommands[0]);
 
-
-            switch (command.nextLine()) {
+            switch (inputCommands[0]) {
                 case "start":
 
                     break;
@@ -95,7 +93,10 @@ public class Main {
                         }
                     }
                     break;
-
+                case "walk":
+                    switch (inputCommands[1]){
+                        case "east":
+                    }
                 case "walk south":
                      possibleRoom = player.getRoom().getSouth();
                     if(possibleRoom!=null){
@@ -145,11 +146,6 @@ public class Main {
                     player.addItem(watterBottle);
                     System.out.println("you have the water bottle");
                     break;
-
-                case "look under carpet":
-                    System.out.println("There is a key here");
-                    break;
-
 
 
                 case "quit":
