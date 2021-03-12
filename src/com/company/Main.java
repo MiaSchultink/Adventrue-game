@@ -58,13 +58,9 @@ public class Main {
         while (running) {
 
             String [] inputCommands = command.nextLine().split(" ", 2);
-            System.out.println(inputCommands[0]);
+
 
             switch (inputCommands[0]) {
-                case "start":
-
-                    break;
-
 
                 case "health":
                     System.out.println("your current health = " + player.getHealth());
@@ -95,52 +91,59 @@ public class Main {
                     break;
                 case "walk":
                     switch (inputCommands[1]){
-                        case "east":
-                    }
-                case "walk south":
-                     possibleRoom = player.getRoom().getSouth();
-                    if(possibleRoom!=null){
-                        player.setRoom(possibleRoom);
-                        System.out.println("You are now in "+ player.getRoom().getName());
-                    }
-                    else{
-                        System.out.println("You cant go that way");
-                    }
-                    break;
+                        case "east":possibleRoom = player.getRoom().getEast();
+                            if(possibleRoom!=null){
+                                player.setRoom(possibleRoom);
+                                System.out.println("You are now in "+ player.getRoom().getName());
+                            }
+                            else{
+                                System.out.println("You cant go that way");
+                            }
+                            break;
 
-                case "walk east":
-                    possibleRoom = player.getRoom().getEast();
-                    if(possibleRoom!=null){
-                        player.setRoom(possibleRoom);
-                        System.out.println("You are now in "+ player.getRoom().getName());
-                    }
-                    else{
-                        System.out.println("You cant go that way");
-                    }
-                    break;
+                        case "south": possibleRoom = player.getRoom().getSouth();
+                           if(possibleRoom!=null){
+                                player.setRoom(possibleRoom);
+                                System.out.println("You are now in "+ player.getRoom().getName());
+                            }
+                           else{
+                              System.out.println("You cant go that way");
+                          }
+                            break;
 
-                case "walk west":
-                    possibleRoom = player.getRoom().getWest();
-                    if(possibleRoom!=null){
-                        player.setRoom(possibleRoom);
-                        System.out.println("You are now in "+ player.getRoom().getName());
-                    }
-                    else{
-                        System.out.println("You cant go that way");
-                    }
-                    break;
+                        case "west":
+                            possibleRoom = player.getRoom().getWest();
+                            if(possibleRoom!=null){
+                                player.setRoom(possibleRoom);
+                                System.out.println("You are now in "+ player.getRoom().getName());
+                            }
+                            else{
+                                System.out.println("You cant go that way");
+                            }
+                            break;
 
-                case "walk north":
-                     possibleRoom = player.getRoom().getNorth();
-                    if(possibleRoom!=null){
-                        player.setRoom(possibleRoom);
-                        System.out.println("You are now in "+ player.getRoom().getName());
-                        System.out.println(player.getRoom().getMessage());
+                        case "north":
+                            possibleRoom = player.getRoom().getNorth();
+                            if(possibleRoom!=null){
+                                player.setRoom(possibleRoom);
+                                System.out.println("You are now in "+ player.getRoom().getName());
+                                System.out.println(player.getRoom().getMessage());
+                            }
+                            else{
+                                System.out.println("You cant go that way");
+                            }
+                            break;
+                        default:
+                            System.out.println("I don't understand that");
+                            break;
                     }
-                    else{
-                        System.out.println("You cant go that way");
+
+                case "collect":
+                    switch(inputCommands[1]){
+                        case "water":
+                            player.addItem(watterBottle);
+                            break;
                     }
-                    break;
 
                 case "pick up water bottle":
                     player.addItem(watterBottle);
