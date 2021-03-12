@@ -1,16 +1,21 @@
 package com.company;
 
 
+import java.util.ArrayList;
 
 public class Character {
     private int health;
     private String name;
     private Room room;
+    private ArrayList<Item> items;
+    private Character pet;
 
-    public Character(int health, String name, Room room) {
+    public Character(int health, String name, Room room,ArrayList<Item> items, Character pet) {
         this.health = health;
         this.name = name;
         this.room = room;
+        this.items = items;
+        this.pet = pet;
     }
 
     public int getHealth() {
@@ -36,4 +41,23 @@ public class Character {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    public void setItems(ArrayList<Item> items){
+        this.items = items;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void addItem(Item item){
+        this.items.add(item);
+    }
+    public void setPet(Character pet){
+        this.pet = pet;
+    }
+    public Character getPet(){
+        return pet;
+    }
+
 }
