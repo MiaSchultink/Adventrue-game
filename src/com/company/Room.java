@@ -8,17 +8,19 @@ public class Room {
     private Room south;
     private Room west;
     private Room east;
-    private ArrayList<Item> items;
+   // private ArrayList<Item> items;
+    private ItemCollection items;
     private String message;
 
 
-    public Room(String name, Room north, Room south, Room west, Room east,ArrayList<Item> items, String message) {
+
+    public Room(String name, Room north, Room south, Room west, Room east, String message) {
         this.name = name;
         this.north = north;
         this.south = south;
         this.west = west;
         this.east = east;
-        this.items = items;
+        this.items = new ItemCollection();
         this.message = message;
     }
 
@@ -62,11 +64,15 @@ public class Room {
     public void setEast(Room east) {
         this.east = east;
     }
-    public void addItems(Item item){
-        this.items.add(item);
+    public void addItem(Item item){
+        this.items.addItem(item);
     }
-    public ArrayList<Item> getItems(){
-        return items;
+   // public ArrayList<Item> getItems(){
+    //    return items;
+    //}
+
+    public void viewRoomItems(){
+        this.items.look();
     }
     public void setMessage(String message){
         this.message = message;

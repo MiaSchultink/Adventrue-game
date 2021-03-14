@@ -7,20 +7,24 @@ public class Character {
     private int health;
     private String name;
     private Room room;
-    private ArrayList<Item> items;
+    private ItemCollection pocket;
     private Character pet;
 
-    public Character(int health, String name, Room room,ArrayList<Item> items, Character pet) {
+    public Character(int health, String name, Room room,Character pet) {
         this.health = health;
         this.name = name;
         this.room = room;
-        this.items = items;
         this.pet = pet;
+        this.pocket = new ItemCollection();
     }
+
+
 
     public int getHealth() {
         return health;
     }
+
+
 
     public void setHealth(int health) {
         this.health = health;
@@ -42,17 +46,15 @@ public class Character {
         this.room = room;
     }
 
-    public void setItems(ArrayList<Item> items){
-        this.items = items;
+
+   public void addItem(Item item){
+      this.pocket.addItem(item);
     }
 
-    public ArrayList<Item> getItems() {
-        return items;
+    public void viewPocket(){
+     pocket.look();
     }
 
-    public void addItem(Item item){
-        this.items.add(item);
-    }
     public void setPet(Character pet){
         this.pet = pet;
     }

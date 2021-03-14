@@ -15,10 +15,17 @@ public class Main {
         String name = command.nextLine();
         System.out.println("Hello, "+ name);
 
-        Room basement= new Room("basement", null, null, null, null,new ArrayList<Item>(),null);
+       ItemCollection gameItems =  new ItemCollection();
+       //ItemCollection playerItems =  new ItemCollection();
+       //playerItems.setItemList(new ArrayList<Item>());
+
+
+
+        Room basement= new Room("basement", null, null, null, null,null);
         basement.setMessage("You are in a dimly lit basement of a large house. There is a note and a water bottle and a flashlight on the table in front of you. There is a stairwell leading south.");
         System.out.println(basement.getMessage());
 
+        //items
         Item watterBottle = new Item("water bottle");
         Item note = new Item("note");
         Item flashLight = new Item("flash light");
@@ -27,30 +34,33 @@ public class Main {
         Item diningRoomKey=  new Item("key");
         Item spear = new Item("spear");
 
+        //rooms
+        Room kitchen = new Room("kitchen",null,null,null,null/*, new ArrayList<Item>()*/,null);
+        Room diningRoom = new Room("dining room",null,null,null,null/*,new ArrayList<Item>()*/,null);
+        Room gameRoom = new Room("gaming room", null,null,null,null/*, new ArrayList<Item>()*/, null);
+
+        //characters
+        Character player = new Character(100, name, basement,null);
+        Character monster1 = new Character(80,"the fanged man",gameRoom/*,new ArrayList<Item>()*/,null);
+        Character cat  =  new Character(50,"mittens",kitchen/*,null*/,null);
+
+        //player settings
 
 
-        Room kitchen = new Room("kitchen",null,null,null,null, new ArrayList<Item>(),null);
-        Room diningRoom = new Room("dining room",null,null,null,null,new ArrayList<Item>(),null);
-        Room gameRoom = new Room("gaming room", null,null,null,null, new ArrayList<Item>(), null);
-
-        Character player = new Character(100, name,basement, new ArrayList<Item>(),null);
-        Character monster1 = new Character(80,"the fanged man",gameRoom,new ArrayList<Item>(),null);
-        Character cat  =  new Character(50,"mittens",kitchen,null,null);
-
-
+        //basement settings
         basement.setNorth(kitchen);
-        basement.addItems(watterBottle);
-        basement.addItems(note);
-        basement.addItems(flashLight);
+        basement.addItem(watterBottle);
+        basement.addItem(note);
+        basement.addItem(flashLight);
 
-
+        //kitchen settings
         kitchen.setSouth(basement);
         kitchen.setWest(diningRoom);
-        kitchen.addItems(sword);
-        kitchen.addItems(carpet);
-        kitchen.addItems(diningRoomKey);
+        kitchen.addItem(sword);
+        kitchen.addItem(diningRoomKey);
         kitchen.setMessage("There is a cat here, it has nice orange fur. If you pet the cat he might become your friend. There is also a sward here.");
 
+        //dining room settings
         diningRoom.setEast(kitchen);
 
         Room possibleRoom;
@@ -73,22 +83,15 @@ public class Main {
                 case "where":
                     System.out.println("You are in the "+ player.getRoom().getName());
                     break;
+
                 case "look":
-                  ArrayList<Item> roomItems = player.getRoom().getItems();
-                  if(!roomItems.isEmpty()) {
-                      for (int counter = 0; counter < roomItems.size(); counter++)
-                          System.out.println(roomItems.get(counter).getName());
-                  }
+                    player.getRoom().viewRoomItems();
                   break;
 
                 case "pocket":
-                    ArrayList<Item> itemBag = player.getItems();
-                    if(!itemBag.isEmpty()) {
-                        for (int i = 0; i < itemBag.size(); i++) {
-                            System.out.println(itemBag.get(i).getName());
-                        }
-                    }
+                  player.viewPocket();
                     break;
+
                 case "walk":
                     switch (inputCommands[1]){
                         case "east":possibleRoom = player.getRoom().getEast();
@@ -133,23 +136,21 @@ public class Main {
                                 System.out.println("You cant go that way");
                             }
                             break;
-                        default:
-                            System.out.println("I don't understand that");
-                            break;
                     }
+                    break;
 
                 case "collect":
                     switch(inputCommands[1]){
                         case "water":
                             player.addItem(watterBottle);
+                            System.out.println("You have the bottle");
+                            break;
+
+                        default:
+                            System.out.println("You can't do that");
                             break;
                     }
-
-                case "pick up water bottle":
-                    player.addItem(watterBottle);
-                    System.out.println("you have the water bottle");
-                    break;
-
+                 break;
 
                 case "quit":
                     System.out.println("Thanks for playing, "+player.getName()+"!");
