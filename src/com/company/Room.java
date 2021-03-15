@@ -70,9 +70,15 @@ public class Room {
    // public ArrayList<Item> getItems(){
     //    return items;
     //}
+    public ItemCollection getItems(){
+        return items;
+    }
 
     public void viewRoomItems(){
         this.items.look();
+    }
+    public void removeItem(Item item){
+        this.items.remove(item);
     }
     public void setMessage(String message){
         this.message = message;

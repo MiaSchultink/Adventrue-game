@@ -16,10 +16,6 @@ public class Main {
         System.out.println("Hello, "+ name);
 
        ItemCollection gameItems =  new ItemCollection();
-       //ItemCollection playerItems =  new ItemCollection();
-       //playerItems.setItemList(new ArrayList<Item>());
-
-
 
         Room basement= new Room("basement", null, null, null, null,null);
         basement.setMessage("You are in a dimly lit basement of a large house. There is a note and a water bottle and a flashlight on the table in front of you. There is a stairwell leading south.");
@@ -27,22 +23,22 @@ public class Main {
 
         //items
         Item watterBottle = new Item("water bottle");
-        Item note = new Item("note");
         Item flashLight = new Item("flash light");
+        Item note = new Item("note");
         Item sword = new Item("sword");
         Item carpet = new Item("carpet");
         Item diningRoomKey=  new Item("key");
         Item spear = new Item("spear");
 
         //rooms
-        Room kitchen = new Room("kitchen",null,null,null,null/*, new ArrayList<Item>()*/,null);
-        Room diningRoom = new Room("dining room",null,null,null,null/*,new ArrayList<Item>()*/,null);
-        Room gameRoom = new Room("gaming room", null,null,null,null/*, new ArrayList<Item>()*/, null);
+        Room kitchen = new Room("kitchen",null,null,null,null,null);
+        Room diningRoom = new Room("dining room",null,null,null,null,null);
+        Room gameRoom = new Room("gaming room", null,null,null,null, null);
 
         //characters
         Character player = new Character(100, name, basement,null);
-        Character monster1 = new Character(80,"the fanged man",gameRoom/*,new ArrayList<Item>()*/,null);
-        Character cat  =  new Character(50,"mittens",kitchen/*,null*/,null);
+        Character monster1 = new Character(80,"the fanged man",kitchen,null);
+        Character cat  =  new Character(50,"mittens",diningRoom,null);
 
         //player settings
 
@@ -123,6 +119,8 @@ public class Main {
                             else{
                                 System.out.println("You cant go that way");
                             }
+                        default:
+                            System.out.println("I don't understand that");
                             break;
 
                         case "north":
@@ -139,10 +137,11 @@ public class Main {
                     }
                     break;
 
-                case "collect":
+                case "collect2":
                     switch(inputCommands[1]){
                         case "water":
                             player.addItem(watterBottle);
+                            player.getRoom().removeItem(watterBottle);
                             System.out.println("You have the bottle");
                             break;
 
@@ -151,6 +150,35 @@ public class Main {
                             break;
                     }
                  break;
+
+                case"collect":
+                  Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
+                    if(item.getName() !=null){
+                        player.addItem(item);
+                        System.out.println("you have the "+item.getName());
+                    }
+                    else{
+                        System.out.println("That item does not exist, or is already in your item bag");
+                    }
+                    break;
+
+                case "attack":
+                    if(player.getRoom()==monster1.getRoom()) {
+                        player.setHealth(player.getHealth() - 10);
+                        monster1.setHealth(monster1.getHealth() - 15);
+                        System.out.println(player.getHealth());
+                        if (player.getHealth() <= 0) {
+                            System.out.println("Sorry you have died");
+                            running = false;
+                        }
+                        if (monster1.getHealth() <= 0) {
+                            System.out.println("You have defeated the monster");
+                        }
+                    }
+                    else{
+                        System.out.println("There is nothing to attack");}
+                    break;
+
 
                 case "quit":
                     System.out.println("Thanks for playing, "+player.getName()+"!");

@@ -10,6 +10,7 @@ public class Character {
     private ItemCollection pocket;
     private Character pet;
 
+
     public Character(int health, String name, Room room,Character pet) {
         this.health = health;
         this.name = name;
@@ -17,7 +18,6 @@ public class Character {
         this.pet = pet;
         this.pocket = new ItemCollection();
     }
-
 
 
     public int getHealth() {
@@ -45,7 +45,6 @@ public class Character {
     public void setRoom(Room room) {
         this.room = room;
     }
-
 
    public void addItem(Item item){
       this.pocket.addItem(item);
