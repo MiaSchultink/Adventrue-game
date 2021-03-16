@@ -166,7 +166,7 @@ public class Main {
 
 
                 case "attack":
-                    if(player.getRoom().viewCharacters();) {
+                    if(player.getRoom()==monster1.getRoom()) {
                         player.setHealth(player.getHealth() - 10);
                         monster1.setHealth(monster1.getHealth() - 15);
                         System.out.println(player.getHealth());
