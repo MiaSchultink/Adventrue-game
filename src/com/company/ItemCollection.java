@@ -7,11 +7,14 @@ public class ItemCollection {
 
     public ItemCollection() {
         this.itemList = new ArrayList<Item>();
-    }
 
+    }
 
     public void addItem(Item item) {
         this.itemList.add(item);
+    }
+    public void removeItem(Item item){
+        this.itemList.remove(item);
     }
 
     public Item collectRequest(String itemName) {

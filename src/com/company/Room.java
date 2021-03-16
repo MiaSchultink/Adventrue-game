@@ -10,6 +10,7 @@ public class Room {
     private Room east;
    // private ArrayList<Item> items;
     private ItemCollection items;
+    private CharacterCollection characters;
     private String message;
 
 
@@ -21,6 +22,7 @@ public class Room {
         this.west = west;
         this.east = east;
         this.items = new ItemCollection();
+        this.characters = new CharacterCollection();
         this.message = message;
     }
 
@@ -67,9 +69,7 @@ public class Room {
     public void addItem(Item item){
         this.items.addItem(item);
     }
-   // public ArrayList<Item> getItems(){
-    //    return items;
-    //}
+
     public ItemCollection getItems(){
         return items;
     }
@@ -79,6 +79,16 @@ public class Room {
     }
     public void removeItem(Item item){
         this.items.remove(item);
+    }
+
+    public void addCharacter(Character player){
+        this.characters.addCharacter(player);
+    }
+    public void removeCharacter(Character player){
+        this.characters.removeCharacter(player);
+    }
+    public void viewCharacters(){
+        this.characters.look();
     }
     public void setMessage(String message){
         this.message = message;

@@ -15,6 +15,7 @@ public class Character {
         this.health = health;
         this.name = name;
         this.room = room;
+
         this.pet = pet;
         this.pocket = new ItemCollection();
     }
@@ -49,9 +50,15 @@ public class Character {
    public void addItem(Item item){
       this.pocket.addItem(item);
     }
+    public void removeItem(Item item){
+        this.pocket.removeItem(item);
+    }
 
     public void viewPocket(){
      pocket.look();
+    }
+    public ItemCollection getPocket(){
+        return pocket;
     }
 
     public void setPet(Character pet){

@@ -18,7 +18,7 @@ public class Main {
        ItemCollection gameItems =  new ItemCollection();
 
         Room basement= new Room("basement", null, null, null, null,null);
-        basement.setMessage("You are in a dimly lit basement of a large house. There is a note and a water bottle and a flashlight on the table in front of you. There is a stairwell leading south.");
+        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading south.");
         System.out.println(basement.getMessage());
 
         //items
@@ -55,9 +55,11 @@ public class Main {
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
         kitchen.setMessage("There is a cat here, it has nice orange fur. If you pet the cat he might become your friend. There is also a sward here.");
+        kitchen.addCharacter(monster1);
 
         //dining room settings
         diningRoom.setEast(kitchen);
+        diningRoom.addCharacter(cat);
 
         Room possibleRoom;
 
@@ -83,6 +85,10 @@ public class Main {
                 case "look":
                     player.getRoom().viewRoomItems();
                   break;
+
+                case "character":
+                    player.getRoom().viewCharacters();
+                    break;
 
                 case "pocket":
                   player.viewPocket();
@@ -119,9 +125,6 @@ public class Main {
                             else{
                                 System.out.println("You cant go that way");
                             }
-                        default:
-                            System.out.println("I don't understand that");
-                            break;
 
                         case "north":
                             possibleRoom = player.getRoom().getNorth();
@@ -134,26 +137,17 @@ public class Main {
                                 System.out.println("You cant go that way");
                             }
                             break;
+
+                        default:
+                            System.out.println("I don't understand that");
+                            break;
                     }
                     break;
 
-                case "collect2":
-                    switch(inputCommands[1]){
-                        case "water":
-                            player.addItem(watterBottle);
-                            player.getRoom().removeItem(watterBottle);
-                            System.out.println("You have the bottle");
-                            break;
-
-                        default:
-                            System.out.println("You can't do that");
-                            break;
-                    }
-                 break;
 
                 case"collect":
                   Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
-                    if(item.getName() !=null){
+                    if(item !=null){
                         player.addItem(item);
                         System.out.println("you have the "+item.getName());
                     }
@@ -162,8 +156,17 @@ public class Main {
                     }
                     break;
 
+                case "drop":
+                    Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
+                    if(itemRemoved !=null){
+                        player.removeItem(itemRemoved);
+                        System.out.println("you have dropped the "+itemRemoved.getName());
+                    }
+                    break;
+
+
                 case "attack":
-                    if(player.getRoom()==monster1.getRoom()) {
+                    if(player.getRoom().viewCharacters();) {
                         player.setHealth(player.getHealth() - 10);
                         monster1.setHealth(monster1.getHealth() - 15);
                         System.out.println(player.getHealth());
