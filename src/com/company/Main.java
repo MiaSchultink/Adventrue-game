@@ -1,9 +1,6 @@
 package com.company;
 
-
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.WeakHashMap;
 
 public class Main {
 
@@ -50,6 +47,7 @@ public class Main {
         Room whiteRoom = new Room("white room");
         Room controlRoom = new Room("control room");
         Room finish = new Room("finish");
+        Room livingRoom = new Room("living room");
 
 
 
@@ -59,93 +57,70 @@ public class Main {
         Character monster1 = new Character(80,"the fanged man", "monster",kitchen,null);
         Character cat  =  new Character(50,"mittens","pet",diningRoom,null);
 
-        //player settings
-
-
-        //basement settings
+        //basemnt settings
         basement.setNorth(kitchen);
+
         basement.addItem(watterBottle);
         basement.addItem(note);
         basement.addItem(flashLight);
 
-        //kitchen settings
+       //kitchen settings
+        kitchen.setEast(diningRoom);
         kitchen.setSouth(basement);
-        kitchen.setWest(diningRoom);
+
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
         kitchen.setMessage("There is a cat here, it has nice orange fur. If you pet the cat he might become your friend. There is also a sward here.");
         kitchen.addCharacter(monster1);
 
         //dining room settings
-        diningRoom.setEast(kitchen);
-        diningRoom.addCharacter(cat);
-        diningRoom.setSouth(gameRoom);
-        diningRoom.setEast(kitchen);
-        diningRoom.setNorth(bedRoom);
+        diningRoom.setSouth(bedRoom);
+        diningRoom.setWest(kitchen);
 
-        //bed room settigns
-        bedRoom.setNorth(bathRoom);
-        bedRoom.setSouth(diningRoom);
+       //bed room settigns
+        bedRoom.setEast(bathRoom);
+        bedRoom.setNorth(diningRoom);
 
         //bath room settings
-        bathRoom.setWest(closet);
-        bathRoom.setSouth(bedRoom);
+        bathRoom.setWest(bedRoom);
+        bathRoom.setNorth(closet);
 
-        /// movie room settings
-        movieTheater.setNorth(gameRoom);
-        movieTheater.setSouth(climbingWall);
+        // closet settings
+        closet.setSouth(bathRoom);
+        closet.setNorth(movieTheater);
 
-        //climbing wall settings
-        climbingWall.setNorth(movieTheater);
-        climbingWall.setWest(jelloRoom);
+      /// movie room settings
+        movieTheater.setSouth(closet);
+        movieTheater.setWest(livingRoom);
 
-        //jello room
-        jelloRoom.setNorth(potionRoom);
-        jelloRoom.setEast(climbingWall);
-
-        //potion room settings
-        potionRoom.setEast(lounge);
-        potionRoom.setNorth(creepyLibrary);
-        potionRoom.setSouth(jelloRoom);
-
-        //lounge settings
-        lounge.setWest(potionRoom);
-        lounge.setEast(gameRoom);
+        // living room settings
+        livingRoom.setEast(movieTheater);
+        livingRoom.setNorth(gameRoom);
 
         //game room settings
-        gameRoom.setWest(lounge);
-        gameRoom.setNorth(diningRoom);
-        gameRoom.setSouth(movieTheater);
+        gameRoom.setSouth(livingRoom);
+        gameRoom.setEast(natureReserve);
 
-        // creepy library
-        creepyLibrary.setSouth(potionRoom);
-        creepyLibrary.setWest(natureReserve);
-        creepyLibrary.setNorth(closet);
 
         //nature reserve settings
-        natureReserve.setEast(creepyLibrary);
-        natureReserve.setWest(lavaRoom);
-        natureReserve.setNorth(fishTank);
+        natureReserve.setWest(gameRoom);
+        natureReserve.setNorth(jelloRoom);
 
-        //fish tank settings
-        fishTank.setWest(whiteRoom);
-        fishTank.setSouth(natureReserve);
+        //jello room settings
+        jelloRoom.setSouth(natureReserve);
+        jelloRoom.setWest(creepyLibrary);
+
+        // creepy library settings
+        creepyLibrary.setEast(jelloRoom);
+        creepyLibrary.setSouth(whiteRoom);
 
         //white room settings
-        whiteRoom.setSouth(lavaRoom);
-        whiteRoom.setEast(fishTank);
-
-        //lava room settings
-        lavaRoom.setSouth(controlRoom);
-        lavaRoom.setNorth(whiteRoom);
+        whiteRoom.setWest(controlRoom);
+        whiteRoom.setNorth(creepyLibrary);
 
         //control room settings
-        controlRoom.setNorth(lavaRoom);
-        controlRoom.setWest(finish);
-
-        // finish settings
-        finish.setEast(controlRoom);
-
+        controlRoom.setEast(whiteRoom);
+        controlRoom.setSouth(finish);
 
 
         Room possibleRoom;
@@ -153,7 +128,7 @@ public class Main {
         while (running) {
 
             String [] inputCommands = command.nextLine().split(" ", 2);
-            System.out.println(player.getRoom().getCharacters().typeCheck("monster"));
+            //System.out.println(player.getRoom().getCharacters().typeCheck("monster"));
 
 
             switch (inputCommands[0]) {
@@ -213,6 +188,7 @@ public class Main {
                             else{
                                 System.out.println("You cant go that way");
                             }
+                            break;
 
                         case "north":
                             possibleRoom = player.getRoom().getNorth();
