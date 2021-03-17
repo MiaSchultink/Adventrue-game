@@ -15,15 +15,11 @@ public class Room {
 
 
 
-    public Room(String name, Room north, Room south, Room west, Room east, String message) {
+    public Room(String name) {
         this.name = name;
-        this.north = north;
-        this.south = south;
-        this.west = west;
-        this.east = east;
         this.items = new ItemCollection();
         this.characters = new CharacterCollection();
-        this.message = message;
+
     }
 
     public String getName() {

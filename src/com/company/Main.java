@@ -3,6 +3,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.WeakHashMap;
 
 public class Main {
 
@@ -17,7 +18,7 @@ public class Main {
 
        ItemCollection gameItems =  new ItemCollection();
 
-        Room basement= new Room("basement", null, null, null, null,null);
+        Room basement= new Room("basement");
         basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading south.");
         System.out.println(basement.getMessage());
 
@@ -31,9 +32,26 @@ public class Main {
         Item spear = new Item("spear");
 
         //rooms
-        Room kitchen = new Room("kitchen",null,null,null,null,null);
-        Room diningRoom = new Room("dining room",null,null,null,null,null);
-        Room gameRoom = new Room("gaming room", null,null,null,null, null);
+        Room kitchen = new Room("kitchen");
+        Room diningRoom = new Room("dining room");
+        Room gameRoom = new Room("gaming room");
+        Room movieTheater = new Room("movie room");
+        Room jelloRoom = new Room("jello room");
+        Room lounge =  new Room("lounge");
+        Room bathRoom = new Room("bath room");
+        Room creepyLibrary = new Room("creepy library");
+        Room potionRoom = new Room("potion room");
+        Room climbingWall = new Room("climbing wall room");
+        Room natureReserve = new Room("nature reserve");
+        Room bedRoom = new Room("bed room");
+        Room closet = new Room("closet");
+        Room lavaRoom = new Room("nature reserve");
+        Room fishTank = new Room("fish tank");
+        Room whiteRoom = new Room("white room");
+        Room controlRoom = new Room("control room");
+        Room finish = new Room("finish");
+
+
 
 
         //characters
@@ -62,6 +80,73 @@ public class Main {
         diningRoom.setEast(kitchen);
         diningRoom.addCharacter(cat);
         diningRoom.setSouth(gameRoom);
+        diningRoom.setEast(kitchen);
+        diningRoom.setNorth(bedRoom);
+
+        //bed room settigns
+        bedRoom.setNorth(bathRoom);
+        bedRoom.setSouth(diningRoom);
+
+        //bath room settings
+        bathRoom.setWest(closet);
+        bathRoom.setSouth(bedRoom);
+
+        /// movie room settings
+        movieTheater.setNorth(gameRoom);
+        movieTheater.setSouth(climbingWall);
+
+        //climbing wall settings
+        climbingWall.setNorth(movieTheater);
+        climbingWall.setWest(jelloRoom);
+
+        //jello room
+        jelloRoom.setNorth(potionRoom);
+        jelloRoom.setEast(climbingWall);
+
+        //potion room settings
+        potionRoom.setEast(lounge);
+        potionRoom.setNorth(creepyLibrary);
+        potionRoom.setSouth(jelloRoom);
+
+        //lounge settings
+        lounge.setWest(potionRoom);
+        lounge.setEast(gameRoom);
+
+        //game room settings
+        gameRoom.setWest(lounge);
+        gameRoom.setNorth(diningRoom);
+        gameRoom.setSouth(movieTheater);
+
+        // creepy library
+        creepyLibrary.setSouth(potionRoom);
+        creepyLibrary.setWest(natureReserve);
+        creepyLibrary.setNorth(closet);
+
+        //nature reserve settings
+        natureReserve.setEast(creepyLibrary);
+        natureReserve.setWest(lavaRoom);
+        natureReserve.setNorth(fishTank);
+
+        //fish tank settings
+        fishTank.setWest(whiteRoom);
+        fishTank.setSouth(natureReserve);
+
+        //white room settings
+        whiteRoom.setSouth(lavaRoom);
+        whiteRoom.setEast(fishTank);
+
+        //lava room settings
+        lavaRoom.setSouth(controlRoom);
+        lavaRoom.setNorth(whiteRoom);
+
+        //control room settings
+        controlRoom.setNorth(lavaRoom);
+        controlRoom.setWest(finish);
+
+        // finish settings
+        finish.setEast(controlRoom);
+
+
 
         Room possibleRoom;
 
