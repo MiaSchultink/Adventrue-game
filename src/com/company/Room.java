@@ -87,6 +87,10 @@ public class Room {
     public void removeCharacter(Character player){
         this.characters.removeCharacter(player);
     }
+    public CharacterCollection getCharacters(){
+        return characters;
+    }
+
     public void viewCharacters(){
         this.characters.look();
     }

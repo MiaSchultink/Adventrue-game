@@ -35,10 +35,11 @@ public class Main {
         Room diningRoom = new Room("dining room",null,null,null,null,null);
         Room gameRoom = new Room("gaming room", null,null,null,null, null);
 
+
         //characters
-        Character player = new Character(100, name, basement,null);
-        Character monster1 = new Character(80,"the fanged man",kitchen,null);
-        Character cat  =  new Character(50,"mittens",diningRoom,null);
+        Character player = new Character(100, name,"player", basement,null);
+        Character monster1 = new Character(80,"the fanged man", "monster",kitchen,null);
+        Character cat  =  new Character(50,"mittens","pet",diningRoom,null);
 
         //player settings
 
@@ -60,12 +61,14 @@ public class Main {
         //dining room settings
         diningRoom.setEast(kitchen);
         diningRoom.addCharacter(cat);
+        diningRoom.setSouth(gameRoom);
 
         Room possibleRoom;
 
         while (running) {
 
             String [] inputCommands = command.nextLine().split(" ", 2);
+            System.out.println(player.getRoom().getCharacters().typeCheck("monster"));
 
 
             switch (inputCommands[0]) {

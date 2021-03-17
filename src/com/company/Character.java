@@ -9,13 +9,13 @@ public class Character {
     private Room room;
     private ItemCollection pocket;
     private Character pet;
+    private String type;
 
-
-    public Character(int health, String name, Room room,Character pet) {
+    public Character(int health, String name, String type, Room room,Character pet) {
         this.health = health;
         this.name = name;
         this.room = room;
-
+this.type = type;
         this.pet = pet;
         this.pocket = new ItemCollection();
     }
@@ -68,4 +68,11 @@ public class Character {
         return pet;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
