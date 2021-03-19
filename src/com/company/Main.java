@@ -4,19 +4,47 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static int random(int a, int b){
+          int randomNumber = (int)((b-a)*(Math.random())+a);
+        System.out.println(randomNumber);
+          return randomNumber;
+    }
+    public static int attack(Character player,Character monster) {
+        int attackDamage = random(10, 15);
+        if (monster != null) {
+            player.setHealth(player.getHealth() - attackDamage);
+            monster.setHealth(monster.getHealth() - attackDamage);
+            System.out.println("this is the player health" +player.getHealth());
+            System.out.println("this is the monster health" + monster.getHealth());
+//            if (player.getHealth() <= 0) {
+//                System.out.println("Sorry you have died");
+//                running = false;
+//            }
+            if (monster.getHealth() <= 0) {
+                System.out.println("You have defeated the monster");
+                monster.getRoom().removeCharacter(monster);
+            }
+        } else {
+            System.out.println("There is nothing to attack");
+        }
+        return player.getHealth();
+    }
+
     public static void main(String[] args) {
         boolean running = true;
+
+
         Scanner command = new Scanner(System.in);
 
 
         System.out.println("Please enter your name");
         String name = command.nextLine();
-        System.out.println("Hello, "+ name);
+        System.out.println("Hello, " + name);
 
-       ItemCollection gameItems =  new ItemCollection();
+        ItemCollection gameItems = new ItemCollection();
 
-        Room basement= new Room("basement");
-        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading south.");
+        Room basement = new Room("basement");
+        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading north.");
         System.out.println(basement.getMessage());
 
         //items
@@ -25,7 +53,7 @@ public class Main {
         Item note = new Item("note");
         Item sword = new Item("sword");
         Item carpet = new Item("carpet");
-        Item diningRoomKey=  new Item("key");
+        Item diningRoomKey = new Item("key");
         Item spear = new Item("spear");
 
         //rooms
@@ -34,7 +62,7 @@ public class Main {
         Room gameRoom = new Room("gaming room");
         Room movieTheater = new Room("movie room");
         Room jelloRoom = new Room("jello room");
-        Room lounge =  new Room("lounge");
+        Room lounge = new Room("lounge");
         Room bathRoom = new Room("bath room");
         Room creepyLibrary = new Room("creepy library");
         Room potionRoom = new Room("potion room");
@@ -50,12 +78,12 @@ public class Main {
         Room livingRoom = new Room("living room");
 
 
-
-
         //characters
-        Character player = new Character(100, name,"player", basement,null);
-        Character monster1 = new Character(80,"the fanged man", "monster",kitchen,null);
-        Character cat  =  new Character(50,"mittens","pet",diningRoom,null);
+        Character player = new Character(100, name, "player", basement, null);
+        Character cat = new Character(50, "mittens", "pet", diningRoom, null);
+
+        //monsters
+        Character monster1 = new Character(80, "the fanged man", "monster", kitchen, null);
 
         //basemnt settings
         basement.setNorth(kitchen);
@@ -64,20 +92,22 @@ public class Main {
         basement.addItem(note);
         basement.addItem(flashLight);
 
-       //kitchen settings
+        //kitchen settings
         kitchen.setEast(diningRoom);
         kitchen.setSouth(basement);
 
+
+
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
-        kitchen.setMessage("There is a cat here, it has nice orange fur. If you pet the cat he might become your friend. There is also a sward here.");
+        kitchen.setMessage("There is a cat here, it has nice orange fur. \nIf you pet the cat he might become your friend.\n There is also a sward here.");
         kitchen.addCharacter(monster1);
 
         //dining room settings
         diningRoom.setSouth(bedRoom);
         diningRoom.setWest(kitchen);
 
-       //bed room settigns
+        //bed room settigns
         bedRoom.setEast(bathRoom);
         bedRoom.setNorth(diningRoom);
 
@@ -89,7 +119,7 @@ public class Main {
         closet.setSouth(bathRoom);
         closet.setNorth(movieTheater);
 
-      /// movie room settings
+        /// movie room settings
         movieTheater.setSouth(closet);
         movieTheater.setWest(livingRoom);
 
@@ -125,11 +155,21 @@ public class Main {
 
         Room possibleRoom;
 
+
         while (running) {
 
-            String [] inputCommands = command.nextLine().split(" ", 2);
-            //System.out.println(player.getRoom().getCharacters().typeCheck("monster"));
+            String[] inputCommands = command.nextLine().split(" ", 2);
 
+            if (player.getHealth() <= 0) {
+                running = false;
+                System.out.println("Oh no looks like you have died");
+            }
+
+            Character monster = player.getRoom().getCharacters().typeCheck("monster");
+//          if(monster!=null){
+//            attack(monster,player);
+//              System.out.println("the monster is attacking you "+ player.getHealth());
+//         }
 
             switch (inputCommands[0]) {
 
@@ -138,66 +178,64 @@ public class Main {
                     break;
 
                 case "name":
-                    System.out.println( "I remember your name, it is "+ player.getName());
+                    System.out.println("I remember your name, it is " + player.getName());
                     break;
 
                 case "where":
-                    System.out.println("You are in the "+ player.getRoom().getName());
+                    System.out.println("You are in the " + player.getRoom().getName());
                     break;
 
                 case "look":
                     player.getRoom().viewRoomItems();
-                  break;
+                    break;
 
                 case "character":
                     player.getRoom().viewCharacters();
                     break;
 
                 case "pocket":
-                  player.viewPocket();
+                    player.viewPocket();
                     break;
 
                 case "walk":
-                    switch (inputCommands[1]){
-                        case "east":possibleRoom = player.getRoom().getEast();
-                            if(possibleRoom!=null){
+                    switch (inputCommands[1]) {
+                        case "east":
+                            possibleRoom = player.getRoom().getEast();
+                            if (possibleRoom != null) {
                                 player.setRoom(possibleRoom);
-                                System.out.println("You are now in "+ player.getRoom().getName());
-                            }
-                            else{
+                                System.out.println("You are now in " + player.getRoom().getName());
+                            } else {
                                 System.out.println("You cant go that way");
                             }
                             break;
 
-                        case "south": possibleRoom = player.getRoom().getSouth();
-                           if(possibleRoom!=null){
+                        case "south":
+                            possibleRoom = player.getRoom().getSouth();
+                            if (possibleRoom != null) {
                                 player.setRoom(possibleRoom);
-                                System.out.println("You are now in "+ player.getRoom().getName());
+                                System.out.println("You are now in " + player.getRoom().getName());
+                            } else {
+                                System.out.println("You cant go that way");
                             }
-                           else{
-                              System.out.println("You cant go that way");
-                          }
                             break;
 
                         case "west":
                             possibleRoom = player.getRoom().getWest();
-                            if(possibleRoom!=null){
+                            if (possibleRoom != null) {
                                 player.setRoom(possibleRoom);
-                                System.out.println("You are now in "+ player.getRoom().getName());
-                            }
-                            else{
+                                System.out.println("You are now in " + player.getRoom().getName());
+                            } else {
                                 System.out.println("You cant go that way");
                             }
                             break;
 
                         case "north":
                             possibleRoom = player.getRoom().getNorth();
-                            if(possibleRoom!=null){
+                            if (possibleRoom != null) {
                                 player.setRoom(possibleRoom);
-                                System.out.println("You are now in "+ player.getRoom().getName());
+                                System.out.println("You are now in " + player.getRoom().getName());
                                 System.out.println(player.getRoom().getMessage());
-                            }
-                            else{
+                            } else {
                                 System.out.println("You cant go that way");
                             }
                             break;
@@ -209,46 +247,49 @@ public class Main {
                     break;
 
 
-                case"collect":
-                  Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
-                    if(item !=null){
+                case "collect":
+                    Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
+                    if (item != null) {
                         player.addItem(item);
-                        System.out.println("you have the "+item.getName());
-                    }
-                    else{
+                        System.out.println("you have the " + item.getName());
+                    } else {
                         System.out.println("That item does not exist, or is already in your item bag");
                     }
                     break;
 
                 case "drop":
                     Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
-                    if(itemRemoved !=null){
+                    if (itemRemoved != null) {
                         player.removeItem(itemRemoved);
-                        System.out.println("you have dropped the "+itemRemoved.getName());
+                        System.out.println("you have dropped the " + itemRemoved.getName());
                     }
                     break;
 
 
                 case "attack":
-                    if(player.getRoom()==monster1.getRoom()) {
-                        player.setHealth(player.getHealth() - 10);
-                        monster1.setHealth(monster1.getHealth() - 15);
-                        System.out.println(player.getHealth());
-                        if (player.getHealth() <= 0) {
-                            System.out.println("Sorry you have died");
-                            running = false;
-                        }
-                        if (monster1.getHealth() <= 0) {
-                            System.out.println("You have defeated the monster");
-                        }
-                    }
-                    else{
-                        System.out.println("There is nothing to attack");}
+                    attack(player,monster);
+//
+//                    int attackDamage= random(10,15);
+//                    if (monster!=null) {
+//                        player.setHealth(player.getHealth() -attackDamage);
+//                       monster.setHealth(monster.getHealth() - attackDamage);
+//                        System.out.println(player.getHealth());
+//                        if (player.getHealth() <= 0) {
+//                            System.out.println("Sorry you have died");
+//                            running = false;
+//                        }
+//                        if (monster.getHealth() <= 0) {
+//                            System.out.println("You have defeated the monster");
+//                            monster.getRoom().removeCharacter(monster);
+//                        }
+//                    } else {
+//                        System.out.println("There is nothing to attack");
+//                    }
                     break;
 
 
                 case "quit":
-                    System.out.println("Thanks for playing, "+player.getName()+"!");
+                    System.out.println("Thanks for playing, " + player.getName() + "!");
                     running = false;
                     break;
 

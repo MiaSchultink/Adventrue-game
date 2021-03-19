@@ -11,11 +11,11 @@ public class Character {
     private Character pet;
     private String type;
 
-    public Character(int health, String name, String type, Room room,Character pet) {
+    public Character(int health, String name, String type, Room room, Character pet) {
         this.health = health;
         this.name = name;
         this.room = room;
-this.type = type;
+        this.type = type;
         this.pet = pet;
         this.pocket = new ItemCollection();
     }
@@ -24,7 +24,6 @@ this.type = type;
     public int getHealth() {
         return health;
     }
-
 
 
     public void setHealth(int health) {
@@ -47,24 +46,27 @@ this.type = type;
         this.room = room;
     }
 
-   public void addItem(Item item){
-      this.pocket.addItem(item);
+    public void addItem(Item item) {
+        this.pocket.addItem(item);
     }
-    public void removeItem(Item item){
+
+    public void removeItem(Item item) {
         this.pocket.removeItem(item);
     }
 
-    public void viewPocket(){
-     pocket.look();
+    public void viewPocket() {
+        pocket.look();
     }
-    public ItemCollection getPocket(){
+
+    public ItemCollection getPocket() {
         return pocket;
     }
 
-    public void setPet(Character pet){
+    public void setPet(Character pet) {
         this.pet = pet;
     }
-    public Character getPet(){
+
+    public Character getPet() {
         return pet;
     }
 
@@ -75,4 +77,6 @@ this.type = type;
     public void setType(String type) {
         this.type = type;
     }
+
 }
+
