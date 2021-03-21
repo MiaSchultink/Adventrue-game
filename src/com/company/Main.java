@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 public class Main {
 
@@ -9,26 +10,44 @@ public class Main {
         System.out.println(randomNumber);
           return randomNumber;
     }
+
+//    public static int attack(Character player,Character monster, Item item) {
+//        int attackDamage = random(item.getAttackDamage()-5,item.getAttackDamage());
+//        if (monster != null) {
+//            player.setHealth(player.getHealth() - attackDamage);
+//            monster.setHealth(monster.getHealth() - attackDamage);
+//            System.out.println("this is the player health" +player.getHealth());
+//            System.out.println("this is the monster health" + monster.getHealth());
+//
+//            if (monster.getHealth() <= 0) {
+//                System.out.println("You have defeated the monster");
+//                monster.getRoom().removeCharacter(monster);
+//            }
+//        } else {
+//            System.out.println("There is nothing to attack");
+//        }
+//        return player.getHealth();
+//    }
+
     public static int attack(Character player,Character monster) {
-        int attackDamage = random(10, 15);
+        int attackDamage = random(10,15);
         if (monster != null) {
             player.setHealth(player.getHealth() - attackDamage);
             monster.setHealth(monster.getHealth() - attackDamage);
+
             System.out.println("this is the player health" +player.getHealth());
             System.out.println("this is the monster health" + monster.getHealth());
-//            if (player.getHealth() <= 0) {
-//                System.out.println("Sorry you have died");
-//                running = false;
-//            }
+
             if (monster.getHealth() <= 0) {
                 System.out.println("You have defeated the monster");
                 monster.getRoom().removeCharacter(monster);
             }
         } else {
-            System.out.println("There is nothing to attack");
+            System.out.println("There is nothing to attack here");
         }
         return player.getHealth();
     }
+
 
     public static void main(String[] args) {
         boolean running = true;
@@ -55,6 +74,10 @@ public class Main {
         Item carpet = new Item("carpet");
         Item diningRoomKey = new Item("key");
         Item spear = new Item("spear");
+
+        //item settings
+        sword.setAttackDamage(20);
+        spear.setAttackDamage(15);
 
         //rooms
         Room kitchen = new Room("kitchen");
@@ -156,6 +179,7 @@ public class Main {
         Room possibleRoom;
 
 
+
         while (running) {
 
             String[] inputCommands = command.nextLine().split(" ", 2);
@@ -166,10 +190,14 @@ public class Main {
             }
 
             Character monster = player.getRoom().getCharacters().typeCheck("monster");
-//          if(monster!=null){
-//            attack(monster,player);
-//              System.out.println("the monster is attacking you "+ player.getHealth());
-//         }
+            if(monster!=null){
+               int randomNumber= random(0,10);
+               if(randomNumber<4){
+                   attack(monster,player);
+                   System.out.println("monster attack");
+               }
+
+            }
 
             switch (inputCommands[0]) {
 
@@ -267,24 +295,8 @@ public class Main {
 
 
                 case "attack":
+                    //String itemName =  command.nextLine();
                     attack(player,monster);
-//
-//                    int attackDamage= random(10,15);
-//                    if (monster!=null) {
-//                        player.setHealth(player.getHealth() -attackDamage);
-//                       monster.setHealth(monster.getHealth() - attackDamage);
-//                        System.out.println(player.getHealth());
-//                        if (player.getHealth() <= 0) {
-//                            System.out.println("Sorry you have died");
-//                            running = false;
-//                        }
-//                        if (monster.getHealth() <= 0) {
-//                            System.out.println("You have defeated the monster");
-//                            monster.getRoom().removeCharacter(monster);
-//                        }
-//                    } else {
-//                        System.out.println("There is nothing to attack");
-//                    }
                     break;
 
 
