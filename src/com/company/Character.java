@@ -78,5 +78,6 @@ public class Character {
         this.type = type;
     }
 
+
 }
 

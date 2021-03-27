@@ -35,7 +35,39 @@ public class ItemCollection {
         }
     }
 
-    public void look() {
+    public void checkName(String itemName){
+        for (int i = 0; i < itemList.size(); i++) {
+            Item item = itemList.get(i);
+            if (itemName.equals(item.getName())){
+
+            }
+        }
+    }
+    public boolean attackRequest(String name){
+        boolean result = false;
+        for(int i=0; i<itemList.size(); i++){
+            Item item = itemList.get(i);
+            if(item.getName().equals(name)&&(item.getAttackDamage()>0)){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public String getAttackItems(){
+        String result = "";
+        for(int i=0; i<this.itemList.size(); i++){
+            Item item = this.itemList.get(i);
+            int attackDamage = item.getAttackDamage();
+            if(attackDamage>0){
+                result = result + " "+ item.getName();
+            }
+        }
+        return result;
+    }
+
+
+    public void look(){
         if (!this.itemList.isEmpty()) {
             for (int i = 0; i < this.itemList.size(); i++) {
                 System.out.println(this.itemList.get(i).getName());

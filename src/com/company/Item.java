@@ -1,11 +1,14 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Item {
     private String name;
     private int attackDamage;
 
-    public Item(String name) {
+    public Item(String name, int attackDamage) {
         this.name = name;
+        this.attackDamage = attackDamage;
     }
 
     public String getName() {
@@ -22,6 +25,8 @@ public class Item {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
 
 }
