@@ -66,6 +66,18 @@ public class ItemCollection {
         return result;
     }
 
+    public Item use(String itemName) {
+        Item result = null;
+        for (int i = 0; i < this.itemList.size(); i++) {
+            Item item = this.itemList.get(i);
+
+            if (item.getName().equals(itemName)) {
+                result = item;
+            }
+        }
+        return result;
+    }
+
 
     public void look(){
         if (!this.itemList.isEmpty()) {

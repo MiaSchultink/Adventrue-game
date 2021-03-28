@@ -1,27 +1,25 @@
 package com.company;
 
 import java.util.Scanner;
-import java.util.concurrent.Callable;
-import java.util.jar.JarOutputStream;
 
 public class Main {
 
-    public static int random(int a, int b){
-          int randomNumber = (int)((b-a)*(Math.random())+a);
-          return randomNumber;
+    public static int random(int a, int b) {
+        int randomNumber = (int) ((b - a) * (Math.random()) + a);
+        return randomNumber;
     }
 
 
-    public static void attack1(Character player,Character monster) {
+    public static void attack1(Character player, Character monster) {
 
-        int playerAttackDamage = random(10,15);
-        int monsterAttackDamage = random(10,15);
+        int playerAttackDamage = random(10, 15);
+        int monsterAttackDamage = random(10, 15);
         if (monster != null) {
             player.setHealth(player.getHealth() - playerAttackDamage);
             monster.setHealth(monster.getHealth() - monsterAttackDamage);
 
-            System.out.println(player.getName()+" health " +player.getHealth());
-            System.out.println(monster.getName()+ " health " + monster.getHealth());
+            System.out.println(player.getName() + " health " + player.getHealth());
+            System.out.println(monster.getName() + " health " + monster.getHealth());
 
             if (monster.getHealth() <= 0) {
                 System.out.println("You have defeated the monster");
@@ -33,8 +31,38 @@ public class Main {
 
     }
 
-    public static void attack(Character player, Character monster, String itemName){
+    public static void attack(Character attacker, Character target, Item weapon) {
+        int monsterAttackDamage = random(10, 15);
 
+        attacker.setHealth(attacker.getHealth());
+        target.setHealth(target.getHealth());
+
+        int attackerHealth = attacker.getHealth();
+        int targetHealth = target.getHealth();
+        int attackDamage = weapon.getAttackDamage();
+
+        targetHealth = targetHealth - attackDamage;
+        target.setHealth(targetHealth);
+        System.out.println(target.getName() +" " + targetHealth);
+
+        attackerHealth = attackerHealth - monsterAttackDamage;
+        attacker.setHealth(attackerHealth);
+        System.out.println(attacker.getName()+" "+attackerHealth);
+
+        if(targetHealth<=0){
+            System.out.println(target.getName()+ " has defeated "+attacker.getName());
+            target.getRoom().removeCharacter(target);
+        }
+        if(attackerHealth<=0){
+            System.out.println(attacker.getName()+" has defeated "+ target.getName());
+        }
+
+    }
+
+
+    public static int rounds(String rounds){
+        int roundNumber = Integer.parseInt(rounds);
+        return roundNumber;
     }
 
 
@@ -56,17 +84,16 @@ public class Main {
         System.out.println(basement.getMessage());
 
         //items
-        Item watterBottle = new Item("water bottle",0);
-        Item flashLight = new Item("flash light",0);
-        Item note = new Item("note",0);
-        Item sword = new Item("sword",20);
-        Item diningRoomKey = new Item("key",0);
-        Item spear = new Item("spear",15);
-        Item baseBallBat =  new Item("baseball bat",20);
+        Item watterBottle = new Item("water bottle", 0);
+        Item flashLight = new Item("flash light", 0);
+        Item note = new Item("note", 0);
+        Item sword = new Item("sword", 20);
+        Item diningRoomKey = new Item("key", 0);
+        Item spear = new Item("spear", 15);
+        Item baseBallBat = new Item("baseball bat", 20);
+        Item knife = new Item("knife",15);
+        Item rock = new Item("rock",10);
 
-        //item settings
-        sword.setAttackDamage(20);
-        spear.setAttackDamage(15);
 
         //rooms
         Room kitchen = new Room("kitchen");
@@ -98,7 +125,8 @@ public class Main {
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen, null);
         monster1.addItem(baseBallBat);
 
-        Character testAttackMonster= new Character(80,"test monster","monster",basement,null);
+        Character testAttackMonster = new Character(80, "test monster", "monster", basement, null);
+        testAttackMonster.addItem(rock);
 
         //basemnt settings
         basement.setNorth(kitchen);
@@ -106,11 +134,12 @@ public class Main {
         basement.addItem(watterBottle);
         basement.addItem(note);
         basement.addItem(flashLight);
+        basement.addItem(knife);
+        basement.addCharacter(testAttackMonster);
 
         //kitchen settings
         kitchen.setEast(diningRoom);
         kitchen.setSouth(basement);
-
 
 
         kitchen.addItem(sword);
@@ -169,14 +198,7 @@ public class Main {
 
         Room possibleRoom;
 
-
-
         while (running) {
-           // System.out.println("New round");
-
-
-
-         //   System.out.println("After cmd");
 
             if (player.getHealth() <= 0) {
                 running = false;
@@ -184,13 +206,13 @@ public class Main {
             }
 
             Character monster = player.getRoom().getCharacters().typeCheck("monster");
-            if(monster!=null){
-               int randomNumber= random(0,10);
-               if(randomNumber<4){
-                   attack(monster,player,null);
-               }
-
-            }
+//            if(monster!=null){
+//               int randomNumber= random(0,10);
+//               if(randomNumber<4){
+//                   attack(monster,player,null);
+//               }
+//
+//            }
             String[] inputCommands = command.nextLine().split(" ", 2);
 
             switch (inputCommands[0]) {
@@ -289,24 +311,34 @@ public class Main {
 
 
                 case "attack":
-                String attackItemNames = player.getPocket().getAttackItems();
-                if(!attackItemNames.equals("")){
-                    System.out.println("What do you want to attack with?");
-                    System.out.println("You can attack with: "+attackItemNames);
-                }
-                else{
-                    System.out.println("You don't have any items you can use to attack");
-                }
-                String itemAttack = command.nextLine();
-                boolean  itemCheck = player.getPocket().attackRequest(itemAttack);
+                    String attackItemNames = player.getPocket().getAttackItems();
+                    if (!attackItemNames.equals("")) {
+                        System.out.println("What do you want to attack with?");
+                        System.out.println("You can attack with:" + attackItemNames);
+                    } else {
+                        System.out.println("You don't have any items you can use to attack");
+                    }
+                    String attackItemName = command.nextLine();
+                    boolean itemCheck = player.getPocket().attackRequest(attackItemName);
 
-              if(itemCheck) {
-                  System.out.println("You are going to attack with the " + itemAttack);
-              }
-              else {
-                  System.out.println("Did you make a typo? not sure if this item can be used to attack");
-              }
-                break;
+                    if (itemCheck) {
+                        System.out.println("You are going to attack with the " + attackItemName);
+                        System.out.println("How many battle rounds do you want? (max of 10 rounds)");
+                        int numberOfRounds = rounds(command.nextLine());
+                        Item attackItem = player.getPocket().use(attackItemName);
+                        for(int i = 0; i<numberOfRounds;i++){
+                            attack(player, monster,attackItem);
+                        }
+
+                    }
+
+
+                    else {
+                        System.out.println("Did you make a typo? not sure if this item can be used to attack");
+                    }
+
+                    break;
+
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
@@ -318,7 +350,6 @@ public class Main {
                     System.out.println("I don't understand that");
                     break;
             }
-         //   System.out.println("After round");
 
         }
         command.close();
