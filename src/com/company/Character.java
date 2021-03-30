@@ -58,6 +58,7 @@ public class Character {
             this.pocket.removeItem(item);
             return health;
         }
+        String string = "this is a comment";
 
     public void viewPocket() {
         pocket.look();

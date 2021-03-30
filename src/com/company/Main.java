@@ -349,6 +349,7 @@ public class Main {
                     break;
 
                 case "eat":
+                    String string = "this is a comment";
                     Item eatItem = player.getPocket().collectRequest(inputCommands[1]);
                     if(eatItem!=null){
                         if(player.getHealth()<100) {
