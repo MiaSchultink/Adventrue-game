@@ -1,7 +1,6 @@
 package com.company;
-
-import javax.print.CancelablePrintJob;
 import java.util.Scanner;
+
 
 public class Main {
 
@@ -33,27 +32,31 @@ public class Main {
         int targetWeaponHealth = targetWeapon.getHealth();
 
         //creating percentage of weapon health decrease
-        int attackerWeaponDecrease = (int)(attackerWeaponHealth*(1/100.0f));
-        int targetWeaponDecrease  = (int)(targetWeaponHealth*(1/100.0f));
+        int attackerWeaponDecrease =(int) Math.round(1 * 100.0/attackerWeaponHealth);
+        int targetWeaponDecrease = (int)Math.round(1 * 100.0/targetWeaponHealth);
 
         //target during attack
         targetHealth = targetHealth - attackerAttackDamage;
         target.setHealth(targetHealth);
         System.out.println(target.getName() +" health = " + targetHealth);
-        targetWeapon.setHealth(targetWeaponHealth-targetWeaponDecrease);
+
+        targetWeaponHealth = targetWeaponHealth-targetWeaponDecrease;
+        targetWeapon.setHealth(targetWeaponHealth);
 
         //attacker during attack
         attackerHealth = attackerHealth - targetAttackDamage;
         attacker.setHealth(attackerHealth);
         System.out.println(attacker.getName()+" health = "+attackerHealth);
-        attackerWeapon.setHealth(attackerWeaponHealth-attackerWeaponDecrease);
+
+        attackerWeaponHealth = attackerWeaponHealth-attackerWeaponDecrease;
+        attackerWeapon.setHealth(attackerWeaponHealth);
+
         //weapon printing
         System.out.println("******************************************");
-        System.out.println(attackerWeapon.getName()+ " health = "+ attackerWeaponHealth);
+        System.out.println(attackerWeapon.getName()+ " health = "+attackerWeaponHealth);
         System.out.println(targetWeapon.getName()+ " health = "+ targetWeaponHealth);
 
         System.out.println("-----------------------------------------");
-
     }
 
     public static int rounds(String rounds){
@@ -75,20 +78,20 @@ public class Main {
 
 
         Room basement = new Room("basement");
-        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading north.");
+        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a stairwell leading north.\nType look to find items available");
         System.out.println(basement.getMessage());
 
         //items
-        Item watterBottle = new Item("water bottle", 0,10);
-        Item flashLight = new Item("flash light", 0,15);
-        Item note = new Item("note", 0,5);
-        Item sword = new Item("sword", 20,65);
-        Item diningRoomKey = new Item("key", 0,10);
-        Item spear = new Item("spear", 15,50);
-        Item baseBallBat = new Item("baseball bat", 20,60);
-        Item knife = new Item("knife",15,70);
-        Item rock = new Item("rock",10,40);
-        Item machineGun =  new Item("machine gun", 17,70);
+        Item watterBottle = new Item("water bottle", 0,10,10);
+        Item flashLight = new Item("flash light", 0,0,15);
+        Item note = new Item("note", 0,0,5);
+        Item sword = new Item("sword", 20,0,65);
+        Item diningRoomKey = new Item("key", 0,0,10);
+        Item spear = new Item("spear", 15,0,50);
+        Item baseBallBat = new Item("baseball bat", 20,0,60);
+        Item knife = new Item("knife",15,0,70);
+        Item rock = new Item("rock",10,0,40);
+        Item machineGun =  new Item("machine gun", 17,0,70);
 
 
         //rooms
@@ -144,14 +147,14 @@ public class Main {
 
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
-        kitchen.setMessage("There is a cat here, it has nice orange fur. \nIf you pet the cat he might become your friend.\nThere is also a sward here.");
+        kitchen.setMessage("There is a cat here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here");
         kitchen.addCharacter(monster1);
 
         //dining room settings
         diningRoom.setSouth(bedRoom);
         diningRoom.setWest(kitchen);
 
-        //bed room settigns
+        //bed room settings
         bedRoom.setEast(bathRoom);
         bedRoom.setNorth(diningRoom);
 
@@ -344,6 +347,24 @@ public class Main {
                     }
 
                     break;
+
+                case "eat":
+                    Item eatItem = player.getPocket().collectRequest(inputCommands[1]);
+                    if(eatItem!=null){
+                        if(player.getHealth()<100) {
+                            int newPlayerHealth = player.eat(eatItem);
+                            System.out.println("Your health = " + newPlayerHealth);
+                        }
+                        if (player.getHealth() == 100) {
+                            System.out.println("You have full health");
+                        }
+                    }
+                    else{
+                        System.out.println("Sorry I don't understand you here is what might have happened:\n1.You don't have the health increasing item\n2.You have already worn this item out\n3.This item does not exist\n4. You made a typo");
+                    }
+
+                break;
+
 
 
                 case "quit":

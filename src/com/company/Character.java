@@ -52,6 +52,12 @@ public class Character {
     public void removeItem(Item item) {
         this.pocket.removeItem(item);
     }
+    public int eat(Item item){
+        int increase  = item.getHealthIncrease();
+         int health = this.health+increase;
+            this.pocket.removeItem(item);
+            return health;
+        }
 
     public void viewPocket() {
         pocket.look();
