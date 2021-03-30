@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Item {
     private String name;
     private int attackDamage;
+    private int health;
 
-    public Item(String name, int attackDamage) {
+    public Item(String name, int attackDamage, int health) {
         this.name = name;
         this.attackDamage = attackDamage;
+        this.health = health;
     }
 
     public String getName() {
@@ -26,6 +28,12 @@ public class Item {
         this.name = name;
     }
 
+    public void setHealth(int health){
+        this.health = health;
+    }
+    public int getHealth(){
+        return health;
+    }
 
 
 

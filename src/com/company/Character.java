@@ -11,12 +11,11 @@ public class Character {
     private Character pet;
     private String type;
 
-    public Character(int health, String name, String type, Room room, Character pet) {
+    public Character(int health, String name, String type, Room room) {
         this.health = health;
         this.name = name;
         this.room = room;
         this.type = type;
-        this.pet = pet;
         this.pocket = new ItemCollection();
     }
 

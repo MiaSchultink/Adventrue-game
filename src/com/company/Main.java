@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.print.CancelablePrintJob;
 import java.util.Scanner;
 
 public class Main {
@@ -9,56 +10,51 @@ public class Main {
         return randomNumber;
     }
 
+    public static void attack(Character attacker, Character target, Item attackerWeapon, Item targetWeapon) {
 
-    public static void attack1(Character player, Character monster) {
-
-        int playerAttackDamage = random(10, 15);
-        int monsterAttackDamage = random(10, 15);
-        if (monster != null) {
-            player.setHealth(player.getHealth() - playerAttackDamage);
-            monster.setHealth(monster.getHealth() - monsterAttackDamage);
-
-            System.out.println(player.getName() + " health " + player.getHealth());
-            System.out.println(monster.getName() + " health " + monster.getHealth());
-
-            if (monster.getHealth() <= 0) {
-                System.out.println("You have defeated the monster");
-                monster.getRoom().removeCharacter(monster);
-            }
-        } else {
-            System.out.println("There is nothing to attack here");
-        }
-
-    }
-
-    public static void attack(Character attacker, Character target, Item weapon) {
-        int monsterAttackDamage = random(10, 15);
-
+//setting attacker and target health
         attacker.setHealth(attacker.getHealth());
         target.setHealth(target.getHealth());
 
+        //setting weapons health
+        attackerWeapon.setHealth(attackerWeapon.getHealth());
+        targetWeapon.setHealth(targetWeapon.getHealth());
+
+ //getting existing attacker and target heath
         int attackerHealth = attacker.getHealth();
         int targetHealth = target.getHealth();
-        int attackDamage = weapon.getAttackDamage();
+        //getting weapon attack damage
 
-        targetHealth = targetHealth - attackDamage;
+        int attackerAttackDamage = attackerWeapon.getAttackDamage();
+        int targetAttackDamage =  targetWeapon.getAttackDamage();
+
+      //getting weapon health
+        int attackerWeaponHealth = attackerWeapon.getHealth();
+        int targetWeaponHealth = targetWeapon.getHealth();
+
+        //creating percentage of weapon health decrease
+        int attackerWeaponDecrease = (int)(attackerWeaponHealth*(1/100.0f));
+        int targetWeaponDecrease  = (int)(targetWeaponHealth*(1/100.0f));
+
+        //target during attack
+        targetHealth = targetHealth - attackerAttackDamage;
         target.setHealth(targetHealth);
-        System.out.println(target.getName() +" " + targetHealth);
+        System.out.println(target.getName() +" health = " + targetHealth);
+        targetWeapon.setHealth(targetWeaponHealth-targetWeaponDecrease);
 
-        attackerHealth = attackerHealth - monsterAttackDamage;
+        //attacker during attack
+        attackerHealth = attackerHealth - targetAttackDamage;
         attacker.setHealth(attackerHealth);
-        System.out.println(attacker.getName()+" "+attackerHealth);
+        System.out.println(attacker.getName()+" health = "+attackerHealth);
+        attackerWeapon.setHealth(attackerWeaponHealth-attackerWeaponDecrease);
+        //weapon printing
+        System.out.println("******************************************");
+        System.out.println(attackerWeapon.getName()+ " health = "+ attackerWeaponHealth);
+        System.out.println(targetWeapon.getName()+ " health = "+ targetWeaponHealth);
 
-        if(targetHealth<=0){
-            System.out.println(target.getName()+ " has defeated "+attacker.getName());
-            target.getRoom().removeCharacter(target);
-        }
-        if(attackerHealth<=0){
-            System.out.println(attacker.getName()+" has defeated "+ target.getName());
-        }
+        System.out.println("-----------------------------------------");
 
     }
-
 
     public static int rounds(String rounds){
         int roundNumber = Integer.parseInt(rounds);
@@ -77,22 +73,22 @@ public class Main {
         String name = command.nextLine();
         System.out.println("Hello, " + name);
 
-        ItemCollection gameItems = new ItemCollection();
 
         Room basement = new Room("basement");
         basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a note, a water bottle and a flashlight on the table in front of you.\nThere is a stairwell leading north.");
         System.out.println(basement.getMessage());
 
         //items
-        Item watterBottle = new Item("water bottle", 0);
-        Item flashLight = new Item("flash light", 0);
-        Item note = new Item("note", 0);
-        Item sword = new Item("sword", 20);
-        Item diningRoomKey = new Item("key", 0);
-        Item spear = new Item("spear", 15);
-        Item baseBallBat = new Item("baseball bat", 20);
-        Item knife = new Item("knife",15);
-        Item rock = new Item("rock",10);
+        Item watterBottle = new Item("water bottle", 0,10);
+        Item flashLight = new Item("flash light", 0,15);
+        Item note = new Item("note", 0,5);
+        Item sword = new Item("sword", 20,65);
+        Item diningRoomKey = new Item("key", 0,10);
+        Item spear = new Item("spear", 15,50);
+        Item baseBallBat = new Item("baseball bat", 20,60);
+        Item knife = new Item("knife",15,70);
+        Item rock = new Item("rock",10,40);
+        Item machineGun =  new Item("machine gun", 17,70);
 
 
         //rooms
@@ -118,17 +114,21 @@ public class Main {
 
 
         //characters
-        Character player = new Character(100, name, "player", basement, null);
-        Character cat = new Character(50, "mittens", "pet", diningRoom, null);
+        Character player = new Character(100, name, "player", basement);
+        Character cat = new Character(50, "mittens", "pet", diningRoom);
 
         //monsters
-        Character monster1 = new Character(80, "the fanged man", "monster", kitchen, null);
+        Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
         monster1.addItem(baseBallBat);
 
-        Character testAttackMonster = new Character(80, "test monster", "monster", basement, null);
+        Character testAttackMonster = new Character(80, "test monster", "monster", basement);
         testAttackMonster.addItem(rock);
 
-        //basemnt settings
+        Character gameRoomMonster =  new Character(100,"gmame gangster","monster", gameRoom);
+        gameRoomMonster.addItem(machineGun);
+
+
+        //basement settings
         basement.setNorth(kitchen);
 
         basement.addItem(watterBottle);
@@ -174,6 +174,7 @@ public class Main {
         //game room settings
         gameRoom.setSouth(livingRoom);
         gameRoom.setEast(natureReserve);
+        gameRoom.addCharacter(gameRoomMonster);
 
         //nature reserve settings
         natureReserve.setWest(gameRoom);
@@ -200,19 +201,18 @@ public class Main {
 
         while (running) {
 
+            Character monster = player.getRoom().getCharacters().typeCheck("monster");
+
             if (player.getHealth() <= 0) {
                 running = false;
                 System.out.println("Oh no looks like you have died");
             }
+            if(monster.getHealth()<=0){
+                System.out.println("You have defeated the monster");
+                monster.getRoom().removeCharacter(monster);
+            }
 
-            Character monster = player.getRoom().getCharacters().typeCheck("monster");
-//            if(monster!=null){
-//               int randomNumber= random(0,10);
-//               if(randomNumber<4){
-//                   attack(monster,player,null);
-//               }
-//
-//            }
+
             String[] inputCommands = command.nextLine().split(" ", 2);
 
             switch (inputCommands[0]) {
@@ -318,6 +318,7 @@ public class Main {
                     } else {
                         System.out.println("You don't have any items you can use to attack");
                     }
+
                     String attackItemName = command.nextLine();
                     boolean itemCheck = player.getPocket().attackRequest(attackItemName);
 
@@ -325,9 +326,14 @@ public class Main {
                         System.out.println("You are going to attack with the " + attackItemName);
                         System.out.println("How many battle rounds do you want? (max of 10 rounds)");
                         int numberOfRounds = rounds(command.nextLine());
+
                         Item attackItem = player.getPocket().use(attackItemName);
-                        for(int i = 0; i<numberOfRounds;i++){
-                            attack(player, monster,attackItem);
+                        Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
+
+                        int i=0;
+                        while((i<numberOfRounds)&&(player.getHealth()>0)&&(monster.getHealth()>0)){
+                            attack(player,monster,attackItem, monsterAttackItem);
+                            i++;
                         }
 
                     }

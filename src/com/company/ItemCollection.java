@@ -64,7 +64,20 @@ public class ItemCollection {
             }
         }
         return result;
+
     }
+
+public Item getMonsterWeapon(){
+        Item weapon = new Item(null,0,0);
+    for(int i=0; i<this.itemList.size(); i++){
+        Item item = this.itemList.get(i);
+        int attackDamage = item.getAttackDamage();
+        if(attackDamage>0){
+            weapon=item;
+        }
+    }
+    return weapon;
+}
 
     public Item use(String itemName) {
         Item result = null;
