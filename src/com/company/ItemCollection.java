@@ -35,14 +35,14 @@ public class ItemCollection {
         }
     }
 
-//    public void checkName(String itemName) {
-//        for (int i = 0; i < itemList.size(); i++) {
-//            Item item = itemList.get(i);
-//            if (itemName.equals(item.getName())) {
-//
-//            }
-//        }
-//    }
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
+
+    public void setItemList(ArrayList<Item> itemList) {
+        this.itemList = itemList;
+    }
 
     public boolean attackRequest(String name) {
         boolean result = false;
@@ -80,22 +80,6 @@ public class ItemCollection {
         return weapon;
     }
 
-//    public int eat(Item item,Character character){
-//        int characterHealth = character.getHealth();
-//        int increase = item.getHealthIncrease();
-//
-//        if(characterHealth<100){
-//            character.setHealth(character.getHealth()+increase);
-//            System.out.println(character.getHealth());
-//            return characterHealth;
-//        }
-//        else{
-//            System.out.println("You can't eat now");
-//            return 0;
-//        }
-//
-//    }
-
     public Item use(String itemName) {
         Item result = null;
         for (int i = 0; i < this.itemList.size(); i++) {
@@ -112,10 +96,21 @@ public class ItemCollection {
     public void look() {
         if (!this.itemList.isEmpty()) {
             for (int i = 0; i < this.itemList.size(); i++) {
-                System.out.println(this.itemList.get(i).getName());
+                System.out.println("name: "+this.itemList.get(i).getName()+", health: "+this.itemList.get(i).getHealth()+", attack damage: "+this.itemList.get(i).getAttackDamage()+", healing: "+this.itemList.get(i).getHealthIncrease());
             }
         }
     }
+
+
+    public void clean(){
+        for(int i=0; i<itemList.size(); i++){
+            Item item = itemList.get(i);
+            if(item.getHealth()<=0){
+                itemList.remove(item);
+            }
+        }
+    }
+
 
     public void remove(Item item) {
         this.itemList.remove(item);

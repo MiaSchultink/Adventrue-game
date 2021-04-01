@@ -9,6 +9,45 @@ public class CharacterCollection {
         this.characterList = new ArrayList<Character>();
     }
 
+    public Character petCheck1(String characterName){
+       Character possiblePet= new Character(0,null,null,null);
+        for (int i = 0; i < characterList.size(); i++) {
+            Character character = characterList.get(i);
+            if (character.getName().equals(characterName) && (character.getType().equals("pet"))){
+                possiblePet=character;
+            }
+        }
+        return possiblePet;
+    }
+
+    public Character collectRequest(String characterName){
+        int index = -1;
+        for (int i = 0; i < characterList.size(); i++) {
+            Character character = characterList.get(i);
+            if (characterName.equals(character.getName())) {
+                index = i;
+            }
+        }
+        if (index != -1) {
+            Character character = characterList.get(index);
+           characterList.remove(index);
+            return character;
+        } else {
+            return null;
+        }
+
+    }
+
+    public void clean(){
+        for(int i=0; i<characterList.size(); i++){
+            Character character= characterList.get(i);
+            if(character.getHealth()<=0){
+                characterList.remove(character);
+            }
+        }
+    }
+
+
     public Character typeCheck(String type){
         int index = -1;
 
@@ -27,10 +66,11 @@ public class CharacterCollection {
         }
     }
 
+
     public void look() {
         if (!this.characterList.isEmpty()) {
             for (int i = 0; i < this.characterList.size(); i++) {
-                System.out.println(this.characterList.get(i).getName()+" "+this.characterList.get(i).getType());
+                System.out.println("name: "+this.characterList.get(i).getName()+", type:"+this.characterList.get(i).getType()+", health: "+this.characterList.get(i).getHealth());
             }
         }
         else{
@@ -45,5 +85,6 @@ public class CharacterCollection {
     public void removeCharacter(Character player){
         this.characterList.remove(player);
     }
+
 }
 

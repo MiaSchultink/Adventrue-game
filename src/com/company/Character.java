@@ -2,6 +2,7 @@ package com.company;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Character {
     private int health;
@@ -10,6 +11,7 @@ public class Character {
     private ItemCollection pocket;
     private Character pet;
     private String type;
+    private CharacterCollection characterBag;
 
     public Character(int health, String name, String type, Room room) {
         this.health = health;
@@ -17,8 +19,11 @@ public class Character {
         this.room = room;
         this.type = type;
         this.pocket = new ItemCollection();
+        this.characterBag = new CharacterCollection();
     }
-
+public void addCharacter(Character character){
+        this.characterBag.addCharacter(character);
+}
 
     public int getHealth() {
         return health;
@@ -58,7 +63,7 @@ public class Character {
             this.pocket.removeItem(item);
             return health;
         }
-        String string = "this is a comment";
+
 
     public void viewPocket() {
         pocket.look();
@@ -84,6 +89,19 @@ public class Character {
         this.type = type;
     }
 
+    public CharacterCollection getCharacterBag() {
+        return characterBag;
+    }
 
+    public void viewCharacters(){
+        this.characterBag.look();
+    }
+    public void typeCheck(String characterType){
+        this.characterBag.typeCheck(characterType);
+    }
+
+    public void setCharacterBag(CharacterCollection characterBag) {
+        this.characterBag = characterBag;
+    }
 }
 

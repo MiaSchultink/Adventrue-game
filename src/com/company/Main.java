@@ -1,5 +1,7 @@
 package com.company;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 
 public class Main {
@@ -8,6 +10,11 @@ public class Main {
         int randomNumber = (int) ((b - a) * (Math.random()) + a);
         return randomNumber;
     }
+    public static void pet(Character petter, Character pet){
+        petter.getRoom().removeCharacter(pet);
+        petter.addCharacter(pet);
+    }
+
 
     public static void attack(Character attacker, Character target, Item attackerWeapon, Item targetWeapon) {
 
@@ -92,6 +99,7 @@ public class Main {
         Item knife = new Item("knife",15,0,70);
         Item rock = new Item("rock",10,0,40);
         Item machineGun =  new Item("machine gun", 17,0,70);
+        Item bread = new Item("bread",0,20,10);
 
 
         //rooms
@@ -138,7 +146,9 @@ public class Main {
         basement.addItem(note);
         basement.addItem(flashLight);
         basement.addItem(knife);
+        basement.addItem(bread);
         basement.addCharacter(testAttackMonster);
+        basement.addCharacter(cat);
 
         //kitchen settings
         kitchen.setEast(diningRoom);
@@ -206,6 +216,12 @@ public class Main {
 
             Character monster = player.getRoom().getCharacters().typeCheck("monster");
 
+            //checking if character and item health is under 0
+            player.getPocket().clean();
+            player.getRoom().getItems().clean();
+            player.getRoom().getCharacters().clean();
+            player.getCharacterBag().clean();
+
             if (player.getHealth() <= 0) {
                 running = false;
                 System.out.println("Oh no looks like you have died");
@@ -213,6 +229,9 @@ public class Main {
             if(monster.getHealth()<=0){
                 System.out.println("You have defeated the monster");
                 monster.getRoom().removeCharacter(monster);
+            }
+            if(player.getHealth()<=10){
+                System.out.println("Your health is very low!");
             }
 
 
@@ -238,6 +257,9 @@ public class Main {
 
                 case "character":
                     player.getRoom().viewCharacters();
+                    break;
+                case "pets":
+                    player.viewCharacters();
                     break;
 
                 case "pocket":
@@ -341,19 +363,20 @@ public class Main {
 
                     }
 
-
                     else {
                         System.out.println("Did you make a typo? not sure if this item can be used to attack");
                     }
-
                     break;
 
                 case "eat":
-                    String string = "this is a comment";
                     Item eatItem = player.getPocket().collectRequest(inputCommands[1]);
                     if(eatItem!=null){
                         if(player.getHealth()<100) {
                             int newPlayerHealth = player.eat(eatItem);
+
+                            if(newPlayerHealth>100){
+                               newPlayerHealth=100;
+                            }
                             System.out.println("Your health = " + newPlayerHealth);
                         }
                         if (player.getHealth() == 100) {
@@ -366,13 +389,29 @@ public class Main {
 
                 break;
 
-
+                case "pet":
+           Character pet = player.getRoom().getCharacters().collectRequest(inputCommands[1]);
+           if((pet!=null)&&(pet.getType().equals("pet"))){
+                   int scratchChances = random(0, 2);
+                   if (scratchChances == 0) {
+                       player.setHealth(player.getHealth() - 5);
+                       System.out.println("Oh oh, looks like the " + pet.getName() + " has scratched you!");
+                       System.out.println("Your health = "+ player.getHealth());
+                   }
+                   if (scratchChances == 1) {
+                       pet(player,cat);
+                       System.out.println("Congratulations, you have a pet!");
+                   }
+           }
+           else{
+               System.out.println("You can't pet that");
+           }
+           break;
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
                     running = false;
                     break;
-
 
                 default:
                     System.out.println("I don't understand that");

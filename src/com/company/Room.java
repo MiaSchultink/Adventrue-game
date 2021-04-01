@@ -8,7 +8,6 @@ public class Room {
     private Room south;
     private Room west;
     private Room east;
-   // private ArrayList<Item> items;
     private ItemCollection items;
     private CharacterCollection characters;
     private String message;
