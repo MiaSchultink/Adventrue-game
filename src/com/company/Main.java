@@ -1,8 +1,5 @@
 package com.company;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
-
 
 public class Main {
 
@@ -14,7 +11,6 @@ public class Main {
         petter.getRoom().removeCharacter(pet);
         petter.addCharacter(pet);
     }
-
 
     public static void attack(Character attacker, Character target, Item attackerWeapon, Item targetWeapon) {
 
@@ -70,7 +66,6 @@ public class Main {
         int roundNumber = Integer.parseInt(rounds);
         return roundNumber;
     }
-
 
     public static void main(String[] args) {
         boolean running = true;
@@ -157,7 +152,7 @@ public class Main {
 
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
-        kitchen.setMessage("There is a cat here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here");
+        kitchen.setMessage("The scenic abandoned kitchen. There is a cat here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here.");
         kitchen.addCharacter(monster1);
 
         //dining room settings
