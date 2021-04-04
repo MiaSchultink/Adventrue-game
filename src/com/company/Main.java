@@ -1,4 +1,5 @@
 package com.company;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -10,6 +11,14 @@ public class Main {
     public static void pet(Character petter, Character pet){
         petter.getRoom().removeCharacter(pet);
         petter.addCharacter(pet);
+    }
+    public static void god(ArrayList<Room> rooms){
+        for(int i=0; i<rooms.size();i++){
+            Room room = rooms.get(i);
+            System.out.println(room.getName());
+            room.viewRoomItems();
+            room.viewCharacters();
+        }
     }
 
     public static void attack(Character attacker, Character target, Item attackerWeapon, Item targetWeapon) {
@@ -95,6 +104,7 @@ public class Main {
         Item rock = new Item("rock",10,0,40);
         Item machineGun =  new Item("machine gun", 17,0,70);
         Item bread = new Item("bread",0,20,10);
+        Item pasta =  new Item("pasta bowl",0,15,10);
 
 
         //rooms
@@ -118,6 +128,22 @@ public class Main {
         Room finish = new Room("finish");
         Room livingRoom = new Room("living room");
 
+        RoomCollection rooms = new RoomCollection();
+        rooms.addRoom(basement);
+        rooms.addRoom(kitchen);
+        rooms.addRoom(diningRoom);
+        rooms.addRoom(gameRoom);
+        rooms.addRoom(movieTheater);
+        rooms.addRoom(jelloRoom);
+        rooms.addRoom(bathRoom);
+        rooms.addRoom(creepyLibrary);
+        rooms.addRoom(natureReserve);
+        rooms.addRoom(bedRoom);
+        rooms.addRoom(closet);
+        rooms.addRoom(whiteRoom);
+        rooms.addRoom(controlRoom);
+        rooms.addRoom(finish);
+        rooms.addRoom(livingRoom);
 
         //characters
         Character player = new Character(100, name, "player", basement);
@@ -149,7 +175,6 @@ public class Main {
         kitchen.setEast(diningRoom);
         kitchen.setSouth(basement);
 
-
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
         kitchen.setMessage("The scenic abandoned kitchen. There is a cat here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here.");
@@ -158,6 +183,10 @@ public class Main {
         //dining room settings
         diningRoom.setSouth(bedRoom);
         diningRoom.setWest(kitchen);
+
+        diningRoom.setMessage("The dinning room, the great festive hall. The long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
+        diningRoom.addItem(pasta);
+
 
         //bed room settings
         bedRoom.setEast(bathRoom);
@@ -205,8 +234,6 @@ public class Main {
         controlRoom.setSouth(finish);
 
 
-        Room possibleRoom;
-
         while (running) {
 
             Character monster = player.getRoom().getCharacters().typeCheck("monster");
@@ -221,13 +248,19 @@ public class Main {
                 running = false;
                 System.out.println("Oh no looks like you have died");
             }
-            if(monster.getHealth()<=0){
-                System.out.println("You have defeated the monster");
-                monster.getRoom().removeCharacter(monster);
+
+            if(monster!=null) {
+                if (monster.getHealth() <= 0) {
+                    System.out.println("You have defeated the monster");
+                    monster.getRoom().removeCharacter(monster);
+                }
             }
+
             if(player.getHealth()<=10){
                 System.out.println("Your health is very low!");
             }
+
+            rooms.checkMonster();
 
 
             String[] inputCommands = command.nextLine().split(" ", 2);
@@ -262,52 +295,14 @@ public class Main {
                     break;
 
                 case "walk":
-                    switch (inputCommands[1]) {
-                        case "east":
-                            possibleRoom = player.getRoom().getEast();
-                            if (possibleRoom != null) {
-                                player.setRoom(possibleRoom);
-                                System.out.println("You are now in " + player.getRoom().getName());
-                            } else {
-                                System.out.println("You cant go that way");
-                            }
-                            break;
-
-                        case "south":
-                            possibleRoom = player.getRoom().getSouth();
-                            if (possibleRoom != null) {
-                                player.setRoom(possibleRoom);
-                                System.out.println("You are now in " + player.getRoom().getName());
-                            } else {
-                                System.out.println("You cant go that way");
-                            }
-                            break;
-
-                        case "west":
-                            possibleRoom = player.getRoom().getWest();
-                            if (possibleRoom != null) {
-                                player.setRoom(possibleRoom);
-                                System.out.println("You are now in " + player.getRoom().getName());
-                            } else {
-                                System.out.println("You cant go that way");
-                            }
-                            break;
-
-                        case "north":
-                            possibleRoom = player.getRoom().getNorth();
-                            if (possibleRoom != null) {
-                                player.setRoom(possibleRoom);
-                                System.out.println("You are now in " + player.getRoom().getName());
-                                System.out.println(player.getRoom().getMessage());
-                            } else {
-                                System.out.println("You cant go that way");
-                            }
-                            break;
-
-                        default:
-                            System.out.println("I don't understand that");
-                            break;
+                    rooms.walk(player,inputCommands[1]);
+                    if((player.getRoom().getNorth()!=null)||(player.getRoom().getWest()!=null)||(player.getRoom().getEast()!=null)||(player.getRoom().getSouth()!=null)){
+                        System.out.println(player.getName()+" is in the "+player.getRoom().getName());
                     }
+                    else{
+                        System.out.println("You can't go that way");
+                    }
+
                     break;
 
 
@@ -402,6 +397,10 @@ public class Main {
                System.out.println("You can't pet that");
            }
            break;
+
+                case "god":
+                   rooms.god();
+                   break;
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");

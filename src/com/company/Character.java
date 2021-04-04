@@ -1,9 +1,6 @@
 package com.company;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 public class Character {
     private int health;
     private String name;
@@ -71,6 +68,10 @@ public void addCharacter(Character character){
 
     public ItemCollection getPocket() {
         return pocket;
+    }
+
+    public void printCharacter(Character character){
+        System.out.println("name: "+ character.getName()+", type: "+character.getType()+ ", health: "+character.getHealth());
     }
 
     public void setPet(Character pet) {

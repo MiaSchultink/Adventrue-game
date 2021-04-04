@@ -96,8 +96,12 @@ public class ItemCollection {
     public void look() {
         if (!this.itemList.isEmpty()) {
             for (int i = 0; i < this.itemList.size(); i++) {
-                System.out.println("name: "+this.itemList.get(i).getName()+", health: "+this.itemList.get(i).getHealth()+", attack damage: "+this.itemList.get(i).getAttackDamage()+", healing: "+this.itemList.get(i).getHealthIncrease());
+               Item item = this.itemList.get(i);
+               item.printItem(item);
             }
+        }
+        else{
+            System.out.println("No items in this room");
         }
     }
 

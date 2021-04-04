@@ -1,7 +1,5 @@
 package com.company;
 
-import java.util.ArrayList;
-
 public class Room {
     private String name;
     private Room north;
@@ -95,4 +93,6 @@ public class Room {
     public String getMessage(){
         return message;
     }
+
+
 }

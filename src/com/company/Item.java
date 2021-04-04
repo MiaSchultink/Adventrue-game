@@ -25,6 +25,9 @@ public class Item {
         return attackDamage;
     }
 
+ public void printItem(Item item){
+     System.out.println("name: "+ item.getName()+", health: "+item.getHealth()+" , attackDamage "+item.getAttackDamage()+" ,healing: "+item.getHealthIncrease());
+ }
 
     public void setName(String name) {
         this.name = name;
@@ -39,6 +42,7 @@ public class Item {
     public int getHealthIncrease(){
         return healthIncrease;
     }
+
     public void setHealthIncrease(int healthIncrease){
         this.healthIncrease = healthIncrease;
     }

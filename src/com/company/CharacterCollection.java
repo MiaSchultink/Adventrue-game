@@ -70,11 +70,12 @@ public class CharacterCollection {
     public void look() {
         if (!this.characterList.isEmpty()) {
             for (int i = 0; i < this.characterList.size(); i++) {
-                System.out.println("name: "+this.characterList.get(i).getName()+", type:"+this.characterList.get(i).getType()+", health: "+this.characterList.get(i).getHealth());
+               Character character = this.characterList.get(i);
+               character.printCharacter(character);
             }
         }
         else{
-            System.out.println("there are no characters in this room");
+            System.out.println("No characters in this room");
         }
     }
 
