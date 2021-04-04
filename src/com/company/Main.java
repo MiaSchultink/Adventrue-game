@@ -156,7 +156,7 @@ public class Main {
         Character testAttackMonster = new Character(80, "test monster", "monster", basement);
         testAttackMonster.addItem(rock);
 
-        Character gameRoomMonster =  new Character(100,"gmame gangster","monster", gameRoom);
+        Character gameRoomMonster =  new Character(100,"game gangster","monster", gameRoom);
         gameRoomMonster.addItem(machineGun);
 
 
@@ -262,7 +262,6 @@ public class Main {
 
             rooms.checkMonster();
 
-
             String[] inputCommands = command.nextLine().split(" ", 2);
 
             switch (inputCommands[0]) {
@@ -295,8 +294,10 @@ public class Main {
                     break;
 
                 case "walk":
+                    Room roomBefore  = player.getRoom();
                     rooms.walk(player,inputCommands[1]);
-                    if((player.getRoom().getNorth()!=null)||(player.getRoom().getWest()!=null)||(player.getRoom().getEast()!=null)||(player.getRoom().getSouth()!=null)){
+                    Room roomAfter  =  player.getRoom();
+                    if(roomBefore!=roomAfter){
                         System.out.println(player.getName()+" is in the "+player.getRoom().getName());
                     }
                     else{

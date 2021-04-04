@@ -113,9 +113,12 @@ public class RoomCollection {
 
             if (monster != null) {
                 if (randomNumber > 2) {
+                    System.out.println("-------------------------");
+                    System.out.println(monster.getName()+" is in "+monster.getRoom().getName());
                     walk(monster, direction);
                     System.out.println(direction);
                     System.out.println(monster.getName()+" is in "+monster.getRoom().getName());
+                    System.out.println("-------------------------");
                 }
             }
         }
