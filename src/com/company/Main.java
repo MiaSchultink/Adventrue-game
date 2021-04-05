@@ -303,7 +303,9 @@ public class Main {
                     else{
                         System.out.println("You can't go that way");
                     }
-
+                    if(player.getRoom().getMessage()!=null) {
+                        System.out.println(player.getRoom().getMessage());
+                    }
                     break;
 
 

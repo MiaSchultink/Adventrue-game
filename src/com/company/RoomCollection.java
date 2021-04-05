@@ -48,45 +48,28 @@ public class RoomCollection {
                 if (possibleRoom != null) {
                     currentRoom.setNorth(currentRoom.getNorth());
                     character.setRoom(possibleRoom);
-                    //System.out.println("You are in the " + character.getRoom().getName());
                 }
-//                else {
-//                    System.out.println("You can't go that way");
-//                }
                 break;
             case "south":
                 possibleRoom = character.getRoom().getSouth();
                 if (possibleRoom != null) {
                     currentRoom.setSouth(currentRoom.getSouth());
                     character.setRoom(possibleRoom);
-                    // System.out.println("You are in the "+character.getRoom().getName());
                 }
-//                else {
-//                    System.out.println("You can't go that way");
-//                }
                 break;
             case "west":
                 possibleRoom = character.getRoom().getWest();
                 if (possibleRoom != null) {
                     currentRoom.setWest(currentRoom.getWest());
                     character.setRoom(possibleRoom);
-                    // System.out.println("You are in the "+character.getRoom().getName());
              }
-//                else {
-//                  System.out.println("You can't go that way");
-//              }
                 break;
-
             case "east":
                 possibleRoom = character.getRoom().getEast();
                 if (possibleRoom != null) {
                     currentRoom.setEast(currentRoom.getEast());
                     character.setRoom(possibleRoom);
-                    //   System.out.println("You are in the "+character.getRoom().getName());
                 }
-//                else {
-//                    System.out.println("You can't go that way");
-//                }
                 break;
             default:
                 System.out.println("I don't understand that direction");
@@ -108,17 +91,11 @@ public class RoomCollection {
             directions.add("south");
 
             int randomDirectionNumber = randomNumber(0, (directions.size()));
-            //System.out.println(randomDirectionNumber);
             String direction = directions.get(randomDirectionNumber);
 
             if (monster != null) {
                 if (randomNumber > 2) {
-                    System.out.println("-------------------------");
-                    System.out.println(monster.getName()+" is in "+monster.getRoom().getName());
                     walk(monster, direction);
-                    System.out.println(direction);
-                    System.out.println(monster.getName()+" is in "+monster.getRoom().getName());
-                    System.out.println("-------------------------");
                 }
             }
         }
