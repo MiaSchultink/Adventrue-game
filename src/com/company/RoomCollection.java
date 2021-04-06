@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class RoomCollection {
     private ArrayList<Room> roomList;
+    private boolean out;
 
     public RoomCollection() {
         this.roomList = new ArrayList<Room>();
+        this.out = false;
 
     }
 
@@ -16,6 +18,14 @@ public class RoomCollection {
 
     public void setRooms(ArrayList<Room> roomList) {
         this.roomList = roomList;
+    }
+
+    public boolean isOut() {
+        return out;
+    }
+
+    public void setOut(boolean out) {
+        this.out = out;
     }
 
     public void addRoom(Room room) {
