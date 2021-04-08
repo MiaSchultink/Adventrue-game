@@ -1,4 +1,5 @@
 package com.company;
+import javax.imageio.event.IIOReadProgressListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -105,6 +106,11 @@ public class Main {
         Item machineGun =  new Item("machine gun", 17,0,70);
         Item bread = new Item("bread",0,20,10);
         Item pasta =  new Item("pasta bowl",0,15,10);
+        Item slime = new Item("grose monster slime",10,0,30);
+        Item treasureChest = new Item("gold coin", 0,0,5);
+        Item RPG = new Item("RPG",50,0,80);
+        Item jello = new Item("super jello",5,25,20);
+        Item jelloBlaster= new Item("jello blaster",25,0,50);
 
 
         //rooms
@@ -137,7 +143,7 @@ public class Main {
         rooms.addRoom(jelloRoom);
         rooms.addRoom(bathRoom);
         rooms.addRoom(creepyLibrary);
-        rooms.addRoom(natureReserve);
+        rooms.addRoom(fishTank);
         rooms.addRoom(bedRoom);
         rooms.addRoom(closet);
         rooms.addRoom(whiteRoom);
@@ -148,6 +154,11 @@ public class Main {
         //characters
         Character player = new Character(100, name, "player", basement);
         Character cat = new Character(50, "mittens", "pet", diningRoom);
+        Character redFish = new Character(30,"bloody perana","monster",fishTank);
+        Character blueFish = new Character(30,"Anigma","pet",fishTank);
+        Character greenFish = new Character(30,"deep water tail trout","pet",fishTank);
+        Character rainBowFish = new Character(30,"rain bow fish","pet",fishTank);
+        Character shark = new Character(60,"The shark","monster",fishTank);
 
         //monsters
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
@@ -158,6 +169,9 @@ public class Main {
 
         Character gameRoomMonster =  new Character(100,"game gangster","monster", gameRoom);
         gameRoomMonster.addItem(machineGun);
+
+        Character jelloMonster = new Character(40,"mr blob","monster", closet);
+        jelloMonster.addItem(jelloBlaster);
 
 
         //basement settings
@@ -210,20 +224,32 @@ public class Main {
 
         //game room settings
         gameRoom.setSouth(livingRoom);
-        gameRoom.setEast(natureReserve);
+        gameRoom.setEast(fishTank);
         gameRoom.addCharacter(gameRoomMonster);
 
-        //nature reserve settings
-        natureReserve.setWest(gameRoom);
-        natureReserve.setNorth(jelloRoom);
+        //fish tabk settings
+        fishTank.setWest(gameRoom);
+        fishTank.setNorth(jelloRoom);
+        fishTank.setMessage("Oh oh, you are underwater. You have a glimps of the trees and the outside world.\n Warning, you are loosing air quickly and under water trouble lurks close.\n There may be valuable items here. ");
+
+        fishTank.addCharacter(redFish);
+        fishTank.addCharacter(blueFish);
+        fishTank.addCharacter(rainBowFish);
+        fishTank.addCharacter(greenFish);
+        fishTank.addCharacter(shark);
+        fishTank.addItem(RPG);
 
         //jello room settings
-        jelloRoom.setSouth(natureReserve);
+        jelloRoom.setSouth(fishTank);
         jelloRoom.setWest(creepyLibrary);
+        jelloRoom.addCharacter(jelloMonster);
 
         // creepy library settings
         creepyLibrary.setEast(jelloRoom);
         creepyLibrary.setSouth(whiteRoom);
+        jelloRoom.setMessage("Wow what a change of scenery!\nEverything is sticky but delicious non the less.\nThe walls are made of brightly colored jello.\nHowever, danger never rests.");
+
+
 
         //white room settings
         whiteRoom.setWest(controlRoom);

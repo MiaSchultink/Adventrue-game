@@ -9,6 +9,7 @@ public class Character {
     private Character pet;
     private String type;
     private CharacterCollection characterBag;
+    private int score;
 
     public Character(int health, String name, String type, Room room) {
         this.health = health;
@@ -17,6 +18,7 @@ public class Character {
         this.type = type;
         this.pocket = new ItemCollection();
         this.characterBag = new CharacterCollection();
+        this.score =0;
     }
 public void addCharacter(Character character){
         this.characterBag.addCharacter(character);
@@ -26,6 +28,13 @@ public void addCharacter(Character character){
         return health;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public void setHealth(int health) {
         this.health = health;
