@@ -31,6 +31,14 @@ public class RoomCollection {
     public void addRoom(Room room) {
         roomList.add(room);
     }
+    public void relocate(Character character, String roomName){
+        for(int i=0; i<roomList.size(); i++){
+            Room room = roomList.get(i);
+            if(room.getName().equals(roomName)){
+                character.setRoom(room);
+            }
+        }
+    }
 
     public void god(){
         for(int i=0; i<roomList.size(); i++){

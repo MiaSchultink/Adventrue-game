@@ -1,5 +1,4 @@
 package com.company;
-import javax.imageio.event.IIOReadProgressListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -111,6 +110,8 @@ public class Main {
         Item RPG = new Item("RPG",50,0,80);
         Item jello = new Item("super jello",5,25,20);
         Item jelloBlaster= new Item("jello blaster",25,0,50);
+        Item fishDish = new Item("fish dish",0,25,10);
+        Item sprayPaint= new Item("spray paint", 10,0,40);
 
 
         //rooms
@@ -153,12 +154,15 @@ public class Main {
 
         //characters
         Character player = new Character(100, name, "player", basement);
+        player.setScore(0);
+
         Character cat = new Character(50, "mittens", "pet", diningRoom);
         Character redFish = new Character(30,"bloody perana","monster",fishTank);
         Character blueFish = new Character(30,"Anigma","pet",fishTank);
         Character greenFish = new Character(30,"deep water tail trout","pet",fishTank);
         Character rainBowFish = new Character(30,"rain bow fish","pet",fishTank);
-        Character shark = new Character(60,"The shark","monster",fishTank);
+        Character shark = new Character(60,"shark","monster",fishTank);
+        Character butler = new Character(85,"the butler", "sideCharacter", diningRoom);
 
         //monsters
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
@@ -200,7 +204,8 @@ public class Main {
 
         diningRoom.setMessage("The dinning room, the great festive hall. The long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
         diningRoom.addItem(pasta);
-
+        diningRoom.addItem(fishDish);
+        diningRoom.addCharacter(butler);
 
         //bed room settings
         bedRoom.setEast(bathRoom);
@@ -243,6 +248,9 @@ public class Main {
         jelloRoom.setSouth(fishTank);
         jelloRoom.setWest(creepyLibrary);
         jelloRoom.addCharacter(jelloMonster);
+        jelloRoom.addItem(jello);
+        jelloRoom.addItem(jello);
+        jelloRoom.addItem(jello);
 
         // creepy library settings
         creepyLibrary.setEast(jelloRoom);
@@ -278,6 +286,7 @@ public class Main {
             if(monster!=null) {
                 if (monster.getHealth() <= 0) {
                     System.out.println("You have defeated the monster");
+                    player.setScore(player.getScore()+100);
                     monster.getRoom().removeCharacter(monster);
                 }
             }
@@ -315,6 +324,11 @@ public class Main {
                     player.viewCharacters();
                     break;
 
+                case "score":
+                   int score =  player.getScore();
+                    System.out.println("score = "+score);
+                    break;
+
                 case "pocket":
                     player.viewPocket();
                     break;
@@ -325,12 +339,13 @@ public class Main {
                     Room roomAfter  =  player.getRoom();
                     if(roomBefore!=roomAfter){
                         System.out.println(player.getName()+" is in the "+player.getRoom().getName());
+                        if(player.getRoom().getMessage()!=null) {
+                            System.out.println(player.getRoom().getMessage());
+                        }
+                        player.setScore(player.getScore()+5);
                     }
                     else{
                         System.out.println("You can't go that way");
-                    }
-                    if(player.getRoom().getMessage()!=null) {
-                        System.out.println(player.getRoom().getMessage());
                     }
                     break;
 
@@ -340,6 +355,7 @@ public class Main {
                     if (item != null) {
                         player.addItem(item);
                         System.out.println("you have the " + item.getName());
+                        player.setScore(player.getScore()+10);
                     } else {
                         System.out.println("That item does not exist, or is already in your item bag");
                     }
@@ -370,6 +386,7 @@ public class Main {
                         System.out.println("You are going to attack with the " + attackItemName);
                         System.out.println("How many battle rounds do you want? (max of 10 rounds)");
                         int numberOfRounds = rounds(command.nextLine());
+                        player.setScore(player.getScore()+50);
 
                         Item attackItem = player.getPocket().use(attackItemName);
                         Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
@@ -392,6 +409,7 @@ public class Main {
                     if(eatItem!=null){
                         if(player.getHealth()<100) {
                             int newPlayerHealth = player.eat(eatItem);
+                            player.setScore(player.getScore()+7);
 
                             if(newPlayerHealth>100){
                                newPlayerHealth=100;
@@ -420,6 +438,7 @@ public class Main {
                    if (scratchChances == 1) {
                        pet(player,cat);
                        System.out.println("Congratulations, you have a pet!");
+                       player.setScore(player.getScore()+25);
                    }
            }
            else{
@@ -427,8 +446,18 @@ public class Main {
            }
            break;
 
+           //cheat commands for debugging
+                case "relocate":
+                    System.out.println("which room do you want to go to?");
+                    rooms.relocate(player,command.nextLine());
+                    System.out.println("You are in the "+player.getRoom().getName());
+                    System.out.println(player.getRoom().getMessage());
+                    break;
+
                 case "god":
                    rooms.god();
+                   player.setScore(0);
+                    System.out.println("You don't get a score for this game because you cheated");;
                    break;
 
                 case "quit":

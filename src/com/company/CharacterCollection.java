@@ -9,16 +9,6 @@ public class CharacterCollection {
         this.characterList = new ArrayList<Character>();
     }
 
-//    public Character petCheck1(String characterName){
-//       Character possiblePet= new Character(0,null,null,null);
-//        for (int i = 0; i < characterList.size(); i++) {
-//            Character character = characterList.get(i);
-//            if (character.getName().equals(characterName) && (character.getType().equals("pet"))){
-//                possiblePet=character;
-//            }
-//        }
-//        return possiblePet;
-//    }
 
     public Character collectRequest(String characterName){
         int index = -1;
@@ -65,6 +55,7 @@ public class CharacterCollection {
             return null;
         }
     }
+
 
 
     public void look() {

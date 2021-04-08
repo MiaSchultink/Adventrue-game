@@ -1,6 +1,5 @@
 package com.company;
 
-
 public class Character {
     private int health;
     private String name;
@@ -18,7 +17,7 @@ public class Character {
         this.type = type;
         this.pocket = new ItemCollection();
         this.characterBag = new CharacterCollection();
-        this.score =0;
+        this.score = 0;
     }
 public void addCharacter(Character character){
         this.characterBag.addCharacter(character);
@@ -80,7 +79,7 @@ public void addCharacter(Character character){
     }
 
     public void printCharacter(Character character){
-        System.out.println("name: "+ character.getName()+", type: "+character.getType()+ ", health: "+character.getHealth());
+        System.out.println("name: "+ character.getName()+", type: "+character.getType()+ ", health: "+character.getHealth()+" ,score "+character.getScore());
     }
 
     public void setPet(Character pet) {
@@ -93,6 +92,9 @@ public void addCharacter(Character character){
 
     public String getType() {
         return type;
+    }
+    public void moveLocation(Room room){
+        this.room = room;
     }
 
     public void setType(String type) {
