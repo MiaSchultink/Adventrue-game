@@ -28,6 +28,18 @@ public class CharacterCollection {
 
     }
 
+    public Character monsterAttackRequest(String monsterName){
+        Character character= new Character(0,"","",null);
+        for(int i=0; i<characterList.size(); i++){
+            Character possibleCharacter = characterList.get(i);
+            if (monsterName.equals(possibleCharacter.getName())&&possibleCharacter.characterTypeCheck("monster")){
+               character = possibleCharacter;
+            }
+
+        }
+       return character;
+    }
+
     public void clean(){
         for(int i=0; i<characterList.size(); i++){
             Character character= characterList.get(i);

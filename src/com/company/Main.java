@@ -112,6 +112,7 @@ public class Main {
         Item jelloBlaster= new Item("jello blaster",25,0,50);
         Item fishDish = new Item("fish dish",0,25,10);
         Item sprayPaint= new Item("spray paint", 10,0,40);
+        Item sharkFangs = new Item ("shark fangs",15,0,60);
 
 
         //rooms
@@ -161,7 +162,7 @@ public class Main {
         Character blueFish = new Character(30,"Anigma","pet",fishTank);
         Character greenFish = new Character(30,"deep water tail trout","pet",fishTank);
         Character rainBowFish = new Character(30,"rain bow fish","pet",fishTank);
-        Character shark = new Character(60,"shark","monster",fishTank);
+
         Character butler = new Character(85,"the butler", "sideCharacter", diningRoom);
 
         //monsters
@@ -177,6 +178,8 @@ public class Main {
         Character jelloMonster = new Character(40,"mr blob","monster", closet);
         jelloMonster.addItem(jelloBlaster);
 
+        Character shark = new Character(60,"shark","monster",fishTank);
+        shark.addItem(sharkFangs);
 
         //basement settings
         basement.setNorth(kitchen);
@@ -325,8 +328,8 @@ public class Main {
                     break;
 
                 case "score":
-                   int score =  player.getScore();
-                    System.out.println("score = "+score);
+                    int score = player.getScore();
+                    System.out.println("score = " + score);
                     break;
 
                 case "pocket":
@@ -334,17 +337,16 @@ public class Main {
                     break;
 
                 case "walk":
-                    Room roomBefore  = player.getRoom();
-                    rooms.walk(player,inputCommands[1]);
-                    Room roomAfter  =  player.getRoom();
-                    if(roomBefore!=roomAfter){
-                        System.out.println(player.getName()+" is in the "+player.getRoom().getName());
-                        if(player.getRoom().getMessage()!=null) {
+                    Room roomBefore = player.getRoom();
+                    rooms.walk(player, inputCommands[1]);
+                    Room roomAfter = player.getRoom();
+                    if (roomBefore != roomAfter) {
+                        System.out.println(player.getName() + " is in the " + player.getRoom().getName());
+                        if (player.getRoom().getMessage() != null) {
                             System.out.println(player.getRoom().getMessage());
                         }
-                        player.setScore(player.getScore()+5);
-                    }
-                    else{
+                        player.setScore(player.getScore() + 5);
+                    } else {
                         System.out.println("You can't go that way");
                     }
                     break;
@@ -355,7 +357,7 @@ public class Main {
                     if (item != null) {
                         player.addItem(item);
                         System.out.println("you have the " + item.getName());
-                        player.setScore(player.getScore()+10);
+                        player.setScore(player.getScore() + 10);
                     } else {
                         System.out.println("That item does not exist, or is already in your item bag");
                     }
@@ -371,6 +373,14 @@ public class Main {
 
 
                 case "attack":
+                    if (monster != null) {
+                        System.out.println("Who do you want to attack");
+                        Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
+                        if (possibleMonster != null) {
+                            System.out.println("You are about to attack " + possibleMonster.getName());
+                        }
+                    }
+
                     String attackItemNames = player.getPocket().getAttackItems();
                     if (!attackItemNames.equals("")) {
                         System.out.println("What do you want to attack with?");
@@ -386,18 +396,19 @@ public class Main {
                         System.out.println("You are going to attack with the " + attackItemName);
                         System.out.println("How many battle rounds do you want? (max of 10 rounds)");
                         int numberOfRounds = rounds(command.nextLine());
-                        player.setScore(player.getScore()+50);
+                        player.setScore(player.getScore() + 50);
 
                         Item attackItem = player.getPocket().use(attackItemName);
                         Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
 
-                        int i=0;
-                        while((i<numberOfRounds)&&(player.getHealth()>0)&&(monster.getHealth()>0)){
-                            attack(player,monster,attackItem, monsterAttackItem);
+                        int i = 0;
+                        while ((i < numberOfRounds) && (player.getHealth() > 0) && (monster.getHealth() > 0)) {
+                            attack(player, monster, attackItem, monsterAttackItem);
                             i++;
                         }
 
                     }
+
 
                     else {
                         System.out.println("Did you make a typo? not sure if this item can be used to attack");

@@ -93,7 +93,9 @@ public class Room {
     public String getMessage(){
         return message;
     }
-
+   public void typeCheck(String type){
+        this.characters.typeCheck(type);
+   }
 
 
 }

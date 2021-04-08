@@ -93,6 +93,14 @@ public void addCharacter(Character character){
     public String getType() {
         return type;
     }
+    public boolean characterTypeCheck(String type){
+        boolean isType = false;
+        if(this.type.equals(type)){
+            isType=true;
+        }
+        return isType;
+    }
+
     public void moveLocation(Room room){
         this.room = room;
     }
