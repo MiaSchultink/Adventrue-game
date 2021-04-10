@@ -270,6 +270,15 @@ public class Main {
         controlRoom.setEast(whiteRoom);
         controlRoom.setSouth(finish);
 
+        ArrayList<String> emoji = new ArrayList<String>();
+        emoji.add("\uD83D\uDE07");
+        emoji.add("\uD83E\uDD10");
+        emoji.add("\uD83E\uDD25");
+        emoji.add("\uD83D\uDE34");
+        emoji.add("\uD83D\uDE37");
+        emoji.add("\uD83E\uDD76");
+        emoji.add("\uD83E\uDD29");
+        emoji.add(	"\uD83D\uDCA9");
 
         while (running) {
 
@@ -375,48 +384,52 @@ public class Main {
                 case "attack":
                     if (monster != null) {
                         System.out.println("Who do you want to attack");
+                        System.out.println("Your options are: "+player.getRoom().getCharacters().typeCheck("monster").getName());
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
                         if (possibleMonster != null) {
                             System.out.println("You are about to attack " + possibleMonster.getName());
                         }
-                    }
 
-                    String attackItemNames = player.getPocket().getAttackItems();
-                    if (!attackItemNames.equals("")) {
-                        System.out.println("What do you want to attack with?");
-                        System.out.println("You can attack with:" + attackItemNames);
-                    } else {
-                        System.out.println("You don't have any items you can use to attack");
-                    }
 
-                    String attackItemName = command.nextLine();
-                    boolean itemCheck = player.getPocket().attackRequest(attackItemName);
-
-                    if (itemCheck) {
-                        System.out.println("You are going to attack with the " + attackItemName);
-                        System.out.println("How many battle rounds do you want? (max of 10 rounds)");
-                        int numberOfRounds = rounds(command.nextLine());
-                        player.setScore(player.getScore() + 50);
-
-                        Item attackItem = player.getPocket().use(attackItemName);
-                        Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
-
-                        int i = 0;
-                        while ((i < numberOfRounds) && (player.getHealth() > 0) && (monster.getHealth() > 0)) {
-                            attack(player, monster, attackItem, monsterAttackItem);
-                            i++;
+                        String attackItemNames = player.getPocket().getAttackItems();
+                        if (!attackItemNames.equals("")) {
+                            System.out.println("What do you want to attack with?");
+                            System.out.println("You can attack with:" + attackItemNames);
+                        } else {
+                            System.out.println("You don't have any items you can use to attack");
                         }
 
+                        String attackItemName = command.nextLine();
+                        boolean itemCheck = player.getPocket().attackRequest(attackItemName);
+
+                        if (itemCheck) {
+                            System.out.println("You are going to attack with the " + attackItemName);
+                            System.out.println("How many battle rounds do you want? (max of 10 rounds)");
+                            int numberOfRounds = rounds(command.nextLine());
+                            player.setScore(player.getScore() + 50);
+
+                            Item attackItem = player.getPocket().use(attackItemName);
+                            Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
+
+                            int i = 0;
+                            while ((i < numberOfRounds) && (player.getHealth() > 0) && (monster.getHealth() > 0)) {
+                                attack(player, monster, attackItem, monsterAttackItem);
+                                i++;
+                            }
+
+                        }
+                        else {
+                            System.out.println("Did you make a typo? not sure if this item can be used to attack");
+                        }
                     }
 
-
-                    else {
-                        System.out.println("Did you make a typo? not sure if this item can be used to attack");
+                   else{
+                        System.out.println("There is no one to attack here");
                     }
                     break;
 
                 case "eat":
-                    Item eatItem = player.getPocket().collectRequest(inputCommands[1]);
+                    Item eatItem = player.getPocket().eatRequest(inputCommands[1]);
                     if(eatItem!=null){
                         if(player.getHealth()<100) {
                             int newPlayerHealth = player.eat(eatItem);
@@ -427,7 +440,7 @@ public class Main {
                             }
                             System.out.println("Your health = " + newPlayerHealth);
                         }
-                        if (player.getHealth() == 100) {
+                        else {
                             System.out.println("You have full health");
                         }
                     }
@@ -457,6 +470,12 @@ public class Main {
            }
            break;
 
+           //game jokes
+                case "emoji":
+                    int index = (int)(Math.random()*emoji.size());
+                    System.out.println(emoji.get(index));
+                    break;
+
            //cheat commands for debugging
                 case "relocate":
                     System.out.println("which room do you want to go to?");
@@ -470,6 +489,7 @@ public class Main {
                    player.setScore(0);
                     System.out.println("You don't get a score for this game because you cheated");;
                    break;
+
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");

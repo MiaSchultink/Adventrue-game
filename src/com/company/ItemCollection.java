@@ -34,6 +34,18 @@ public class ItemCollection {
             return null;
         }
     }
+    public Item eatRequest(String itemName){
+        Item eatItem = new Item("",0,0,0);
+        for(int i=0; i<itemList.size(); i++){
+            Item item = itemList.get(i);
+            if(item.getName().equals(itemName)&&item.getHealthIncrease()>0){
+                eatItem=item;
+            }
+            else{eatItem=null;
+            }
+        }
+        return eatItem;
+    }
 
     public ArrayList<Item> getItemList() {
         return itemList;
@@ -75,6 +87,9 @@ public class ItemCollection {
             int attackDamage = item.getAttackDamage();
             if (attackDamage > 0) {
                 weapon = item;
+            }
+            else{
+                weapon=null;
             }
         }
         return weapon;

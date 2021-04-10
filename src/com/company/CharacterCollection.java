@@ -35,6 +35,9 @@ public class CharacterCollection {
             if (monsterName.equals(possibleCharacter.getName())&&possibleCharacter.characterTypeCheck("monster")){
                character = possibleCharacter;
             }
+            else{
+                character=null;
+            }
 
         }
        return character;

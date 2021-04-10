@@ -31,6 +31,7 @@ public class RoomCollection {
     public void addRoom(Room room) {
         roomList.add(room);
     }
+
     public void relocate(Character character, String roomName){
         for(int i=0; i<roomList.size(); i++){
             Room room = roomList.get(i);
@@ -55,6 +56,8 @@ public class RoomCollection {
         int randomNumber = (int) ((b - a) * (Math.random()) + a);
         return randomNumber;
     }
+
+
 
     public void walk(Character character, String direction) {
         Room possibleRoom;
