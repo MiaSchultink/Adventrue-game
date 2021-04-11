@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class RoomCollection {
     private ArrayList<Room> roomList;
+    private ArrayList<Room> path;
     private boolean out;
 
     public RoomCollection() {
         this.roomList = new ArrayList<Room>();
         this.out = false;
+        this.path = new ArrayList<Room>();
 
     }
 
@@ -27,6 +29,12 @@ public class RoomCollection {
     public void setOut(boolean out) {
         this.out = out;
     }
+    public void lookPath(){
+        for(int i=0; i<path.size(); i++){
+            Room room = path.get(i);
+            System.out.println(room.getName());
+        }
+    }
 
     public void addRoom(Room room) {
         roomList.add(room);
@@ -40,6 +48,7 @@ public class RoomCollection {
             }
         }
     }
+
 
     public void god(){
         for(int i=0; i<roomList.size(); i++){
@@ -57,7 +66,23 @@ public class RoomCollection {
         return randomNumber;
     }
 
-
+public boolean pathCheck(Room room){
+        boolean check = true;
+        for(int i=0; i<path.size(); i++){
+            if(path.contains(room)){
+               check =false;
+            }
+            else{
+                check=true;
+            }
+        }
+        return check;
+}
+public void addRoomToPath(Room room){
+        if(pathCheck(room)){
+            path.add(room);
+        }
+}
 
     public void walk(Character character, String direction) {
         Room possibleRoom;
@@ -69,6 +94,8 @@ public class RoomCollection {
                 if (possibleRoom != null) {
                     currentRoom.setNorth(currentRoom.getNorth());
                     character.setRoom(possibleRoom);
+                    //addRoomToPath(possibleRoom);
+                    addRoomToPath(currentRoom);
                 }
                 break;
             case "south":
@@ -76,6 +103,8 @@ public class RoomCollection {
                 if (possibleRoom != null) {
                     currentRoom.setSouth(currentRoom.getSouth());
                     character.setRoom(possibleRoom);
+                    //addRoomToPath(possibleRoom);
+                    addRoomToPath(currentRoom);
                 }
                 break;
             case "west":
@@ -83,6 +112,8 @@ public class RoomCollection {
                 if (possibleRoom != null) {
                     currentRoom.setWest(currentRoom.getWest());
                     character.setRoom(possibleRoom);
+                   // addRoomToPath(possibleRoom);
+                    addRoomToPath(currentRoom);
              }
                 break;
             case "east":
@@ -90,11 +121,36 @@ public class RoomCollection {
                 if (possibleRoom != null) {
                     currentRoom.setEast(currentRoom.getEast());
                     character.setRoom(possibleRoom);
+                   // addRoomToPath(possibleRoom);
+                    addRoomToPath(currentRoom);
                 }
                 break;
             default:
                 System.out.println("I don't understand that direction");
                 break;
+        }
+    }
+
+    public ArrayList<Room> directionSettings(Room room){
+        ArrayList<Room> directions  = new ArrayList<>();
+        directions.add(room.getSouth());
+        directions.add(room.getWest());
+        directions.add(room.getEast());
+        directions.add(room.getNorth());
+        return directions;
+    }
+    public void printPath(){
+        ArrayList<Room> directions = new ArrayList<>();
+        for(int i=0; i<roomList.size(); i++){
+            Room room = roomList.get(i);
+           directions  = directionSettings(room);
+           for(int j=0; j<directions.size(); j++){
+               Room possibleRoom = directions.get(j);
+               if(possibleRoom!=null){
+                   System.out.println(possibleRoom.getName());
+
+               }
+           }
         }
     }
 

@@ -181,6 +181,17 @@ public class Main {
         Character shark = new Character(60,"shark","monster",fishTank);
         shark.addItem(sharkFangs);
 
+        Direction north =  new Direction("north");
+        Direction south = new Direction("south");
+        Direction west = new Direction("west");
+        Direction east = new Direction("east");
+
+        north.setOpposite(south);
+        south.setOpposite(north);
+
+        east.setOpposite(west);
+        west.setOpposite(east);
+
         //basement settings
         basement.setNorth(kitchen);
 
@@ -294,6 +305,8 @@ public class Main {
                 running = false;
                 System.out.println("Oh no looks like you have died");
             }
+
+            rooms.printPath();
 
             if(monster!=null) {
                 if (monster.getHealth() <= 0) {
@@ -490,6 +503,9 @@ public class Main {
                     System.out.println("You don't get a score for this game because you cheated");;
                    break;
 
+                case "path":
+                   rooms.lookPath();
+                   break;
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
