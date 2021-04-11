@@ -66,6 +66,17 @@ public class RoomCollection {
         return randomNumber;
     }
 
+    public int randomIndex(){
+        int index = (int)(Math.random()*roomList.size());
+        return index;
+    }
+
+    public Room randomRoom(){
+        int index = randomIndex();
+        Room randomRoom = roomList.get(index);
+        return randomRoom;
+    }
+
 public boolean pathCheck(Room room){
         boolean check = true;
         for(int i=0; i<path.size(); i++){
@@ -139,20 +150,20 @@ public void addRoomToPath(Room room){
         directions.add(room.getNorth());
         return directions;
     }
-    public void printPath(){
-        ArrayList<Room> directions = new ArrayList<>();
-        for(int i=0; i<roomList.size(); i++){
-            Room room = roomList.get(i);
-           directions  = directionSettings(room);
-           for(int j=0; j<directions.size(); j++){
-               Room possibleRoom = directions.get(j);
-               if(possibleRoom!=null){
-                   System.out.println(possibleRoom.getName());
-
-               }
-           }
-        }
-    }
+//    public void printPath(){
+//        ArrayList<Room> directions = new ArrayList<>();
+//        for(int i=0; i<roomList.size(); i++){
+//            Room room = roomList.get(i);
+//           directions  = directionSettings(room);
+//           for(int j=0; j<directions.size(); j++){
+//               Room possibleRoom = directions.get(j);
+//               if(possibleRoom!=null){
+//                   System.out.println(possibleRoom.getName());
+//
+//               }
+//           }
+//        }
+//    }
 
 
     public void checkMonster() {

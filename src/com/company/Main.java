@@ -1,4 +1,5 @@
 package com.company;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,12 +9,14 @@ public class Main {
         int randomNumber = (int) ((b - a) * (Math.random()) + a);
         return randomNumber;
     }
-    public static void pet(Character petter, Character pet){
+
+    public static void pet(Character petter, Character pet) {
         petter.getRoom().removeCharacter(pet);
         petter.addCharacter(pet);
     }
-    public static void god(ArrayList<Room> rooms){
-        for(int i=0; i<rooms.size();i++){
+
+    public static void god(ArrayList<Room> rooms) {
+        for (int i = 0; i < rooms.size(); i++) {
             Room room = rooms.get(i);
             System.out.println(room.getName());
             room.viewRoomItems();
@@ -31,52 +34,171 @@ public class Main {
         attackerWeapon.setHealth(attackerWeapon.getHealth());
         targetWeapon.setHealth(targetWeapon.getHealth());
 
- //getting existing attacker and target heath
+        //getting existing attacker and target heath
         int attackerHealth = attacker.getHealth();
         int targetHealth = target.getHealth();
         //getting weapon attack damage
 
         int attackerAttackDamage = attackerWeapon.getAttackDamage();
-        int targetAttackDamage =  targetWeapon.getAttackDamage();
+        int targetAttackDamage = targetWeapon.getAttackDamage();
 
-      //getting weapon health
+        //getting weapon health
         int attackerWeaponHealth = attackerWeapon.getHealth();
         int targetWeaponHealth = targetWeapon.getHealth();
 
         //creating percentage of weapon health decrease
-        int attackerWeaponDecrease =(int) Math.round(1 * 100.0/attackerWeaponHealth);
-        int targetWeaponDecrease = (int)Math.round(1 * 100.0/targetWeaponHealth);
+        int attackerWeaponDecrease = (int) Math.round(1 * 100.0 / attackerWeaponHealth);
+        int targetWeaponDecrease = (int) Math.round(1 * 100.0 / targetWeaponHealth);
 
         //target during attack
         targetHealth = targetHealth - attackerAttackDamage;
         target.setHealth(targetHealth);
-        System.out.println(target.getName() +" health = " + targetHealth);
+        System.out.println(target.getName() + " health = " + targetHealth);
 
-        targetWeaponHealth = targetWeaponHealth-targetWeaponDecrease;
+        targetWeaponHealth = targetWeaponHealth - targetWeaponDecrease;
         targetWeapon.setHealth(targetWeaponHealth);
 
         //attacker during attack
         attackerHealth = attackerHealth - targetAttackDamage;
         attacker.setHealth(attackerHealth);
-        System.out.println(attacker.getName()+" health = "+attackerHealth);
+        System.out.println(attacker.getName() + " health = " + attackerHealth);
 
-        attackerWeaponHealth = attackerWeaponHealth-attackerWeaponDecrease;
+        attackerWeaponHealth = attackerWeaponHealth - attackerWeaponDecrease;
         attackerWeapon.setHealth(attackerWeaponHealth);
 
         //weapon printing
         System.out.println("******************************************");
-        System.out.println(attackerWeapon.getName()+ " health = "+attackerWeaponHealth);
-        System.out.println(targetWeapon.getName()+ " health = "+ targetWeaponHealth);
+        System.out.println(attackerWeapon.getName() + " health = " + attackerWeaponHealth);
+        System.out.println(targetWeapon.getName() + " health = " + targetWeaponHealth);
 
         System.out.println("-----------------------------------------");
     }
 
-    public static int rounds(String rounds){
+    public static int rounds(String rounds) {
         int roundNumber = Integer.parseInt(rounds);
         return roundNumber;
     }
 
+
+////****************experamental code- do not toutch
+
+
+    // public static void roomPattern(String[][] rooms ) {
+    public static void arrayFill(String[][] roomsArray) {
+        for (int i = 0; i < roomsArray.length; i++) {
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                roomsArray[i][j] = "-";
+            }
+
+        }
+    }
+
+    public static String[][] chekFree(int row, int column, String[][] roomsArray) {
+        if (row > 0) {
+            if (roomsArray[row - 1][column].equals("-")) {
+                roomsArray[row - 1][column] = "F";
+            }
+        }
+        if (row < roomsArray.length - 1) {
+            if (roomsArray[row + 1][column].equals("-")) {
+                roomsArray[row + 1][column] = "F";
+            }
+        }
+        if (column > 0) {
+            if (roomsArray[row][column - 1].equals("-")) {
+                roomsArray[row][column - 1] = "F";
+            }
+        }
+        if (column < roomsArray[0].length - 1) {
+            if (roomsArray[row][column + 1].equals("-")) {
+                roomsArray[row][column + 1] = "F";
+            }
+        }
+        return roomsArray;
+    }
+
+    public static int findF(String[][] roomsArray) {
+        int numberOfF = 0;
+        for (int i = 0; i < roomsArray.length; i++) {
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                if (roomsArray[i][j].equals("F")) {
+                    numberOfF++;
+                }
+            }
+        }
+       // System.out.println(numberOfF);
+        return numberOfF;
+    }
+
+
+    public static String[][] findNextR(String[][] roomsArray, int Fnumber) {
+        int counter = 0;
+        int randomNumberOfF = random(0, Fnumber);
+        for (int i = 0; i < roomsArray.length; i++) {
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                if (roomsArray[i][j].equals("F")) {
+                    counter++;
+                    if (counter == randomNumberOfF) {
+                        roomsArray[i][j] = "R";
+                        roomsArray = chekFree(i, j, roomsArray);
+                       // System.out.println(i + " " + j);
+                    }
+                }
+            }
+        }
+        return roomsArray;
+    }
+
+    public static void replaceF(String[][] roomsArray) {
+        for (int i = 0; i < roomsArray.length; i++) {
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                if (roomsArray[i][j].equals("F")) {
+                    roomsArray[i][j] = "-";
+                }
+            }
+        }
+    }
+
+
+//        public static int random ( int a, int b){
+//            int randomNumber = (int) ((b - a) * (Math.random()) + a);
+//            return randomNumber;
+//        }
+
+    public static void printArray(String[][] roomsArray) {
+
+        for (int i = 0; i < roomsArray.length; i++) {
+            String row = "";
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                row = row +"   " +roomsArray[i][j];
+            }
+            System.out.println(row);
+        }
+
+    }
+
+    // }
+
+    public static String[][] makeMap(int roomNumber) {
+        String[][] roomsArray = new String[10][10];
+        arrayFill(roomsArray);
+        roomsArray[6][4] = "R";
+        roomsArray = chekFree(6, 4, roomsArray);
+       // int roomNumber = 30;
+        for (int y = 0; y < roomNumber; y++) {
+            int F = findF(roomsArray);
+            roomsArray = findNextR(roomsArray, F);
+        }
+        replaceF(roomsArray);
+        printArray(roomsArray);
+        return roomsArray;
+    }
+
+////***************experamentla code do not toutch
+
+
     public static void main(String[] args) {
+
         boolean running = true;
 
 
@@ -93,26 +215,26 @@ public class Main {
         System.out.println(basement.getMessage());
 
         //items
-        Item watterBottle = new Item("water bottle", 0,10,10);
-        Item flashLight = new Item("flash light", 0,0,15);
-        Item note = new Item("note", 0,0,5);
-        Item sword = new Item("sword", 20,0,65);
-        Item diningRoomKey = new Item("key", 0,0,10);
-        Item spear = new Item("spear", 15,0,50);
-        Item baseBallBat = new Item("baseball bat", 20,0,60);
-        Item knife = new Item("knife",15,0,70);
-        Item rock = new Item("rock",10,0,40);
-        Item machineGun =  new Item("machine gun", 17,0,70);
-        Item bread = new Item("bread",0,20,10);
-        Item pasta =  new Item("pasta bowl",0,15,10);
-        Item slime = new Item("grose monster slime",10,0,30);
-        Item treasureChest = new Item("gold coin", 0,0,5);
-        Item RPG = new Item("RPG",50,0,80);
-        Item jello = new Item("super jello",5,25,20);
-        Item jelloBlaster= new Item("jello blaster",25,0,50);
-        Item fishDish = new Item("fish dish",0,25,10);
-        Item sprayPaint= new Item("spray paint", 10,0,40);
-        Item sharkFangs = new Item ("shark fangs",15,0,60);
+        Item watterBottle = new Item("water bottle", 0, 10, 10);
+        Item flashLight = new Item("flash light", 0, 0, 15);
+        Item note = new Item("note", 0, 0, 5);
+        Item sword = new Item("sword", 20, 0, 65);
+        Item diningRoomKey = new Item("key", 0, 0, 10);
+        Item spear = new Item("spear", 15, 0, 50);
+        Item baseBallBat = new Item("baseball bat", 20, 0, 60);
+        Item knife = new Item("knife", 15, 0, 70);
+        Item rock = new Item("rock", 10, 0, 40);
+        Item machineGun = new Item("machine gun", 17, 0, 70);
+        Item bread = new Item("bread", 0, 20, 10);
+        Item pasta = new Item("pasta bowl", 0, 15, 10);
+        Item slime = new Item("grose monster slime", 10, 0, 30);
+        Item treasureChest = new Item("gold coin", 0, 0, 5);
+        Item RPG = new Item("RPG", 50, 0, 80);
+        Item jello = new Item("super jello", 5, 25, 20);
+        Item jelloBlaster = new Item("jello blaster", 25, 0, 50);
+        Item fishDish = new Item("fish dish", 0, 25, 10);
+        Item sprayPaint = new Item("spray paint", 10, 0, 40);
+        Item sharkFangs = new Item("shark fangs", 15, 0, 60);
 
 
         //rooms
@@ -153,17 +275,22 @@ public class Main {
         rooms.addRoom(finish);
         rooms.addRoom(livingRoom);
 
+////**************** risky code !!!!!!!!!!!!
+
+        String [][] roomMap = makeMap(rooms.getRoomList().size());
+        Room [][] roomLayout;
+
         //characters
         Character player = new Character(100, name, "player", basement);
         player.setScore(0);
 
         Character cat = new Character(50, "mittens", "pet", diningRoom);
-        Character redFish = new Character(30,"bloody perana","monster",fishTank);
-        Character blueFish = new Character(30,"Anigma","pet",fishTank);
-        Character greenFish = new Character(30,"deep water tail trout","pet",fishTank);
-        Character rainBowFish = new Character(30,"rain bow fish","pet",fishTank);
+        Character redFish = new Character(30, "bloody perana", "monster", fishTank);
+        Character blueFish = new Character(30, "Anigma", "pet", fishTank);
+        Character greenFish = new Character(30, "deep water tail trout", "pet", fishTank);
+        Character rainBowFish = new Character(30, "rain bow fish", "pet", fishTank);
 
-        Character butler = new Character(85,"the butler", "sideCharacter", diningRoom);
+        Character butler = new Character(85, "the butler", "sideCharacter", diningRoom);
 
         //monsters
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
@@ -172,16 +299,16 @@ public class Main {
         Character testAttackMonster = new Character(80, "test monster", "monster", basement);
         testAttackMonster.addItem(rock);
 
-        Character gameRoomMonster =  new Character(100,"game gangster","monster", gameRoom);
+        Character gameRoomMonster = new Character(100, "game gangster", "monster", gameRoom);
         gameRoomMonster.addItem(machineGun);
 
-        Character jelloMonster = new Character(40,"mr blob","monster", closet);
+        Character jelloMonster = new Character(40, "mr blob", "monster", closet);
         jelloMonster.addItem(jelloBlaster);
 
-        Character shark = new Character(60,"shark","monster",fishTank);
+        Character shark = new Character(60, "shark", "monster", fishTank);
         shark.addItem(sharkFangs);
 
-        Direction north =  new Direction("north");
+        Direction north = new Direction("north");
         Direction south = new Direction("south");
         Direction west = new Direction("west");
         Direction east = new Direction("east");
@@ -272,7 +399,6 @@ public class Main {
         jelloRoom.setMessage("Wow what a change of scenery!\nEverything is sticky but delicious non the less.\nThe walls are made of brightly colored jello.\nHowever, danger never rests.");
 
 
-
         //white room settings
         whiteRoom.setWest(controlRoom);
         whiteRoom.setNorth(creepyLibrary);
@@ -289,7 +415,7 @@ public class Main {
         emoji.add("\uD83D\uDE37");
         emoji.add("\uD83E\uDD76");
         emoji.add("\uD83E\uDD29");
-        emoji.add(	"\uD83D\uDCA9");
+        emoji.add("\uD83D\uDCA9");
 
         while (running) {
 
@@ -306,17 +432,17 @@ public class Main {
                 System.out.println("Oh no looks like you have died");
             }
 
-            rooms.printPath();
+            //rooms.printPath();
 
-            if(monster!=null) {
+            if (monster != null) {
                 if (monster.getHealth() <= 0) {
                     System.out.println("You have defeated the monster");
-                    player.setScore(player.getScore()+100);
+                    player.setScore(player.getScore() + 100);
                     monster.getRoom().removeCharacter(monster);
                 }
             }
 
-            if(player.getHealth()<=10){
+            if (player.getHealth() <= 10) {
                 System.out.println("Your health is very low!");
             }
 
@@ -397,7 +523,7 @@ public class Main {
                 case "attack":
                     if (monster != null) {
                         System.out.println("Who do you want to attack");
-                        System.out.println("Your options are: "+player.getRoom().getCharacters().typeCheck("monster").getName());
+                        System.out.println("Your options are: " + player.getRoom().getCharacters().typeCheck("monster").getName());
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
                         if (possibleMonster != null) {
                             System.out.println("You are about to attack " + possibleMonster.getName());
@@ -430,82 +556,77 @@ public class Main {
                                 i++;
                             }
 
-                        }
-                        else {
+                        } else {
                             System.out.println("Did you make a typo? not sure if this item can be used to attack");
                         }
-                    }
-
-                   else{
+                    } else {
                         System.out.println("There is no one to attack here");
                     }
                     break;
 
                 case "eat":
                     Item eatItem = player.getPocket().eatRequest(inputCommands[1]);
-                    if(eatItem!=null){
-                        if(player.getHealth()<100) {
+                    if (eatItem != null) {
+                        if (player.getHealth() < 100) {
                             int newPlayerHealth = player.eat(eatItem);
-                            player.setScore(player.getScore()+7);
+                            player.setScore(player.getScore() + 7);
 
-                            if(newPlayerHealth>100){
-                               newPlayerHealth=100;
+                            if (newPlayerHealth > 100) {
+                                newPlayerHealth = 100;
                             }
                             System.out.println("Your health = " + newPlayerHealth);
-                        }
-                        else {
+                        } else {
                             System.out.println("You have full health");
                         }
-                    }
-                    else{
+                    } else {
                         System.out.println("Sorry I don't understand you here is what might have happened:\n1.You don't have the health increasing item\n2.You have already worn this item out\n3.This item does not exist\n4. You made a typo");
                     }
 
-                break;
+                    break;
 
                 case "pet":
-           Character pet = player.getRoom().getCharacters().collectRequest(inputCommands[1]);
-           if((pet!=null)&&(pet.getType().equals("pet"))){
-                   int scratchChances = random(0, 2);
-                   if (scratchChances == 0) {
-                       player.setHealth(player.getHealth() - 5);
-                       System.out.println("Oh oh, looks like the " + pet.getName() + " has scratched you!");
-                       System.out.println("Your health = "+ player.getHealth());
-                   }
-                   if (scratchChances == 1) {
-                       pet(player,cat);
-                       System.out.println("Congratulations, you have a pet!");
-                       player.setScore(player.getScore()+25);
-                   }
-           }
-           else{
-               System.out.println("You can't pet that");
-           }
-           break;
+                    Character pet = player.getRoom().getCharacters().collectRequest(inputCommands[1]);
+                    if ((pet != null) && (pet.getType().equals("pet"))) {
+                        int scratchChances = random(0, 2);
+                        if (scratchChances == 0) {
+                            player.setHealth(player.getHealth() - 5);
+                            System.out.println("Oh oh, looks like the " + pet.getName() + " has scratched you!");
+                            System.out.println("Your health = " + player.getHealth());
+                        }
+                        if (scratchChances == 1) {
+                            pet(player, cat);
+                            System.out.println("Congratulations, you have a pet!");
+                            player.setScore(player.getScore() + 25);
+                        }
+                    } else {
+                        System.out.println("You can't pet that");
+                    }
+                    break;
 
-           //game jokes
+                //game jokes
                 case "emoji":
-                    int index = (int)(Math.random()*emoji.size());
+                    int index = (int) (Math.random() * emoji.size());
                     System.out.println(emoji.get(index));
                     break;
 
-           //cheat commands for debugging
+                //cheat commands for debugging
                 case "relocate":
                     System.out.println("which room do you want to go to?");
-                    rooms.relocate(player,command.nextLine());
-                    System.out.println("You are in the "+player.getRoom().getName());
+                    rooms.relocate(player, command.nextLine());
+                    System.out.println("You are in the " + player.getRoom().getName());
                     System.out.println(player.getRoom().getMessage());
                     break;
 
                 case "god":
-                   rooms.god();
-                   player.setScore(0);
-                    System.out.println("You don't get a score for this game because you cheated");;
-                   break;
+                    rooms.god();
+                    player.setScore(0);
+                    System.out.println("You don't get a score for this game because you cheated");
+                    ;
+                    break;
 
                 case "path":
-                   rooms.lookPath();
-                   break;
+                    rooms.lookPath();
+                    break;
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
