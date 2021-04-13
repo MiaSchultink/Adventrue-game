@@ -1,6 +1,8 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RoomCollection {
     private ArrayList<Room> roomList;
@@ -69,6 +71,11 @@ public class RoomCollection {
     public int randomIndex(){
         int index = (int)(Math.random()*roomList.size());
         return index;
+    }
+
+    public ArrayList<Room> shuffle(){
+        Collections.shuffle(roomList);
+        return roomList;
     }
 
     public Room randomRoom(){

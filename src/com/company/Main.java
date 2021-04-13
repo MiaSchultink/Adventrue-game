@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -126,7 +127,7 @@ public class Main {
                 }
             }
         }
-       // System.out.println(numberOfF);
+        // System.out.println(numberOfF);
         return numberOfF;
     }
 
@@ -141,7 +142,7 @@ public class Main {
                     if (counter == randomNumberOfF) {
                         roomsArray[i][j] = "R";
                         roomsArray = chekFree(i, j, roomsArray);
-                       // System.out.println(i + " " + j);
+                        // System.out.println(i + " " + j);
                     }
                 }
             }
@@ -170,7 +171,7 @@ public class Main {
         for (int i = 0; i < roomsArray.length; i++) {
             String row = "";
             for (int j = 0; j < roomsArray[i].length; j++) {
-                row = row +"   " +roomsArray[i][j];
+                row = row + "   " + roomsArray[i][j];
             }
             System.out.println(row);
         }
@@ -178,14 +179,13 @@ public class Main {
     }
 
     // }
-
     public static String[][] makeMap(int roomNumber) {
         String[][] roomsArray = new String[10][10];
         arrayFill(roomsArray);
         roomsArray[6][4] = "R";
         roomsArray = chekFree(6, 4, roomsArray);
-       // int roomNumber = 30;
-        for (int y = 0; y < roomNumber; y++) {
+        // int roomNumber = 30;
+        for (int y = 0; y < roomNumber - 1; y++) {
             int F = findF(roomsArray);
             roomsArray = findNextR(roomsArray, F);
         }
@@ -193,6 +193,26 @@ public class Main {
         printArray(roomsArray);
         return roomsArray;
     }
+
+
+    public static void printRoomArray(Room[][] rooms) {
+int labelLength = 13;
+        for (int i = 0; i < rooms.length; i++) {
+            String roomName = "";
+            for (int j = 0; j < rooms[i].length; j++) {
+                Room room = rooms[i][j];
+                if (room != null) {
+                    String name = rooms[i][j].getName();
+                    int roomNameLength = name.length();
+                    roomName = roomName +" ".repeat(labelLength-roomNameLength+1)+ name;
+                } else {
+                    roomName = roomName +" "+"-".repeat(labelLength);
+                }
+            }
+            System.out.println(roomName);
+        }
+    }
+
 
 ////***************experamentla code do not toutch
 
@@ -235,6 +255,13 @@ public class Main {
         Item fishDish = new Item("fish dish", 0, 25, 10);
         Item sprayPaint = new Item("spray paint", 10, 0, 40);
         Item sharkFangs = new Item("shark fangs", 15, 0, 60);
+        Item soup = new Item("soup", 5, 0, 15);
+        Item pillow = new Item("pillow", 0, 15, 20);
+        Item nunchucks = new Item("nunchucks", 20, 0, 60);
+        Item healingPotion = new Item("healign potion", 0, 20, 40);
+        Item poison = new Item("poison", 20, 0, 40);
+        Item book = new Item("book", 0, 0, 20);
+        Item shooshingDevice = new Item("shooshing device", 17, 0, 35);
 
 
         //rooms
@@ -277,8 +304,58 @@ public class Main {
 
 ////**************** risky code !!!!!!!!!!!!
 
-        String [][] roomMap = makeMap(rooms.getRoomList().size());
-        Room [][] roomLayout;
+        String[][] roomMap = makeMap(rooms.getRoomList().size());
+        System.out.println(rooms.getRoomList().size());
+        Room[][] roomLayout = new Room[10][10];
+
+
+        rooms.shuffle();
+        int roomCounter = 0;
+        for (int i = 0; i < roomMap.length; i++) {
+            for (int j = 0; j < roomMap[i].length; j++) {
+                if (roomMap[i][j].equals("R")) {
+                    Room randomRoom = rooms.getRoomList().get(roomCounter);
+                    roomCounter++;
+                    roomLayout[i][j] = randomRoom;
+                    System.out.println(randomRoom.getName() + " " + i + " " + j);
+                }
+
+            }
+        }
+        for (int i = 0; i < roomLayout.length - 1; i++) {
+            for (int j = 0; j < roomLayout[i].length - 1; j++) {
+
+                Room room = roomLayout[i][j];
+                if (room != null) {
+                    if (i > 0) {
+                        Room roomNorth = roomLayout[i - 1][j];
+                        if (roomNorth != null) {
+                            room.setNorth(roomNorth);
+                        }
+                    }
+                    if (i < roomLayout.length - 1) {
+                        Room roomSouth = roomLayout[i + 1][j];
+                        if (roomSouth != null) {
+                            room.setSouth(roomSouth);
+                        }
+                    }
+                    if (j < roomLayout[i].length - 1) {
+                        Room roomEast = roomLayout[i][j + 1];
+                        if (roomEast != null) {
+                            room.setEast(roomEast);
+                        }
+                    }
+                    if (j > 0) {
+                        Room roomWest = roomLayout[i][j - 1];
+                        if (roomWest != null) {
+                            room.setWest(roomWest);
+                        }
+                    }
+
+                }
+            }
+        }
+
 
         //characters
         Character player = new Character(100, name, "player", basement);
@@ -289,6 +366,7 @@ public class Main {
         Character blueFish = new Character(30, "Anigma", "pet", fishTank);
         Character greenFish = new Character(30, "deep water tail trout", "pet", fishTank);
         Character rainBowFish = new Character(30, "rain bow fish", "pet", fishTank);
+
 
         Character butler = new Character(85, "the butler", "sideCharacter", diningRoom);
 
@@ -308,19 +386,11 @@ public class Main {
         Character shark = new Character(60, "shark", "monster", fishTank);
         shark.addItem(sharkFangs);
 
-        Direction north = new Direction("north");
-        Direction south = new Direction("south");
-        Direction west = new Direction("west");
-        Direction east = new Direction("east");
-
-        north.setOpposite(south);
-        south.setOpposite(north);
-
-        east.setOpposite(west);
-        west.setOpposite(east);
+        Character zombiLibrarian = new Character(60, "zombi librarian", "monster", creepyLibrary);
+        zombiLibrarian.addItem(shooshingDevice);
 
         //basement settings
-        basement.setNorth(kitchen);
+        // basement.setNorth(kitchen);
 
         basement.addItem(watterBottle);
         basement.addItem(note);
@@ -331,8 +401,8 @@ public class Main {
         basement.addCharacter(cat);
 
         //kitchen settings
-        kitchen.setEast(diningRoom);
-        kitchen.setSouth(basement);
+//        kitchen.setEast(diningRoom);
+//        kitchen.setSouth(basement);
 
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
@@ -340,8 +410,8 @@ public class Main {
         kitchen.addCharacter(monster1);
 
         //dining room settings
-        diningRoom.setSouth(bedRoom);
-        diningRoom.setWest(kitchen);
+//        diningRoom.setSouth(bedRoom);
+//        diningRoom.setWest(kitchen);
 
         diningRoom.setMessage("The dinning room, the great festive hall. The long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
         diningRoom.addItem(pasta);
@@ -349,33 +419,41 @@ public class Main {
         diningRoom.addCharacter(butler);
 
         //bed room settings
-        bedRoom.setEast(bathRoom);
-        bedRoom.setNorth(diningRoom);
+//        bedRoom.setEast(bathRoom);
+//        bedRoom.setNorth(diningRoom);
+
+        bedRoom.setMessage("A comfortable safe haven, a tempting location for a quick nap, but remember there isn’t much time to rest!");
+        bedRoom.addItem(pillow);
+        bedRoom.addItem(nunchucks);
 
         //bath room settings
-        bathRoom.setWest(bedRoom);
-        bathRoom.setNorth(closet);
+//        bathRoom.setWest(bedRoom);
+//        bathRoom.setNorth(closet);
+
+        bathRoom.setMessage("Everything is clean, it smells like soup, be careful not to get any in your eyes!.");
+        bathRoom.addItem(watterBottle);
+        bathRoom.addItem(soup);
 
         // closet settings
-        closet.setSouth(bathRoom);
-        closet.setNorth(movieTheater);
+//        closet.setSouth(bathRoom);
+//        closet.setNorth(movieTheater);
 
         /// movie room settings
-        movieTheater.setSouth(closet);
-        movieTheater.setWest(livingRoom);
+//        movieTheater.setSouth(closet);
+//        movieTheater.setWest(livingRoom);
 
         // living room settings
-        livingRoom.setEast(movieTheater);
-        livingRoom.setNorth(gameRoom);
+//        livingRoom.setEast(movieTheater);
+//        livingRoom.setNorth(gameRoom);
 
         //game room settings
-        gameRoom.setSouth(livingRoom);
-        gameRoom.setEast(fishTank);
+//        gameRoom.setSouth(livingRoom);
+//        gameRoom.setEast(fishTank);
         gameRoom.addCharacter(gameRoomMonster);
 
         //fish tabk settings
-        fishTank.setWest(gameRoom);
-        fishTank.setNorth(jelloRoom);
+//        fishTank.setWest(gameRoom);
+//        fishTank.setNorth(jelloRoom);
         fishTank.setMessage("Oh oh, you are underwater. You have a glimps of the trees and the outside world.\n Warning, you are loosing air quickly and under water trouble lurks close.\n There may be valuable items here. ");
 
         fishTank.addCharacter(redFish);
@@ -386,26 +464,32 @@ public class Main {
         fishTank.addItem(RPG);
 
         //jello room settings
-        jelloRoom.setSouth(fishTank);
-        jelloRoom.setWest(creepyLibrary);
+//        jelloRoom.setSouth(fishTank);
+//        jelloRoom.setWest(creepyLibrary);
+
+        jelloRoom.setMessage("Wow what a change of scenery!\nEverything is sticky but delicious non the less.\nThe walls are made of brightly colored jello.\nHowever, danger never rests.");
         jelloRoom.addCharacter(jelloMonster);
         jelloRoom.addItem(jello);
         jelloRoom.addItem(jello);
         jelloRoom.addItem(jello);
 
         // creepy library settings
-        creepyLibrary.setEast(jelloRoom);
-        creepyLibrary.setSouth(whiteRoom);
-        jelloRoom.setMessage("Wow what a change of scenery!\nEverything is sticky but delicious non the less.\nThe walls are made of brightly colored jello.\nHowever, danger never rests.");
-
+//        creepyLibrary.setEast(jelloRoom);
+//        creepyLibrary.setSouth(whiteRoom);
+        creepyLibrary.addItem(poison);
+        creepyLibrary.addItem(healingPotion);
+        creepyLibrary.addItem(book);
+        creepyLibrary.addCharacter(zombiLibrarian);
 
         //white room settings
-        whiteRoom.setWest(controlRoom);
-        whiteRoom.setNorth(creepyLibrary);
+//        whiteRoom.setWest(controlRoom);
+//        whiteRoom.setNorth(creepyLibrary);
+
+        whiteRoom.setMessage("What is this strange place?  It is all white as far as the eye can, as if it is a part of another dimension. ");
 
         //control room settings
-        controlRoom.setEast(whiteRoom);
-        controlRoom.setSouth(finish);
+//        controlRoom.setEast(whiteRoom);
+//        controlRoom.setSouth(finish);
 
         ArrayList<String> emoji = new ArrayList<String>();
         emoji.add("\uD83D\uDE07");
@@ -624,9 +708,15 @@ public class Main {
                     ;
                     break;
 
-                case "path":
-                    rooms.lookPath();
+                case "map":
+                    printRoomArray(roomLayout);
                     break;
+                case "pattern":
+                    printArray(roomMap);
+                    break;
+//                case "path":
+//                    rooms.lookPath();
+//                    break;
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
