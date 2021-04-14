@@ -1,12 +1,11 @@
 package com.company;
 
-import java.util.ArrayList;
-
 public class Item {
     private String name;
     private int attackDamage;
     private int healthIncrease;
     private int health;
+    private String message;
 
     public Item(String name, int attackDamage, int healthIncrease, int health) {
         this.name = name;
@@ -47,4 +46,11 @@ public class Item {
         this.healthIncrease = healthIncrease;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

@@ -112,8 +112,7 @@ public void addRoomToPath(Room room){
                 if (possibleRoom != null) {
                     currentRoom.setNorth(currentRoom.getNorth());
                     character.setRoom(possibleRoom);
-                    //addRoomToPath(possibleRoom);
-                    addRoomToPath(currentRoom);
+
                 }
                 break;
             case "south":
@@ -121,8 +120,6 @@ public void addRoomToPath(Room room){
                 if (possibleRoom != null) {
                     currentRoom.setSouth(currentRoom.getSouth());
                     character.setRoom(possibleRoom);
-                    //addRoomToPath(possibleRoom);
-                    addRoomToPath(currentRoom);
                 }
                 break;
             case "west":
@@ -130,8 +127,7 @@ public void addRoomToPath(Room room){
                 if (possibleRoom != null) {
                     currentRoom.setWest(currentRoom.getWest());
                     character.setRoom(possibleRoom);
-                   // addRoomToPath(possibleRoom);
-                    addRoomToPath(currentRoom);
+
              }
                 break;
             case "east":
@@ -139,8 +135,6 @@ public void addRoomToPath(Room room){
                 if (possibleRoom != null) {
                     currentRoom.setEast(currentRoom.getEast());
                     character.setRoom(possibleRoom);
-                   // addRoomToPath(possibleRoom);
-                    addRoomToPath(currentRoom);
                 }
                 break;
             default:
@@ -149,28 +143,6 @@ public void addRoomToPath(Room room){
         }
     }
 
-    public ArrayList<Room> directionSettings(Room room){
-        ArrayList<Room> directions  = new ArrayList<>();
-        directions.add(room.getSouth());
-        directions.add(room.getWest());
-        directions.add(room.getEast());
-        directions.add(room.getNorth());
-        return directions;
-    }
-//    public void printPath(){
-//        ArrayList<Room> directions = new ArrayList<>();
-//        for(int i=0; i<roomList.size(); i++){
-//            Room room = roomList.get(i);
-//           directions  = directionSettings(room);
-//           for(int j=0; j<directions.size(); j++){
-//               Room possibleRoom = directions.get(j);
-//               if(possibleRoom!=null){
-//                   System.out.println(possibleRoom.getName());
-//
-//               }
-//           }
-//        }
-//    }
 
 
     public void checkMonster() {
