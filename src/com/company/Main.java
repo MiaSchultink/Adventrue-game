@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -22,6 +23,11 @@ public class Main {
             room.viewRoomItems();
             room.viewCharacters();
         }
+    }
+
+    public static void rickRole() {
+        String link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
+        System.out.println(link);
     }
 
     public static void attack(Character attacker, Character target, Item attackerWeapon, Item targetWeapon) {
@@ -77,6 +83,20 @@ public class Main {
     public static int rounds(String rounds) {
         int roundNumber = Integer.parseInt(rounds);
         return roundNumber;
+    }
+
+    public static void printPattern(int n) {
+        for (int i = 0; i < n; i++) //outer loop for number of rows(n) { for (int j=n-i; j>1; j--) //inner loop for spaces
+        {
+            System.out.print(" "); //print space
+            for (int j = 0; j <= i; j++) //inner loop for number of columns
+            {
+                System.out.print("* "); //print star
+
+            }
+            System.out.println(); //ending line after each row
+        }
+
     }
 
 
@@ -170,6 +190,7 @@ public class Main {
     public static String[][] makeMap(int roomNumber) {
         String[][] roomsArray = new String[10][10];
         arrayFill(roomsArray);
+
         roomsArray[6][4] = "R";
         roomsArray = chekFree(6, 4, roomsArray);
 
@@ -178,13 +199,13 @@ public class Main {
             roomsArray = findNextR(roomsArray, F);
         }
         replaceF(roomsArray);
-       // printArray(roomsArray);
+        // printArray(roomsArray);
         return roomsArray;
     }
 
 
     public static void printRoomArray(Room[][] rooms) {
-int labelLength = 13;
+        int labelLength = 13;
         for (int i = 0; i < rooms.length; i++) {
             String roomName = "";
             for (int j = 0; j < rooms[i].length; j++) {
@@ -192,9 +213,9 @@ int labelLength = 13;
                 if (room != null) {
                     String name = rooms[i][j].getName();
                     int roomNameLength = name.length();
-                    roomName = roomName +" ".repeat(labelLength-roomNameLength+1)+ name;
+                    roomName = roomName + " ".repeat(labelLength - roomNameLength + 1) + name;
                 } else {
-                    roomName = roomName +" "+"-".repeat(labelLength);
+                    roomName = roomName + " " + "-".repeat(labelLength);
                 }
             }
             System.out.println(roomName);
@@ -208,7 +229,6 @@ int labelLength = 13;
     public static void main(String[] args) {
 
         boolean running = true;
-
 
         Scanner command = new Scanner(System.in);
 
@@ -250,8 +270,13 @@ int labelLength = 13;
         Item poison = new Item("poison", 20, 0, 40);
         Item book = new Item("book", 0, 0, 20);
         Item shooshingDevice = new Item("shooshing device", 17, 0, 35);
-        Item laptop = new Item("laptop",0,0,40);
-        String lapTopMessage = " can you solve the following problem?"+
+        Item laptop = new Item("laptop", 0, 0, 40);
+        Item fire = new Item("fire", 40, 0, 75);
+        String lapTopMessage = " can you solve the following problem?" +
+                " Print this pattern:\n" +
+                // printPattern(5);+
+
+                "Solution \n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -270,9 +295,13 @@ int labelLength = 13;
                 "        } ";
 
         laptop.setMessage(lapTopMessage);
+        Item cellPhone = new Item("cell phone", 0, 0, 30);
+        cellPhone.setMessage("Sorry no service! all the service is going to the servers to power the super computers");
+        Item jacket = new Item("jacket", 0, 15, 20);
+        Item chocolate = new Item("secret chocolate", 0, 20, 30);
 
 
-    //rooms
+        //rooms
         Room kitchen = new Room("kitchen");
         Room diningRoom = new Room("dining room");
         Room gameRoom = new Room("gaming room");
@@ -307,8 +336,8 @@ int labelLength = 13;
         rooms.addRoom(closet);
         rooms.addRoom(whiteRoom);
         rooms.addRoom(controlRoom);
-        rooms.addRoom(finish);
         rooms.addRoom(livingRoom);
+        rooms.addRoom(finish);
 
 ////**************** risky code !!!!!!!!!!!!
 
@@ -316,6 +345,7 @@ int labelLength = 13;
         Room[][] roomLayout = new Room[10][10];
 
         rooms.shuffle();
+        // Collections.shuffle(rooms.getRoomList(0, rooms.getRoomList().size()));
         int roomCounter = 0;
         for (int i = 0; i < roomMap.length; i++) {
             for (int j = 0; j < roomMap[i].length; j++) {
@@ -323,7 +353,6 @@ int labelLength = 13;
                     Room randomRoom = rooms.getRoomList().get(roomCounter);
                     roomCounter++;
                     roomLayout[i][j] = randomRoom;
-                   // System.out.println(randomRoom.getName() + " " + i + " " + j);
                 }
 
             }
@@ -395,6 +424,10 @@ int labelLength = 13;
         Character zombiLibrarian = new Character(60, "zombi librarian", "monster", creepyLibrary);
         zombiLibrarian.addItem(shooshingDevice);
 
+        Character giantDragon = new Character(130, "Dragon of death", "monster", finish);
+        giantDragon.addItem(fire);
+
+
         //basement settings
         basement.addItem(watterBottle);
         basement.addItem(note);
@@ -420,6 +453,7 @@ int labelLength = 13;
         bedRoom.setMessage("A comfortable safe haven, a tempting location for a quick nap, but remember there isn’t much time to rest!");
         bedRoom.addItem(pillow);
         bedRoom.addItem(nunchucks);
+        bedRoom.addItem(chocolate);
 
         //bath room settings
         bathRoom.setMessage("Everything is clean, it smells like soup, be careful not to get any in your eyes!.");
@@ -427,10 +461,13 @@ int labelLength = 13;
         bathRoom.addItem(soup);
 
         // closet settings
+        closet.addItem(jacket);
+
 
         /// movie room settings
 
         // living room settings
+
 
         //game room settings
         gameRoom.addCharacter(gameRoomMonster);
@@ -464,6 +501,10 @@ int labelLength = 13;
 
         //control room settings
         controlRoom.addItem(laptop);
+        controlRoom.addItem(cellPhone);
+
+        //finish settings
+        finish.addCharacter(giantDragon);
 
         ArrayList<String> emoji = new ArrayList<String>();
         emoji.add("\uD83D\uDE07");
@@ -490,8 +531,6 @@ int labelLength = 13;
                 System.out.println("Oh no looks like you have died");
             }
 
-            //rooms.printPath();
-
             if (monster != null) {
                 if (monster.getHealth() <= 0) {
                     System.out.println("You have defeated the monster");
@@ -503,6 +542,13 @@ int labelLength = 13;
             if (player.getHealth() <= 10) {
                 System.out.println("Your health is very low!");
             }
+
+            int randomNumber = random(0, 20);
+            if (randomNumber < 1) {
+                System.out.println("Well well, looks like you got lucky!\n click this link for the soluiton to the game");
+                rickRole();
+            }
+
 
             rooms.checkMonster();
 
@@ -563,7 +609,7 @@ int labelLength = 13;
                     if (item != null) {
                         player.addItem(item);
                         System.out.println("you have the " + item.getName());
-                        if(item.getMessage()!=null){
+                        if (item.getMessage() != null) {
                             System.out.println(item.getMessage());
                         }
                         player.setScore(player.getScore() + 10);
@@ -588,39 +634,42 @@ int labelLength = 13;
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
                         if (possibleMonster != null) {
                             System.out.println("You are about to attack " + possibleMonster.getName());
-                        }
-
-
-                        String attackItemNames = player.getPocket().getAttackItems();
-                        if (!attackItemNames.equals("")) {
-                            System.out.println("What do you want to attack with?");
-                            System.out.println("You can attack with:" + attackItemNames);
-                        } else {
-                            System.out.println("You don't have any items you can use to attack");
-                        }
-
-                        String attackItemName = command.nextLine();
-                        boolean itemCheck = player.getPocket().attackRequest(attackItemName);
-
-                        if (itemCheck) {
-                            System.out.println("You are going to attack with the " + attackItemName);
-                            System.out.println("How many battle rounds do you want? (max of 10 rounds)");
-                            int numberOfRounds = rounds(command.nextLine());
-                            player.setScore(player.getScore() + 50);
-
-                            Item attackItem = player.getPocket().use(attackItemName);
-                            Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
-
-                            int i = 0;
-                            while ((i < numberOfRounds) && (player.getHealth() > 0) && (monster.getHealth() > 0)) {
-                                attack(player, monster, attackItem, monsterAttackItem);
-                                i++;
+                            String attackItemNames = player.getPocket().getAttackItems();
+                            if (!attackItemNames.equals("")) {
+                                System.out.println("What do you want to attack with?");
+                                System.out.println("You can attack with:" + attackItemNames);
+                            } else {
+                                System.out.println("You don't have any items you can use to attack");
                             }
 
-                        } else {
-                            System.out.println("Did you make a typo? not sure if this item can be used to attack");
+                            String attackItemName = command.nextLine();
+                            boolean itemCheck = player.getPocket().attackRequest(attackItemName);
+
+                            if (itemCheck) {
+                                System.out.println("You are going to attack with the " + attackItemName);
+                                System.out.println("How many battle rounds do you want? (max of 10 rounds)");
+                                int numberOfRounds = rounds(command.nextLine());
+                                player.setScore(player.getScore() + 50);
+
+                                Item attackItem = player.getPocket().use(attackItemName);
+                                Item monsterAttackItem = monster.getPocket().getMonsterWeapon();
+
+                                int i = 0;
+                                while ((i < numberOfRounds) && (player.getHealth() > 0) && (monster.getHealth() > 0)) {
+                                    attack(player, monster, attackItem, monsterAttackItem);
+                                    i++;
+                                }
+
+                            } else {
+                                System.out.println("Did you make a typo? not sure if this item can be used to attack");
+                            }
+
                         }
-                    } else {
+                        else {
+                            System.out.println("Sorry! that is not a valid character");
+                        }
+                    }
+                    else {
                         System.out.println("There is no one to attack here");
                     }
                     break;
@@ -682,7 +731,6 @@ int labelLength = 13;
                     rooms.god();
                     player.setScore(0);
                     System.out.println("You don't get a score for this game because you cheated");
-                    ;
                     break;
 
                 case "map":

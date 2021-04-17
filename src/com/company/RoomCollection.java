@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class RoomCollection {
@@ -17,6 +16,9 @@ public class RoomCollection {
     }
 
     public ArrayList<Room> getRoomList() {
+        return roomList;
+    }
+    public ArrayList<Room> shuffleRooms(int a, int b){
         return roomList;
     }
 
@@ -96,11 +98,7 @@ public boolean pathCheck(Room room){
         }
         return check;
 }
-public void addRoomToPath(Room room){
-        if(pathCheck(room)){
-            path.add(room);
-        }
-}
+
 
     public void walk(Character character, String direction) {
         Room possibleRoom;
