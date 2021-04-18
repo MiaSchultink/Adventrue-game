@@ -1,7 +1,7 @@
 package com.company;
 
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -198,8 +198,7 @@ public class Main {
             int F = findF(roomsArray);
             roomsArray = findNextR(roomsArray, F);
         }
-        replaceF(roomsArray);
-        // printArray(roomsArray);
+        //replaceF(roomsArray);
         return roomsArray;
     }
 
@@ -220,6 +219,65 @@ public class Main {
             }
             System.out.println(roomName);
         }
+    }
+
+    public static String[][] checkExitRoom(String[][] rooms) {
+        // boolean isExit = false;
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                boolean onEdge = false;
+                if (rooms[i][j].equals("F")) {
+                    if (i == 0 || j == 0 || i == (rooms.length - 1) || j == (rooms[i].length - 1)) {
+                        onEdge = true;
+                    }
+                    if (onEdge) {
+                        rooms[i][j] = "E";
+                        // return;
+                    } else {
+                        // if (rooms[i][j].equals("F")) {
+                        String up = rooms[i - 1][j];
+                        String down = rooms[i + 1][j];
+                        String right = rooms[i][j + 1];
+                        String left = rooms[i][j - 1];
+
+                        if ((down.equals("-") || up.equals("-") || right.equals("-") || left.equals("-")) || (down.equals("F") || up.equals("F") || right.equals("F") || left.equals("F"))) {
+                            rooms[i][j] = "E";
+                            // return;
+                        }
+                    }
+                }
+            }
+        }
+        return rooms;
+    }
+
+    public static int findE(String[][] rooms) {
+        int numberOfE = 0;
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                if (rooms[i][j].equals("E")) {
+                    numberOfE++;
+                }
+            }
+        }
+        return numberOfE;
+    }
+
+    public static Room[][] placeExitRoom(String[][] rooms, Room[][] roomsArray, Room exitRoom, int eNumber) {
+        int counter = 0;
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                if (rooms[i][j].equals("E")) {
+                    counter++;
+                    int exitIndex = random(0, eNumber);
+                    if (counter == exitIndex) {
+                        rooms[i][j] = "*";
+                        roomsArray[i][j]= exitRoom;
+                    }
+                }
+            }
+        }
+        return roomsArray;
     }
 
 
@@ -337,15 +395,16 @@ public class Main {
         rooms.addRoom(whiteRoom);
         rooms.addRoom(controlRoom);
         rooms.addRoom(livingRoom);
-        rooms.addRoom(finish);
+        // rooms.addRoom(finish);
 
 ////**************** risky code !!!!!!!!!!!!
 
         String[][] roomMap = makeMap(rooms.getRoomList().size());
+        checkExitRoom(roomMap);
+        System.out.println(findE(roomMap));
         Room[][] roomLayout = new Room[10][10];
 
         rooms.shuffle();
-        // Collections.shuffle(rooms.getRoomList(0, rooms.getRoomList().size()));
         int roomCounter = 0;
         for (int i = 0; i < roomMap.length; i++) {
             for (int j = 0; j < roomMap[i].length; j++) {
@@ -354,9 +413,12 @@ public class Main {
                     roomCounter++;
                     roomLayout[i][j] = randomRoom;
                 }
-
             }
         }
+        rooms.addRoom(finish);
+       roomLayout = placeExitRoom(roomMap,roomLayout, finish,findE(roomMap));
+
+
         for (int i = 0; i < roomLayout.length - 1; i++) {
             for (int j = 0; j < roomLayout[i].length - 1; j++) {
 
@@ -504,7 +566,8 @@ public class Main {
         controlRoom.addItem(cellPhone);
 
         //finish settings
-        finish.addCharacter(giantDragon);
+        finish.setMessage("Congratulation! You made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. Take a deep breath of fresh air and celebrate! It has been an honor helping you along your journey "+player.getName()+". You have achieved great things "+player.getScore()+" . Thank you.");
+
 
         ArrayList<String> emoji = new ArrayList<String>();
         emoji.add("\uD83D\uDE07");
@@ -547,6 +610,10 @@ public class Main {
             if (randomNumber < 1) {
                 System.out.println("Well well, looks like you got lucky!\n click this link for the soluiton to the game");
                 rickRole();
+            }
+
+            if(player.getRoom()==finish){
+                running=false;
             }
 
 
@@ -664,12 +731,10 @@ public class Main {
                                 System.out.println("Did you make a typo? not sure if this item can be used to attack");
                             }
 
-                        }
-                        else {
+                        } else {
                             System.out.println("Sorry! that is not a valid character");
                         }
-                    }
-                    else {
+                    } else {
                         System.out.println("There is no one to attack here");
                     }
                     break;
