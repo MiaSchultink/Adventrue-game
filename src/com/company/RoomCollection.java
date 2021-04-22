@@ -18,7 +18,8 @@ public class RoomCollection {
     public ArrayList<Room> getRoomList() {
         return roomList;
     }
-    public ArrayList<Room> shuffleRooms(int a, int b){
+
+    public ArrayList<Room> shuffleRooms(int a, int b) {
         return roomList;
     }
 
@@ -33,8 +34,9 @@ public class RoomCollection {
     public void setOut(boolean out) {
         this.out = out;
     }
-    public void lookPath(){
-        for(int i=0; i<path.size(); i++){
+
+    public void lookPath() {
+        for (int i = 0; i < path.size(); i++) {
             Room room = path.get(i);
             System.out.println(room.getName());
         }
@@ -44,18 +46,18 @@ public class RoomCollection {
         roomList.add(room);
     }
 
-    public void relocate(Character character, String roomName){
-        for(int i=0; i<roomList.size(); i++){
+    public void relocate(Character character, String roomName) {
+        for (int i = 0; i < roomList.size(); i++) {
             Room room = roomList.get(i);
-            if(room.getName().equals(roomName)){
+            if (room.getName().equals(roomName)) {
                 character.setRoom(room);
             }
         }
     }
 
 
-    public void god(){
-        for(int i=0; i<roomList.size(); i++){
+    public void god() {
+        for (int i = 0; i < roomList.size(); i++) {
             Room room = roomList.get(i);
             System.out.println("--------------------------");
             System.out.println(room.getName());
@@ -70,34 +72,33 @@ public class RoomCollection {
         return randomNumber;
     }
 
-    public int randomIndex(){
-        int index = (int)(Math.random()*roomList.size());
+    public int randomIndex() {
+        int index = (int) (Math.random() * roomList.size());
         return index;
     }
 
-    public ArrayList<Room> shuffle(){
+    public ArrayList<Room> shuffle() {
         Collections.shuffle(roomList);
         return roomList;
     }
 
-    public Room randomRoom(){
+    public Room randomRoom() {
         int index = randomIndex();
         Room randomRoom = roomList.get(index);
         return randomRoom;
     }
 
-public boolean pathCheck(Room room){
+    public boolean pathCheck(Room room) {
         boolean check = true;
-        for(int i=0; i<path.size(); i++){
-            if(path.contains(room)){
-               check =false;
-            }
-            else{
-                check=true;
+        for (int i = 0; i < path.size(); i++) {
+            if (path.contains(room)) {
+                check = false;
+            } else {
+                check = true;
             }
         }
         return check;
-}
+    }
 
 
     public void walk(Character character, String direction) {
@@ -126,7 +127,7 @@ public boolean pathCheck(Room room){
                     currentRoom.setWest(currentRoom.getWest());
                     character.setRoom(possibleRoom);
 
-             }
+                }
                 break;
             case "east":
                 possibleRoom = character.getRoom().getEast();
@@ -140,7 +141,6 @@ public boolean pathCheck(Room room){
                 break;
         }
     }
-
 
 
     public void checkMonster() {

@@ -9,6 +9,7 @@ public class Character {
     private String type;
     private CharacterCollection characterBag;
     private int score;
+    private String message;
 
     public Character(int health, String name, String type, Room room) {
         this.health = health;
@@ -122,6 +123,14 @@ public void addCharacter(Character character){
 
     public void setCharacterBag(CharacterCollection characterBag) {
         this.characterBag = characterBag;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
 

@@ -43,6 +43,20 @@ public class CharacterCollection {
        return character;
     }
 
+    public Character talkRequest(String characterName){
+        Character character= new Character(0,"","",null);
+        for(int i=0; i<characterList.size(); i++){
+            Character possibleCharacter = characterList.get(i);
+            if((character.getName().equals(characterName))&&(character.getType().equals("person"))){
+                character=possibleCharacter;
+            }
+            else{
+                character=null;
+            }
+        }
+        return character;
+    }
+
     public void clean(){
         for(int i=0; i<characterList.size(); i++){
             Character character= characterList.get(i);

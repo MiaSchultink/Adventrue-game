@@ -1,8 +1,8 @@
 package com.company;
 
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+
 
 public class Main {
 
@@ -85,22 +85,21 @@ public class Main {
         return roundNumber;
     }
 
-    public static void printPattern(int n) {
+    public static String printPattern(int n) {
+        String pattern = "";
         for (int i = 0; i < n; i++) //outer loop for number of rows(n) { for (int j=n-i; j>1; j--) //inner loop for spaces
         {
-            System.out.print(" "); //print space
+            pattern = pattern + " ";
             for (int j = 0; j <= i; j++) //inner loop for number of columns
             {
-                System.out.print("* "); //print star
+                pattern = pattern + "* ";
 
             }
-            System.out.println(); //ending line after each row
+            pattern = pattern + "\n";
         }
-
+        return pattern;
     }
 
-
-////****************experamental code- do not toutch
 
     public static void arrayFill(String[][] roomsArray) {
         for (int i = 0; i < roomsArray.length; i++) {
@@ -271,17 +270,28 @@ public class Main {
                     counter++;
                     int exitIndex = random(0, eNumber);
                     if (counter == exitIndex) {
+                        System.out.println("this number " + exitIndex);
                         rooms[i][j] = "*";
-                        roomsArray[i][j]= exitRoom;
+                        roomsArray[i][j] = exitRoom;
                     }
+
                 }
             }
         }
         return roomsArray;
     }
 
-
-////***************experamentla code do not toutch
+    public static String[][] deleteExtraStarts(String rooms[][]) {
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                String possibleStar = rooms[i][j];
+                if (possibleStar.equals("*")) {
+                    // List<String> list = new ArrayList<String>(Arrays.asList(rooms));
+                }
+            }
+        }
+        return rooms;
+    }
 
 
     public static void main(String[] args) {
@@ -314,7 +324,6 @@ public class Main {
         Item bread = new Item("bread", 0, 20, 10);
         Item pasta = new Item("pasta bowl", 0, 15, 10);
         Item slime = new Item("grose monster slime", 10, 0, 30);
-        Item treasureChest = new Item("gold coin", 0, 0, 5);
         Item RPG = new Item("RPG", 50, 0, 80);
         Item jello = new Item("super jello", 5, 25, 20);
         Item jelloBlaster = new Item("jello blaster", 25, 0, 50);
@@ -332,7 +341,7 @@ public class Main {
         Item fire = new Item("fire", 40, 0, 75);
         String lapTopMessage = " can you solve the following problem?" +
                 " Print this pattern:\n" +
-                // printPattern(5);+
+                printPattern(5) +
 
                 "Solution \n" +
                 "\n" +
@@ -357,6 +366,22 @@ public class Main {
         cellPhone.setMessage("Sorry no service! all the service is going to the servers to power the super computers");
         Item jacket = new Item("jacket", 0, 15, 20);
         Item chocolate = new Item("secret chocolate", 0, 20, 30);
+        Item psychicAbility = new Item("psychic powers", 20, 0, 80);
+        Item popCorn = new Item("popcorn", 0, 25, 30);
+        Item coke = new Item("cola", 0, 15, 25);
+        Item spookyPower = new Item("spooky power", 10, 0, 40);
+        Item protectiveShoes = new Item("fire protection shoes", 0, 15, 40);
+        Item strawBerries = new Item("strawberries", 0, 9, 10);
+        Item pineapple = new Item("pineapple", 0, 7, 10);
+        Item jollyRanchers = new Item("jolly ranchers",0,15,20);
+
+        Item gun = new Item("pistol", 10, 0, 30);
+        Item taser = new Item("taser", 15, 0, 50);
+        Item glassShard = new Item("glass shard", 10, 0, 25);
+        Item toxicGas = new Item("toxic gas", 15, 0, 40);
+        Item attackVines = new Item("grip vines", 10, 0, 50);
+        Item grenade = new Item("grenade",20,0,25);
+        Item temporarySuperStrength = new Item("temporary super strength",10,0,35);
 
 
         //rooms
@@ -365,15 +390,12 @@ public class Main {
         Room gameRoom = new Room("gaming room");
         Room movieTheater = new Room("movie room");
         Room jelloRoom = new Room("jello room");
-        Room lounge = new Room("lounge");
         Room bathRoom = new Room("bath room");
         Room creepyLibrary = new Room("creepy library");
-        Room potionRoom = new Room("potion room");
-        Room climbingWall = new Room("climbing wall room");
         Room natureReserve = new Room("nature reserve");
         Room bedRoom = new Room("bed room");
         Room closet = new Room("closet");
-        Room lavaRoom = new Room("nature reserve");
+        Room lavaRoom = new Room("lava room");
         Room fishTank = new Room("fish tank");
         Room whiteRoom = new Room("white room");
         Room controlRoom = new Room("control room");
@@ -395,9 +417,9 @@ public class Main {
         rooms.addRoom(whiteRoom);
         rooms.addRoom(controlRoom);
         rooms.addRoom(livingRoom);
-        // rooms.addRoom(finish);
+        rooms.addRoom(lavaRoom);
+        rooms.addRoom(natureReserve);
 
-////**************** risky code !!!!!!!!!!!!
 
         String[][] roomMap = makeMap(rooms.getRoomList().size());
         checkExitRoom(roomMap);
@@ -416,7 +438,7 @@ public class Main {
             }
         }
         rooms.addRoom(finish);
-       roomLayout = placeExitRoom(roomMap,roomLayout, finish,findE(roomMap));
+        roomLayout = placeExitRoom(roomMap, roomLayout, finish, findE(roomMap));
 
 
         for (int i = 0; i < roomLayout.length - 1; i++) {
@@ -463,9 +485,10 @@ public class Main {
         Character blueFish = new Character(30, "Anigma", "pet", fishTank);
         Character greenFish = new Character(30, "deep water tail trout", "pet", fishTank);
         Character rainBowFish = new Character(30, "rain bow fish", "pet", fishTank);
+        Character italianGreyhound = new Character(60, "Griffin", "pet", finish);
 
 
-        Character butler = new Character(85, "the butler", "sideCharacter", diningRoom);
+        Character butler = new Character(85, "the butler", "person", diningRoom);
 
         //monsters
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
@@ -489,6 +512,22 @@ public class Main {
         Character giantDragon = new Character(130, "Dragon of death", "monster", finish);
         giantDragon.addItem(fire);
 
+        Character invisibleMan = new Character(200, "invisible man", "monster", whiteRoom);
+        invisibleMan.addItem(psychicAbility);
+
+        Character movieWatcher = new Character(70, "jake", "bystander", movieTheater);
+
+        Character ghost = new Character(55, "creepy ghost", "monster", closet);
+        ghost.addItem(spookyPower);
+
+        Character lavaMonster = new Character(100, "burning legend", "monster", lavaRoom);
+        lavaMonster.addItem(fire);
+
+        Character natureReserveMonster = new Character(70, "the master of green", "monster", natureReserve);
+        natureReserveMonster.addItem(attackVines);
+
+        Character livingRoomMonster = new Character(60,"civilised monster","monster",livingRoom);
+        livingRoomMonster.addItem(taser);
 
         //basement settings
         basement.addItem(watterBottle);
@@ -524,15 +563,25 @@ public class Main {
 
         // closet settings
         closet.addItem(jacket);
-
+        closet.addCharacter(ghost);
 
         /// movie room settings
+        movieTheater.addCharacter(movieWatcher);
+        movieTheater.addItem(popCorn);
+        movieTheater.addItem(coke);
 
         // living room settings
-
+        livingRoom.addItem(gun);
+        livingRoom.addItem(toxicGas);
+        livingRoom.addCharacter(livingRoomMonster);
 
         //game room settings
         gameRoom.addCharacter(gameRoomMonster);
+        gameRoom.addItem(grenade);
+        gameRoom.addItem(popCorn);
+        gameRoom.addItem(jollyRanchers);
+        gameRoom.setMessage("The room of ultimate fun, the flashing lights and music, the popcorn and candy. \nTruly an amazing experience!");
+
 
         //fish tabk settings
         fishTank.setMessage("Oh oh, you are underwater. You have a glimps of the trees and the outside world.\n Warning, you are loosing air quickly and under water trouble lurks close.\n There may be valuable items here. ");
@@ -543,6 +592,7 @@ public class Main {
         fishTank.addCharacter(greenFish);
         fishTank.addCharacter(shark);
         fishTank.addItem(RPG);
+        fishTank.addItem(watterBottle);
 
         //jello room settings
         jelloRoom.setMessage("Wow what a change of scenery!\nEverything is sticky but delicious non the less.\nThe walls are made of brightly colored jello.\nHowever, danger never rests.");
@@ -557,17 +607,28 @@ public class Main {
         creepyLibrary.addItem(book);
         creepyLibrary.addCharacter(zombiLibrarian);
 
-        //white room settings
+        // nature reserve settings
+        natureReserve.addCharacter(natureReserveMonster);
+        natureReserve.addItem(strawBerries);
+        natureReserve.addItem(pineapple);
 
+        //white room settings
+        whiteRoom.addCharacter(invisibleMan);
         whiteRoom.setMessage("What is this strange place?  It is all white as far as the eye can, as if it is a part of another dimension. ");
 
         //control room settings
         controlRoom.addItem(laptop);
         controlRoom.addItem(cellPhone);
+        controlRoom.addItem(watterBottle);
+
+        //lava room settings
+        lavaRoom.addCharacter(lavaMonster);
+        lavaRoom.addItem(protectiveShoes);
+
 
         //finish settings
-        finish.setMessage("Congratulation! You made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. Take a deep breath of fresh air and celebrate! It has been an honor helping you along your journey "+player.getName()+". You have achieved great things "+player.getScore()+" . Thank you.");
-
+        finish.setMessage("Congratulation! \nYou made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. \nThere is an abandoned dog out here, perhaps you could take him on your future adventures.\nTake a deep breath of fresh air and celebrate! \nIt has been an honor helping you along your journey " + player.getName() + ". You have achieved great things " + "Your score is " + player.getScore() + ". \nThank you. Type 'end game' to end your journey");
+        finish.addCharacter(italianGreyhound);
 
         ArrayList<String> emoji = new ArrayList<String>();
         emoji.add("\uD83D\uDE07");
@@ -612,10 +673,14 @@ public class Main {
                 rickRole();
             }
 
-            if(player.getRoom()==finish){
-                running=false;
-            }
 
+            if (player.getRoom() == lavaRoom) {
+                if (player.getPocket().getItemList().contains(protectiveShoes)) {
+                    player.setHealth(player.getHealth() - 3);
+                } else {
+                    player.setHealth(player.getHealth() - 7);
+                }
+            }
 
             rooms.checkMonster();
 
@@ -778,6 +843,16 @@ public class Main {
                     }
                     break;
 
+                case "talk to":
+                    Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[2]);
+                    if(talkCharacter!=null){
+                        System.out.println(talkCharacter.getMessage());
+                    }
+                    else{
+                        System.out.println("Sorry you can't talk to this person");
+                    }
+                    break;
+
                 //game jokes
                 case "emoji":
                     int index = (int) (Math.random() * emoji.size());
@@ -788,8 +863,11 @@ public class Main {
                 case "relocate":
                     System.out.println("which room do you want to go to?");
                     rooms.relocate(player, command.nextLine());
+
                     System.out.println("You are in the " + player.getRoom().getName());
                     System.out.println(player.getRoom().getMessage());
+
+
                     break;
 
                 case "god":
@@ -807,6 +885,10 @@ public class Main {
 
                 case "quit":
                     System.out.println("Thanks for playing, " + player.getName() + "!");
+                    running = false;
+                    break;
+
+                case "end game":
                     running = false;
                     break;
 
