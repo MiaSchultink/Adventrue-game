@@ -1,6 +1,7 @@
 package com.company;
 
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -16,13 +17,75 @@ public class Main {
         petter.addCharacter(pet);
     }
 
-    public static void god(ArrayList<Room> rooms) {
-        for (int i = 0; i < rooms.size(); i++) {
-            Room room = rooms.get(i);
-            System.out.println(room.getName());
-            room.viewRoomItems();
-            room.viewCharacters();
+    public static void findExit(Room exitRoom, Room startRoom){
+        ArrayList<Room> path = new ArrayList<>();
+        path.add(startRoom);
+
+        Room currentRoom  = startRoom;
+        Room roomNorth  = currentRoom.getNorth();
+        Room roomEast = currentRoom.getEast();
+        Room roomSouth = currentRoom.getSouth();
+        Room roomWest  = currentRoom.getWest();
+
+        if((roomNorth!=null)&&(!path.contains(roomNorth))){
+            System.out.println("north");
+            if(roomNorth==exitRoom){
+                for(int i=0; i<path.size(); i++){
+                    Room roomInPath = path.get(i);
+                    System.out.println(roomInPath.getName()+" to the north");
+                }
+
+            }
+            else{
+                System.out.println("not noth");
+                currentRoom=roomNorth;
+                path.add(currentRoom);
+            }
         }
+        if((roomEast!=null)&&(!path.contains(roomEast))){
+            if(roomEast==exitRoom){
+                for(int i=0; i<path.size(); i++){
+                    Room roomInPath = path.get(i);
+                    System.out.println(roomInPath.getName()+" to the east");
+                }
+
+            }
+            else{
+                currentRoom=roomEast;
+                path.add(currentRoom);
+            }
+        }
+
+        if((roomSouth!=null)&&(!path.contains(roomSouth))){
+            if(roomSouth==exitRoom){
+                for(int i=0; i<path.size(); i++){
+                    Room roomInPath = path.get(i);
+                    System.out.println(roomInPath.getName()+" to the south");
+                }
+
+            }
+            else{
+                currentRoom=roomSouth;
+                path.add(currentRoom);
+
+            }
+        }
+        if((roomWest!=null)&&(!path.contains(roomWest))){
+            if(roomWest==exitRoom){
+                for(int i=0; i<path.size(); i++){
+                    Room roomInPath = path.get(i);
+                    System.out.println(roomInPath.getName()+" to the west");
+                }
+
+            }
+            else{
+                currentRoom=roomWest;
+                path.add(currentRoom);
+
+            }
+        }
+
+
     }
 
     public static void rickRole() {
@@ -268,9 +331,7 @@ public class Main {
             for (int j = 0; j < rooms[i].length; j++) {
                 if (rooms[i][j].equals("E")) {
                     counter++;
-                    int exitIndex = random(0, eNumber);
-                    if (counter == exitIndex) {
-                        System.out.println("this number " + exitIndex);
+                    if (counter == eNumber) {
                         rooms[i][j] = "*";
                         roomsArray[i][j] = exitRoom;
                     }
@@ -281,17 +342,17 @@ public class Main {
         return roomsArray;
     }
 
-    public static String[][] deleteExtraStarts(String rooms[][]) {
-        for (int i = 0; i < rooms.length; i++) {
-            for (int j = 0; j < rooms[i].length; j++) {
-                String possibleStar = rooms[i][j];
-                if (possibleStar.equals("*")) {
-                    // List<String> list = new ArrayList<String>(Arrays.asList(rooms));
-                }
-            }
-        }
-        return rooms;
-    }
+//    public static String[][] deleteExtraStarts(String rooms[][]) {
+//        for (int i = 0; i < rooms.length; i++) {
+//            for (int j = 0; j < rooms[i].length; j++) {
+//                String possibleStar = rooms[i][j];
+//                if (possibleStar.equals("*")) {
+//                    // List<String> list = new ArrayList<String>(Arrays.asList(rooms));
+//                }
+//            }
+//        }
+//        return rooms;
+//    }
 
 
     public static void main(String[] args) {
@@ -373,15 +434,15 @@ public class Main {
         Item protectiveShoes = new Item("fire protection shoes", 0, 15, 40);
         Item strawBerries = new Item("strawberries", 0, 9, 10);
         Item pineapple = new Item("pineapple", 0, 7, 10);
-        Item jollyRanchers = new Item("jolly ranchers",0,15,20);
+        Item jollyRanchers = new Item("jolly ranchers", 0, 15, 20);
 
         Item gun = new Item("pistol", 10, 0, 30);
         Item taser = new Item("taser", 15, 0, 50);
         Item glassShard = new Item("glass shard", 10, 0, 25);
         Item toxicGas = new Item("toxic gas", 15, 0, 40);
         Item attackVines = new Item("grip vines", 10, 0, 50);
-        Item grenade = new Item("grenade",20,0,25);
-        Item temporarySuperStrength = new Item("temporary super strength",10,0,35);
+        Item grenade = new Item("grenade", 20, 0, 25);
+        Item temporarySuperStrength = new Item("temporary super strength", 10, 0, 35);
 
 
         //rooms
@@ -399,7 +460,7 @@ public class Main {
         Room fishTank = new Room("fish tank");
         Room whiteRoom = new Room("white room");
         Room controlRoom = new Room("control room");
-        Room finish = new Room("finish");
+        Room finish = new Room("freedom");
         Room livingRoom = new Room("living room");
 
         RoomCollection rooms = new RoomCollection();
@@ -438,7 +499,7 @@ public class Main {
             }
         }
         rooms.addRoom(finish);
-        roomLayout = placeExitRoom(roomMap, roomLayout, finish, findE(roomMap));
+        roomLayout = placeExitRoom(roomMap, roomLayout, finish, random(0, findE(roomMap)));
 
 
         for (int i = 0; i < roomLayout.length - 1; i++) {
@@ -515,7 +576,8 @@ public class Main {
         Character invisibleMan = new Character(200, "invisible man", "monster", whiteRoom);
         invisibleMan.addItem(psychicAbility);
 
-        Character movieWatcher = new Character(70, "jake", "bystander", movieTheater);
+        Character movieWatcher = new Character(70, "jake", "person", movieTheater);
+        movieWatcher.setMessage("Hey there, do you come here often?  Anyway, if you come by soon the best movie is ‘monsters inc’!");
 
         Character ghost = new Character(55, "creepy ghost", "monster", closet);
         ghost.addItem(spookyPower);
@@ -526,7 +588,7 @@ public class Main {
         Character natureReserveMonster = new Character(70, "the master of green", "monster", natureReserve);
         natureReserveMonster.addItem(attackVines);
 
-        Character livingRoomMonster = new Character(60,"civilised monster","monster",livingRoom);
+        Character livingRoomMonster = new Character(60, "civilised monster", "monster", livingRoom);
         livingRoomMonster.addItem(taser);
 
         //basement settings
@@ -624,6 +686,7 @@ public class Main {
         //lava room settings
         lavaRoom.addCharacter(lavaMonster);
         lavaRoom.addItem(protectiveShoes);
+        lavaRoom.setMessage("The floor is lava, the noise of the bubbling hot substance is a fair wearing.\nWe suggest that you get out of here as soon as possible!");
 
 
         //finish settings
@@ -843,12 +906,15 @@ public class Main {
                     }
                     break;
 
-                case "talk to":
-                    Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[2]);
-                    if(talkCharacter!=null){
-                        System.out.println(talkCharacter.getMessage());
-                    }
-                    else{
+                case "contact":
+                    Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[1]);
+                    if (talkCharacter != null) {
+                        if (talkCharacter.getMessage() != null) {
+                            System.out.println(talkCharacter.getMessage());
+                        } else {
+                            System.out.println("I have nothing to say");
+                        }
+                    } else {
                         System.out.println("Sorry you can't talk to this person");
                     }
                     break;
@@ -866,8 +932,6 @@ public class Main {
 
                     System.out.println("You are in the " + player.getRoom().getName());
                     System.out.println(player.getRoom().getMessage());
-
-
                     break;
 
                 case "god":
@@ -879,6 +943,12 @@ public class Main {
                 case "map":
                     printRoomArray(roomLayout);
                     break;
+
+
+                case "path":
+                    findExit(basement,finish);
+                    break;
+
                 case "pattern":
                     printArray(roomMap);
                     break;

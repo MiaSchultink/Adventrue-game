@@ -47,7 +47,7 @@ public class CharacterCollection {
         Character character= new Character(0,"","",null);
         for(int i=0; i<characterList.size(); i++){
             Character possibleCharacter = characterList.get(i);
-            if((character.getName().equals(characterName))&&(character.getType().equals("person"))){
+            if((possibleCharacter.getName().equals(characterName))&&(possibleCharacter.getType().equals("person"))){
                 character=possibleCharacter;
             }
             else{
