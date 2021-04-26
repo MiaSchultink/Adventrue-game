@@ -1,8 +1,6 @@
 package com.company;
-
-
-import java.lang.reflect.Array;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 
 public class Main {
@@ -17,6 +15,39 @@ public class Main {
         petter.addCharacter(pet);
     }
 
+    public static void exitConditions(Room startRoom, Room lastRoom, Room possibleRoom) {
+        ArrayList<Room> path = new ArrayList<>();
+        Room currentRoom = startRoom;
+        path.add(currentRoom);
+
+        while (currentRoom != lastRoom) {
+            if ((possibleRoom != null) && (!(path.contains(possibleRoom)))) {
+                System.out.println("is not null");
+                System.out.println("is not in path");
+                currentRoom = possibleRoom;
+                System.out.println(currentRoom.getName());
+                path.add(currentRoom);
+                System.out.println("added to path " + currentRoom.getName());
+
+                if (currentRoom == lastRoom) {
+                    path.add(possibleRoom);
+                    for (int i = 0; i < path.size(); i++) {
+                        Room room = path.get(i);
+                        System.out.println("Path to exit");
+                        System.out.println(room.getName());
+
+                    }
+                }
+            }
+        }
+
+
+          //  if(!(path.contains(possibleRoom))){
+          //  }
+
+        }
+
+
     public static void findExit(Room exitRoom, Room startRoom){
         ArrayList<Room> path = new ArrayList<>();
         path.add(startRoom);
@@ -27,63 +58,90 @@ public class Main {
         Room roomSouth = currentRoom.getSouth();
         Room roomWest  = currentRoom.getWest();
 
-        if((roomNorth!=null)&&(!path.contains(roomNorth))){
-            System.out.println("north");
-            if(roomNorth==exitRoom){
-                for(int i=0; i<path.size(); i++){
-                    Room roomInPath = path.get(i);
-                    System.out.println(roomInPath.getName()+" to the north");
-                }
 
-            }
-            else{
-                System.out.println("not noth");
-                currentRoom=roomNorth;
-                path.add(currentRoom);
-            }
-        }
-        if((roomEast!=null)&&(!path.contains(roomEast))){
-            if(roomEast==exitRoom){
-                for(int i=0; i<path.size(); i++){
-                    Room roomInPath = path.get(i);
-                    System.out.println(roomInPath.getName()+" to the east");
-                }
+            exitConditions(startRoom, exitRoom, roomEast);
+            exitConditions(startRoom, exitRoom, roomSouth);
+            exitConditions(startRoom, exitRoom, roomNorth);
+            exitConditions(startRoom, exitRoom, roomWest);
 
-            }
-            else{
-                currentRoom=roomEast;
-                path.add(currentRoom);
-            }
+
+        if((roomEast==null||path.contains(roomEast))&&(roomNorth==null||path.contains(roomNorth))&&(roomSouth==null||path.contains(roomSouth))&&(roomWest==null||path.contains(roomWest))) {
+            currentRoom = startRoom;
+            path.clear();
+            System.out.println("At start room");
+            path.add(currentRoom);
+            exitConditions(startRoom, exitRoom, roomSouth);
+            exitConditions(startRoom, exitRoom, roomNorth);
+            exitConditions(startRoom, exitRoom, roomWest);
+            exitConditions(startRoom, exitRoom, roomEast);
         }
 
-        if((roomSouth!=null)&&(!path.contains(roomSouth))){
-            if(roomSouth==exitRoom){
-                for(int i=0; i<path.size(); i++){
-                    Room roomInPath = path.get(i);
-                    System.out.println(roomInPath.getName()+" to the south");
-                }
 
-            }
-            else{
-                currentRoom=roomSouth;
-                path.add(currentRoom);
-
-            }
-        }
-        if((roomWest!=null)&&(!path.contains(roomWest))){
-            if(roomWest==exitRoom){
-                for(int i=0; i<path.size(); i++){
-                    Room roomInPath = path.get(i);
-                    System.out.println(roomInPath.getName()+" to the west");
-                }
-
-            }
-            else{
-                currentRoom=roomWest;
-                path.add(currentRoom);
-
-            }
-        }
+//        if((roomNorth!=null)&&(!path.contains(roomNorth))){
+//            System.out.println("north");
+//            if(roomNorth==exitRoom){
+//                for(int i=0; i<path.size(); i++){
+//                    Room roomInPath = path.get(i);
+//                    System.out.println(roomInPath.getName()+" to the north");
+//                }
+//
+//            }
+//            else{
+//                currentRoom=roomNorth;
+//                path.add(currentRoom);
+//            }
+//        }
+//
+//        if((roomEast!=null)&&(!path.contains(roomEast))){
+//            System.out.println("east");
+//            if(roomEast==exitRoom){
+//                for(int i=0; i<path.size(); i++){
+//                    Room roomInPath = path.get(i);
+//                    System.out.println(roomInPath.getName()+" to the east");
+//                }
+//
+//            }
+//            else{
+//                currentRoom=roomEast;
+//                path.add(currentRoom);
+//            }
+//        }
+//
+//        if((roomSouth!=null)&&(!path.contains(roomSouth))){
+//            if(roomSouth==exitRoom){
+//                for(int i=0; i<path.size(); i++){
+//                    Room roomInPath = path.get(i);
+//                    System.out.println(roomInPath.getName()+" to the south");
+//                }
+//
+//            }
+//            else{
+//                currentRoom=roomSouth;
+//                path.add(currentRoom);
+//
+//            }
+//        }
+//        if((roomWest!=null)&&(!path.contains(roomWest))){
+//            if(roomWest==exitRoom){
+//                for(int i=0; i<path.size(); i++){
+//                    Room roomInPath = path.get(i);
+//                    System.out.println(roomInPath.getName()+" to the west");
+//                }
+//
+//            }
+//            else{
+//                currentRoom=roomWest;
+//                path.add(currentRoom);
+//
+//            }
+//        }
+//        if((roomEast==null||path.contains(roomEast))&&(roomNorth==null||path.contains(roomNorth))&&(roomSouth==null||path.contains(roomSouth))&&(roomWest==null||path.contains(roomWest))){
+//            currentRoom=startRoom;
+//            path.clear();
+//            System.out.println("At start room");
+//            path.add(currentRoom);
+//           // findExit(exitRoom,startRoom);
+//        }
 
 
     }
@@ -435,6 +493,7 @@ public class Main {
         Item strawBerries = new Item("strawberries", 0, 9, 10);
         Item pineapple = new Item("pineapple", 0, 7, 10);
         Item jollyRanchers = new Item("jolly ranchers", 0, 15, 20);
+        Item gameMedal = new Item("gold medal",0,90,90);
 
         Item gun = new Item("pistol", 10, 0, 30);
         Item taser = new Item("taser", 15, 0, 50);
@@ -443,6 +502,10 @@ public class Main {
         Item attackVines = new Item("grip vines", 10, 0, 50);
         Item grenade = new Item("grenade", 20, 0, 25);
         Item temporarySuperStrength = new Item("temporary super strength", 10, 0, 35);
+
+        //torture chamber weapons
+        Item beatingStick = new Item("beating stick",10,0,20);
+        Item scythe = new Item("scythe",15,0,20);
 
 
         //rooms
@@ -462,6 +525,7 @@ public class Main {
         Room controlRoom = new Room("control room");
         Room finish = new Room("freedom");
         Room livingRoom = new Room("living room");
+        Room tortureChamber = new Room("torture chamber");
 
         RoomCollection rooms = new RoomCollection();
         rooms.addRoom(basement);
@@ -480,6 +544,7 @@ public class Main {
         rooms.addRoom(livingRoom);
         rooms.addRoom(lavaRoom);
         rooms.addRoom(natureReserve);
+        rooms.addRoom(tortureChamber);
 
 
         String[][] roomMap = makeMap(rooms.getRoomList().size());
@@ -591,6 +656,8 @@ public class Main {
         Character livingRoomMonster = new Character(60, "civilised monster", "monster", livingRoom);
         livingRoomMonster.addItem(taser);
 
+        Character stretchingMonster = new Character(60,"stretch torturer","monster",tortureChamber);
+
         //basement settings
         basement.addItem(watterBottle);
         basement.addItem(note);
@@ -692,6 +759,7 @@ public class Main {
         //finish settings
         finish.setMessage("Congratulation! \nYou made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. \nThere is an abandoned dog out here, perhaps you could take him on your future adventures.\nTake a deep breath of fresh air and celebrate! \nIt has been an honor helping you along your journey " + player.getName() + ". You have achieved great things " + "Your score is " + player.getScore() + ". \nThank you. Type 'end game' to end your journey");
         finish.addCharacter(italianGreyhound);
+        finish.addItem(gameMedal);
 
         ArrayList<String> emoji = new ArrayList<String>();
         emoji.add("\uD83D\uDE07");
