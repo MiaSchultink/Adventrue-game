@@ -100,6 +100,14 @@ public class RoomCollection {
         return check;
     }
 
+    public int roomCounter(){
+        int counter =0;
+        for(int i=0; i<roomList.size(); i++){
+           counter=i;
+        }
+        return counter;
+    }
+
 
     public void walk(Character character, String direction) {
         Room possibleRoom;
