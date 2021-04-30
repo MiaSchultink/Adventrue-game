@@ -1,6 +1,5 @@
 package com.company;
 import java.util.*;
-import java.util.zip.GZIPOutputStream;
 
 
 public class Main {
@@ -15,137 +14,105 @@ public class Main {
         petter.addCharacter(pet);
     }
 
+    public static void moveTo(Room room, ArrayList<Room> path, Room lastRoom) {
+    path.add(room);
+        String pathNames ="";
+        for (int i = 0; i < path.size() - 1; i++) {
+            pathNames=pathNames+"-"+path.get(i).getName();
+        }
+        System.out.println(pathNames);
+
+
+        if (room == lastRoom) {
+          //  path.add(lastRoom);
+            System.out.println("finished");
+            return;
+        }
+
+        else if ((room.getNorth() != null)&&(!path.contains(room.getNorth()))) {
+            System.out.println("north");
+            moveTo(room.getNorth(), path, lastRoom);
+        }
+        else if ((room.getEast() != null)&&(!path.contains(room.getEast()))) {
+            System.out.println("east");
+            moveTo(room.getEast(), path, lastRoom);
+        }
+        else if ((room.getWest() != null)&&(!path.contains(room.getWest()))){
+            System.out.println("west");
+            moveTo(room.getWest(), path, lastRoom);
+        }
+        else if ((room.getSouth() != null)&&(!path.contains(room.getSouth()))){
+            System.out.println("south");
+            moveTo(room.getWest(), path, lastRoom);
+        }
+        else {
+
+            System.out.println("stuck");
+        }
+
+
+    }
+
+
+    public static boolean checkRoom(Room currentRoom, Room nextRoom, ArrayList<Room> path) {
+
+        boolean exists = nextRoom != null;
+
+        if (exists) {
+            System.out.println(nextRoom.getName() + " not null");
+            path.add(nextRoom);
+
+        }
+        return exists;
+    }
+
+
     public static void exitConditions(Room startRoom, Room lastRoom) {
-//        ArrayList<Room> path = new ArrayList<>();
-//        Room currentRoom = startRoom;
-//        path.add(currentRoom);
-//
-//        while (currentRoom != lastRoom) {
-//            if ((possibleRoom != null) && (!(path.contains(possibleRoom)))) {
-//                System.out.println("is not null");
-//                System.out.println("is not in path");
-//                currentRoom = possibleRoom;
-//                System.out.println(currentRoom.getName());
-//                path.add(currentRoom);
-//                System.out.println("added to path " + currentRoom.getName());
-//
-//                if (currentRoom == lastRoom) {
-//                    path.add(possibleRoom);
-//                    for (int i = 0; i < path.size(); i++) {
-//                        Room room = path.get(i);
-//                        System.out.println("Path to exit");
-//                        System.out.println(room.getName());
-//
-//                    }
-//                }
-//            }
 
-
-        Room currentRoom  =startRoom;
+        ArrayList<Room> path = new ArrayList<>();
+        Room currentRoom = startRoom;
         Room[] rooms = new Room[4];
         rooms[0] = currentRoom.getNorth();
         rooms[1] = currentRoom.getEast();
         rooms[2] = currentRoom.getSouth();
         rooms[3] = currentRoom.getWest();
 
-        for(int i=0; i<rooms.length-1; i++){
+
+        // checkRoom(rooms[0]);
+
+        boolean nullPath = false;
+
+
+        for (int i = 0; i < rooms.length - 1; i++) {
             Room room = rooms[i];
-            if(room!=null) {
-                System.out.println("rooms " + room.getName());
+
+            if ((room != null) && (!(path.contains(room)))) {
+                // System.out.println("rooms " + room.getName());
+                currentRoom = room;
+                path.add(currentRoom);
+            }
+            if ((rooms[0] == null || path.contains(rooms[0])) && (rooms[1] == null || path.contains(rooms[1])) && (rooms[2] == null || path.contains(rooms[2])) && (rooms[3] == null || path.contains(rooms[3]))) {
+                nullPath = true;
             }
 
-        }
+            if (nullPath) {
+                path.clear();
+                currentRoom = startRoom;
+                path.add(currentRoom);
+                // System.out.println("cleared");
+            }
+
+
+//                if (room == lastRoom) {
+//                    path.add(room);
+//                    System.out.println("last one " + room.getName());
+//                    return;
+//                }
+
 
         }
+    }
 
-
-//    public static void findExit(Room exitRoom, Room startRoom){
-//        ArrayList<Room> path = new ArrayList<>();
-//        path.add(startRoom);
-//
-//        Room currentRoom  = startRoom;
-//        Room roomNorth  = currentRoom.getNorth();
-//        Room roomEast = currentRoom.getEast();
-//        Room roomSouth = currentRoom.getSouth();
-//        Room roomWest  = currentRoom.getWest();
-//
-//
-//
-//        if((roomEast==null||path.contains(roomEast))&&(roomNorth==null||path.contains(roomNorth))&&(roomSouth==null||path.contains(roomSouth))&&(roomWest==null||path.contains(roomWest))) {
-//            currentRoom = startRoom;
-//            path.clear();
-//            System.out.println("At start room");
-//            path.add(currentRoom);
-//        }
-//
-//
-//        if((roomNorth!=null)&&(!(path.contains(roomNorth)))){
-//            System.out.println("north");
-//            if(roomNorth==exitRoom){
-//                for(int i=0; i<path.size(); i++){
-//                    Room roomInPath = path.get(i);
-//                    System.out.println(roomInPath.getName()+" to the north");
-//                }
-//
-//            }
-//            else{
-//                currentRoom=roomNorth;
-//                path.add(currentRoom);
-//            }
-//        }
-//
-//        if((roomEast!=null)&&(!(path.contains(roomEast)))){
-//            System.out.println("east");
-//            if(roomEast==exitRoom){
-//                for(int i=0; i<path.size(); i++){
-//                    Room roomInPath = path.get(i);
-//                    System.out.println(roomInPath.getName()+" to the east");
-//                }
-//
-//            }
-//            else{
-//                currentRoom=roomEast;
-//                path.add(currentRoom);
-//            }
-//        }
-//
-//        if((roomSouth!=null)&&(!(path.contains(roomSouth)))){
-//            if(roomSouth==exitRoom){
-//                for(int i=0; i<path.size(); i++){
-//                    Room roomInPath = path.get(i);
-//                    System.out.println(roomInPath.getName()+" to the south");
-//                }
-//
-//            }
-//            else{
-//                currentRoom=roomSouth;
-//                path.add(currentRoom);
-//
-//            }
-//        }
-//        if((roomWest!=null)&&(!(path.contains(roomWest)))){
-//            if(roomWest==exitRoom){
-//                for(int i=0; i<path.size(); i++){
-//                    Room roomInPath = path.get(i);
-//                    System.out.println(roomInPath.getName()+" to the west");
-//                }
-//
-//            }
-//            else{
-//                currentRoom=roomWest;
-//                path.add(currentRoom);
-//
-//            }
-//        }
-//        if((roomEast==null||path.contains(roomEast))&&(roomNorth==null||path.contains(roomNorth))&&(roomSouth==null||path.contains(roomSouth))&&(roomWest==null||path.contains(roomWest))){
-//            currentRoom=startRoom;
-//            path.clear();
-//            System.out.println("At start room");
-//            path.add(currentRoom);
-//        }
-//
-//
-//    }
 
     public static void rickRole() {
         String link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
@@ -269,7 +236,6 @@ public class Main {
     }
 
 
-
     public static String[][] findNextR(String[][] roomsArray, int Fnumber) {
         int counter = 0;
         int randomNumberOfF = random(0, Fnumber);
@@ -285,6 +251,18 @@ public class Main {
             }
         }
         return roomsArray;
+    }
+
+    public static int countR(String[][] roomsArray) {
+        int rCounter = 0;
+        for (int i = 0; i < roomsArray.length; i++) {
+            for (int j = 0; j < roomsArray[i].length; j++) {
+                if (roomsArray[i][j].equals("R")) {
+                    rCounter++;
+                }
+            }
+        }
+        return rCounter;
     }
 
     public static void replaceF(String[][] roomsArray) {
@@ -310,17 +288,17 @@ public class Main {
     }
 
     public static String[][] makeMap(int roomNumber) {
-        String[][] roomsArray = new String[10][10];
+        String[][] roomsArray = new String[15][15];
         arrayFill(roomsArray);
 
         roomsArray[6][4] = "R";
         roomsArray = chekFree(6, 4, roomsArray);
 
+
         for (int y = 0; y < roomNumber - 1; y++) {
             int F = findF(roomsArray);
             roomsArray = findNextR(roomsArray, F);
         }
-        //replaceF(roomsArray);
         return roomsArray;
     }
 
@@ -495,7 +473,7 @@ public class Main {
         Item strawBerries = new Item("strawberries", 0, 9, 10);
         Item pineapple = new Item("pineapple", 0, 7, 10);
         Item jollyRanchers = new Item("jolly ranchers", 0, 15, 20);
-        Item gameMedal = new Item("gold medal",0,90,90);
+        Item gameMedal = new Item("gold medal", 0, 90, 90);
 
         Item gun = new Item("pistol", 10, 0, 30);
         Item taser = new Item("taser", 15, 0, 50);
@@ -506,8 +484,8 @@ public class Main {
         Item temporarySuperStrength = new Item("temporary super strength", 10, 0, 35);
 
         //torture chamber weapons
-        Item beatingStick = new Item("beating stick",10,0,20);
-        Item scythe = new Item("scythe",15,0,20);
+        Item beatingStick = new Item("beating stick", 10, 0, 20);
+        Item scythe = new Item("scythe", 15, 0, 20);
 
 
         //rooms
@@ -552,7 +530,7 @@ public class Main {
         String[][] roomMap = makeMap(rooms.getRoomList().size());
         checkExitRoom(roomMap);
         System.out.println(findE(roomMap));
-        Room[][] roomLayout = new Room[10][10];
+        Room[][] roomLayout = new Room[15][15];
 
         rooms.shuffle();
         int roomCounter = 0;
@@ -658,7 +636,7 @@ public class Main {
         Character livingRoomMonster = new Character(60, "civilised monster", "monster", livingRoom);
         livingRoomMonster.addItem(taser);
 
-        Character stretchingMonster = new Character(60,"stretch torturer","monster",tortureChamber);
+        Character stretchingMonster = new Character(60, "stretch torturer", "monster", tortureChamber);
 
         //basement settings
         basement.addItem(watterBottle);
@@ -1016,7 +994,10 @@ public class Main {
 
 
                 case "path":
-                 exitConditions(basement,finish);
+                    //exitConditions(basement,finish);
+                    ArrayList<Room> path = new ArrayList<>();
+                    moveTo(player.getRoom(), path, finish);
+                    // checkRoom(player.getRoom().getNorth(),path);
                     break;
 
                 case "pattern":
@@ -1025,7 +1006,7 @@ public class Main {
 
                 case "count":
                     int counter = rooms.roomCounter();
-                    System.out.println("number of rooms = "+counter);
+                    System.out.println("number of rooms = " + counter);
                     break;
 
                 case "quit":
