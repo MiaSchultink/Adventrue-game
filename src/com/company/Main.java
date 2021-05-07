@@ -1,9 +1,7 @@
 package com.company;
 
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.*;
-import java.util.jar.JarOutputStream;
 
 
 public class Main {
@@ -97,64 +95,107 @@ public class Main {
         return false;
     }
 
-    public static void testPath(Room startRoom, Room lastRoom){
+    public static Room getRandomNeighbor(Room[] rooms) {
+        Room resultRoom = new Room("");
+        int roomIndex = random(0, 4);
+
+       int counter = 0;
+       boolean finished = false;
+       while ((!finished)&&(counter<3)) {
+               roomIndex = (roomIndex + counter) % 4;
+               Room randomRoom = rooms[roomIndex];
+               if (randomRoom != null) {
+                   resultRoom = randomRoom;
+                  // System.out.println("at last room");
+                   finished=true;
+               }
+
+           counter++;
+       }
+        return resultRoom;
+    }
+
+    public static void testPath(Room startRoom, Room lastRoom) {
         ArrayList<Room> path = new ArrayList<>();
         Room currentRoom;
-        currentRoom=startRoom;
-        Room [] rooms = new Room[4];
-        rooms[0]  = currentRoom.getNorth();
+        currentRoom = startRoom;
+        path.add(currentRoom);
+
+        Room[] rooms = new Room[4];
+        rooms[0] = currentRoom.getNorth();
         rooms[1] = currentRoom.getEast();
         rooms[2] = currentRoom.getSouth();
         rooms[3] = currentRoom.getWest();
-        int moves = 1000;
+
+        int moves = 10000;
         int counter = 0;
+        boolean done = false;
 
-        for(int i=0; i<moves; i++){
-            int random= random(0,rooms.length-1);
-            System.out.println(random);
+        // for (int i = 0; i < moves; i++) {
+        while ((counter < moves) && (done == false)) {
 
-            if(rooms[random]!=null){
-                currentRoom=rooms[random];
-                System.out.println(currentRoom.getName());
+            //System.out.println(i);
+            int random = random(0, rooms.length);
+            //System.out.println("before " +currentRoom.getName());
+//            if(rooms[random]!=null){
+//                currentRoom=rooms[random];
 
-                rooms[0]  = currentRoom.getNorth();
-                rooms[1] = currentRoom.getEast();
-                rooms[2] = currentRoom.getSouth();
-                rooms[3] = currentRoom.getWest();
 
+            rooms[0] = currentRoom.getNorth();
+            rooms[1] = currentRoom.getEast();
+            rooms[2] = currentRoom.getSouth();
+            rooms[3] = currentRoom.getWest();
+
+   if((path.contains(rooms[0])||rooms[0]==null)&&(path.contains(rooms[1])||rooms[1]==null)&&(path.contains(rooms[2])||rooms[2]==null)&&(path.contains(rooms[3])||rooms[3]==null)){
+       currentRoom=startRoom;
+       System.out.println("back at start");
+      // counter++;
+   }
+
+           // currentRoom = getRandomNeighbor(rooms);
+            Room nextRoom = getRandomNeighbor(rooms);
+            if(!(path.contains(nextRoom))){
+                currentRoom = nextRoom;
                 path.add(currentRoom);
+            }
 
-                if(rooms[random]==lastRoom){
-                    System.out.println("done");
-                    for(int k=0; k<path.size(); k++){
-                        Room room = path.get(i);
-                        System.out.println(room.getName());
+           // path.add(currentRoom);
+            else if(path.contains(nextRoom)){
+               // nextRoom=getRandomNeighbor(rooms);
+               // counter++;
+            }
+           // counter++;
 
-                    }
-                    System.out.println("counter "+counter);
-
-
-                    return;
+            if (rooms[random] == lastRoom) {
+                System.out.println("done");
+                for (int k = 0; k < path.size(); k++) {
+                    Room room = path.get(k);
+                    System.out.println(room.getName());
                 }
+                System.out.println("When done " + counter);
+                done = true;
 
             }
+            //System.out.println(counter);
+ counter++;
         }
+        System.out.println("end " + currentRoom.getName());
+
     }
 
-    public static void findPath(Room startRoom, Room lastRoom, RoomCollection rooms){
-        ArrayList<Room> visited  = new ArrayList<>();
+
+    public static void findPath(Room startRoom, Room lastRoom, RoomCollection rooms) {
+        ArrayList<Room> visited = new ArrayList<>();
         ArrayList<Room> unvisited = new ArrayList<>();
 
 
-        for(int i=0; i<rooms.getRoomList().size(); i++){
+        for (int i = 0; i < rooms.getRoomList().size(); i++) {
             Room room = rooms.getRoomList().get(i);
             room.setShortestDistance(100000000);
             unvisited.add(room);
         }
         startRoom.setShortestDistance(0);
     }
-
-
 
 
     public static void rickRole() {
@@ -1047,7 +1088,7 @@ public class Main {
 //                        path.clear();
 //                        moveTo(player.getRoom(), path, finish);
 //                    }
-                    testPath(basement,finish);
+                    testPath(basement, finish);
 
                     break;
 
