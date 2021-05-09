@@ -135,9 +135,14 @@ public class Main {
 
          rooms.getVisitedRooms().add(startRoom);
          ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
+        //System.out.println("size "+unvisitedNeighbors.size());
+
          for( int i=0; i<unvisitedNeighbors.size(); i++){
             int distance =  currentRoom.getShortestDistanceStart();
              Room neighbor = unvisitedNeighbors.get(i);
+             System.out.println(i);
+             System.out.println(neighbor.getName());
+             //System.out.println("unvisited neighbor "+neighbor.getName());
 
              Room previousRoom = currentRoom;
 
@@ -148,7 +153,7 @@ public class Main {
                  currentRoom.setShortestDistanceFromStart(distance + 1);
                  currentRoom.setPreviousRoom(previousRoom);
              }
-            rooms.printStatus(startRoom);
+           // rooms.printStatus(startRoom);
 
          }
     }

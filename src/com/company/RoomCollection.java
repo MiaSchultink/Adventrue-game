@@ -206,7 +206,7 @@ public class RoomCollection {
             if (room != null) {
                 if (unvisitedRooms.contains(room)) {
                     unvisitedNeighbors.add(room);
-                    System.out.println(room.getName());
+                    System.out.println("unvisited neighbor "+room.getName());
                 }
             }
         }
@@ -237,6 +237,7 @@ public class RoomCollection {
         printUnvisited();
         System.out.println("visited");
         printVisited();
+
     }
 
 
