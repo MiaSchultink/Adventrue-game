@@ -115,6 +115,44 @@ public class Main {
         return resultRoom;
     }
 
+
+
+    public static void coordinatePath(Room startRoom, RoomCollection rooms){
+        Room currentRoom = new Room("");
+        currentRoom=startRoom;
+        startRoom.setShortestDistanceFromStart(0);
+        rooms.setDistanceFromStart(startRoom);
+       //rooms.distanceFromStart(currentRoom);
+        rooms.previousRoom();
+
+         for( int t=0 ;t<rooms.getRoomList().size(); t++){
+             Room room = rooms.getRoomList().get(t);
+             if(room!=startRoom){
+                 rooms.getUnvisitedRooms().add(room);
+                // System.out.println("added  to unvisited "+ room.getName());
+             }
+         }
+
+         rooms.getVisitedRooms().add(startRoom);
+         ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
+         for( int i=0; i<unvisitedNeighbors.size(); i++){
+            int distance =  currentRoom.getShortestDistanceStart();
+             Room neighbor = unvisitedNeighbors.get(i);
+
+             Room previousRoom = currentRoom;
+
+             currentRoom=neighbor;
+
+             int knownDistance = currentRoom.getShortestDistanceStart();
+             if(knownDistance>distance+1) {
+                 currentRoom.setShortestDistanceFromStart(distance + 1);
+                 currentRoom.setPreviousRoom(previousRoom);
+             }
+            rooms.printStatus(startRoom);
+
+         }
+    }
+
     public static void testPath(Room startRoom, Room lastRoom) {
         ArrayList<Room> path = new ArrayList<>();
         Room currentRoom;
@@ -184,19 +222,19 @@ public class Main {
     }
 
 
-    public static void findPath(Room startRoom, Room lastRoom, RoomCollection rooms) {
-        ArrayList<Room> visited = new ArrayList<>();
-        ArrayList<Room> unvisited = new ArrayList<>();
-
-
-        for (int i = 0; i < rooms.getRoomList().size(); i++) {
-            Room room = rooms.getRoomList().get(i);
-            room.setShortestDistance(100000000);
-            unvisited.add(room);
-        }
-        startRoom.setShortestDistance(0);
-    }
-
+//    public static void findPath(Room startRoom, Room lastRoom, RoomCollection rooms) {
+//        ArrayList<Room> visited = new ArrayList<>();
+//        ArrayList<Room> unvisited = new ArrayList<>();
+//
+//
+//        for (int i = 0; i < rooms.getRoomList().size(); i++) {
+//            Room room = rooms.getRoomList().get(i);
+//            room.setShortestDistance(100000000);
+//            unvisited.add(room);
+//        }
+//        startRoom.setShortestDistance(0);
+//    }
+//
 
     public static void rickRole() {
         String link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
@@ -1089,7 +1127,9 @@ public class Main {
 //                        moveTo(player.getRoom(), path, finish);
 //                    }
                     testPath(basement, finish);
-
+                    break;
+                case "exit":
+coordinatePath(player.getRoom(),rooms);
                     break;
 
                 case "pattern":

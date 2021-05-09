@@ -9,7 +9,7 @@ public class Room {
     private ItemCollection items;
     private CharacterCollection characters;
     private String message;
-    private int shortestDistance;
+    private int shortestDistanceFromStart;
     private Room previousRoom;
 
 
@@ -98,12 +98,12 @@ public class Room {
         this.characters.typeCheck(type);
    }
 
-    public int getShortestDistance() {
-        return shortestDistance;
+    public int getShortestDistanceStart() {
+        return shortestDistanceFromStart;
     }
 
-    public void setShortestDistance(int shortestDistance) {
-        this.shortestDistance = shortestDistance;
+    public void setShortestDistanceFromStart(int shortestDistanceFromStart) {
+        this.shortestDistanceFromStart = shortestDistanceFromStart;
     }
 
     public Room getPreviousRoom() {

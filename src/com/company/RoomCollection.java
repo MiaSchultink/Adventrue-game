@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.print.attribute.standard.Copies;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,12 +8,43 @@ public class RoomCollection {
     private ArrayList<Room> roomList;
     private ArrayList<Room> path;
     private boolean out;
+    private ArrayList<Room> visitedRooms;
+    private ArrayList<Room> unvisitedRooms;
+    private ArrayList<Room> unvisitedNeighbors;
+
 
     public RoomCollection() {
         this.roomList = new ArrayList<Room>();
         this.out = false;
         this.path = new ArrayList<Room>();
+        this.visitedRooms = new ArrayList<>();
+        this.unvisitedRooms = new ArrayList<>();
+        this.unvisitedNeighbors = new ArrayList<>();
 
+    }
+
+    public ArrayList<Room> getVisitedRooms() {
+        return visitedRooms;
+    }
+
+    public void setVisitedRooms(ArrayList<Room> visitedRooms) {
+        this.visitedRooms = visitedRooms;
+    }
+
+    public ArrayList<Room> getUnvisitedRooms() {
+        return unvisitedRooms;
+    }
+
+    public void setUnvisitedRooms(ArrayList<Room> unvisitedRooms) {
+        this.unvisitedRooms = unvisitedRooms;
+    }
+
+    public ArrayList<Room> getUnvisitedNeighbors() {
+        return unvisitedNeighbors;
+    }
+
+    public void setUnvisitedNeighbors(ArrayList<Room> unvisitedNeighbors) {
+        this.unvisitedNeighbors = unvisitedNeighbors;
     }
 
     public ArrayList<Room> getRoomList() {
@@ -106,6 +138,105 @@ public class RoomCollection {
            counter=i;
         }
         return counter;
+    }
+
+    public void setDistanceFromStart(Room startRoom){
+        for(int i=0; i<roomList.size(); i++){
+            Room room = roomList.get(i);
+            if(room==startRoom){
+                room.setShortestDistanceFromStart(0);
+               // System.out.println(room.getName()+" "+" "+room.getShortestDistanceStart());
+            }
+            else{
+                room.setShortestDistanceFromStart(10000);
+                //System.out.println(room.getName()+" "+" "+room.getShortestDistanceStart());
+            }
+        }
+    }
+
+    public void printVisited(){
+        for(int i=0; i<visitedRooms.size(); i++){
+            Room room = visitedRooms.get(i);
+            System.out.println("visited "+room.getName());
+        }
+    }
+   public void printUnvisited(){
+      for(int i=0; i<unvisitedRooms.size(); i++){
+          Room room = unvisitedRooms.get(i);
+          System.out.println("unvisited "+room.getName());
+      }
+   }
+
+   public void printDistanceFromStart(){
+        for(int i=0; i<roomList.size(); i++){
+            Room room= roomList.get(i);
+            int shortestDistance = room.getShortestDistanceStart();
+            System.out.println(room.getName()+" "+shortestDistance);
+        }
+   }
+
+   public void printPreviousRoom(){
+        for(int i=0; i<roomList.size(); i++){
+           Room room = roomList.get(i);
+           Room previousRoom = room.getPreviousRoom();
+           if(previousRoom==null){
+               System.out.println("null");
+           }
+           else {
+               System.out.println("room " + room.getName() + " previous room " + previousRoom.getName());
+           }
+        }
+   }
+
+   public ArrayList<Room> checkNeighbor(Room currentRoom){
+        Room roomNorth  = currentRoom.getNorth();
+        Room roomSouth = currentRoom.getSouth();
+        Room roomEast = currentRoom.getEast();
+        Room roomWest = currentRoom.getWest();
+
+        ArrayList<Room> possibleNeighbors = new ArrayList<>();
+        possibleNeighbors.add(roomEast);
+        possibleNeighbors.add(roomNorth);
+        possibleNeighbors.add(roomSouth);
+        possibleNeighbors.add(roomWest);
+
+        for(int i=0; i<possibleNeighbors.size(); i++) {
+            Room room = possibleNeighbors.get(i);
+
+            if (room != null) {
+                if (unvisitedRooms.contains(room)) {
+                    unvisitedNeighbors.add(room);
+                    System.out.println(room.getName());
+                }
+            }
+        }
+     return unvisitedNeighbors;
+   }
+
+    public void previousRoom(){
+        for(int i=0; i<roomList.size(); i++){
+           Room room = roomList.get(i);
+           room.setPreviousRoom(null);
+//            if(room.getPreviousRoom()==null){
+//                System.out.println("null");
+//            }
+//            else {
+//                System.out.println(room.getName() + " " + room.getPreviousRoom().getName());
+//            }
+        }
+    }
+
+    public void printStatus(Room startRoom){
+        System.out.println("previous rooms:");
+       // previousRoom();
+        printPreviousRoom();
+        System.out.println("shortest distance from start: ");
+       // distanceFromStart(startRoom);
+        printDistanceFromStart();
+        System.out.println("unvisited");
+        printUnvisited();
+        System.out.println("visited");
+        printVisited();
     }
 
 
