@@ -1,6 +1,7 @@
 package com.company;
 
 
+import java.nio.file.Path;
 import java.util.*;
 
 
@@ -117,45 +118,63 @@ public class Main {
 
 
 
-    public static void coordinatePath(Room startRoom, RoomCollection rooms){
+    public static void coordinatePath(Room startRoom, RoomCollection rooms, Room lastRoom){
         Room currentRoom = new Room("");
         currentRoom=startRoom;
         startRoom.setShortestDistanceFromStart(0);
         rooms.setDistanceFromStart(startRoom);
        //rooms.distanceFromStart(currentRoom);
-        rooms.previousRoom();
+       // rooms.previousRoom();
 
          for( int t=0 ;t<rooms.getRoomList().size(); t++){
              Room room = rooms.getRoomList().get(t);
-             if(room!=startRoom){
+            // if(room!=startRoom){
                  rooms.getUnvisitedRooms().add(room);
                 // System.out.println("added  to unvisited "+ room.getName());
-             }
+            // }
          }
 
-         rooms.getVisitedRooms().add(startRoom);
-         ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
-        //System.out.println("size "+unvisitedNeighbors.size());
+        // rooms.getVisitedRooms().add(startRoom);
+         while(!(rooms.getUnvisitedRooms().isEmpty())) {
+             currentRoom=rooms.getShortestDistanceFromStart();
 
-         for( int i=0; i<unvisitedNeighbors.size(); i++){
-            int distance =  currentRoom.getShortestDistanceStart();
-             Room neighbor = unvisitedNeighbors.get(i);
-             System.out.println(i);
-             System.out.println(neighbor.getName());
-             //System.out.println("unvisited neighbor "+neighbor.getName());
+             ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
+             //System.out.println("size "+unvisitedNeighbors.size());
 
-             Room previousRoom = currentRoom;
-
-             currentRoom=neighbor;
-
-             int knownDistance = currentRoom.getShortestDistanceStart();
-             if(knownDistance>distance+1) {
-                 currentRoom.setShortestDistanceFromStart(distance + 1);
-                 currentRoom.setPreviousRoom(previousRoom);
+             for (int i = 0; i < unvisitedNeighbors.size(); i++) {
+                 int distance = currentRoom.getShortestDistanceStart()+1;
+                 Room neighbor = unvisitedNeighbors.get(i);
+                 if(distance<neighbor.getShortestDistanceStart()){
+                     neighbor.setShortestDistanceFromStart(distance);
+                     neighbor.setPreviousRoom(currentRoom);
+                 }
              }
-           // rooms.printStatus(startRoom);
+          int index=   rooms.getUnvisitedRooms().indexOf(currentRoom);
+            // rooms.getUnvisitedRooms().remove(index);
+             rooms.getUnvisitedRooms().remove(currentRoom);
 
          }
+         for( int i=0; i<rooms.getRoomList().size(); i++){
+             Room room = rooms.getRoomList().get(i);
+             System.out.println("------------------------");
+             //System.out.println("Name: "+room.getName()+" shortest distance: "+room.getShortestDistanceStart()+" previous room: "+room.getPreviousRoom().getName());
+             System.out.println("name: "+ room.getName());
+             System.out.println("distance "+room.getShortestDistanceStart());
+             if(room.getPreviousRoom()!=null) {
+                 System.out.println("previous " + room.getPreviousRoom().getName());
+             }
+         }
+      //   ArrayList<Room> path = new ArrayList<>();
+         String path = "";
+         currentRoom=lastRoom;
+         path = lastRoom.getName();
+        while(currentRoom.getPreviousRoom()!=null){
+          //path.add(currentRoom.getPreviousRoom());
+            path = currentRoom.getPreviousRoom().getName()+" - "+path;
+            System.out.println(path);
+            currentRoom=currentRoom.getPreviousRoom();
+        }
+
     }
 
     public static void testPath(Room startRoom, Room lastRoom) {
@@ -1134,7 +1153,7 @@ public class Main {
                     testPath(basement, finish);
                     break;
                 case "exit":
-coordinatePath(player.getRoom(),rooms);
+coordinatePath(player.getRoom(),rooms,finish);
                     break;
 
                 case "pattern":

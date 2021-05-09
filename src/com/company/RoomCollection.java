@@ -153,6 +153,17 @@ public class RoomCollection {
             }
         }
     }
+    public Room getShortestDistanceFromStart(){
+        int knownShortestDistance = unvisitedRooms.get(0).getShortestDistanceStart();
+        Room roomWithShortestDistanceFromStart = unvisitedRooms.get(0);
+        for(int i=1; i<unvisitedRooms.size(); i++){
+            if (unvisitedRooms.get(i).getShortestDistanceStart() < knownShortestDistance) {
+                roomWithShortestDistanceFromStart = unvisitedRooms.get(i);
+                knownShortestDistance = unvisitedRooms.get(i).getShortestDistanceStart();
+            }
+        }
+        return roomWithShortestDistanceFromStart;
+    }
 
     public void printVisited(){
         for(int i=0; i<visitedRooms.size(); i++){
@@ -206,7 +217,7 @@ public class RoomCollection {
             if (room != null) {
                 if (unvisitedRooms.contains(room)) {
                     unvisitedNeighbors.add(room);
-                    System.out.println("unvisited neighbor "+room.getName());
+                   // System.out.println("unvisited neighbor "+room.getName());
                 }
             }
         }
