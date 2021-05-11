@@ -69,20 +69,20 @@ public class Main {
                      neighbor.setPreviousRoom(currentRoom);
                  }
              }
-          int index=   rooms.getUnvisitedRooms().indexOf(currentRoom);
+        //  int index=   rooms.getUnvisitedRooms().indexOf(currentRoom);
             // rooms.getUnvisitedRooms().remove(index);
              rooms.getUnvisitedRooms().remove(currentRoom);
 
          }
          for( int i=0; i<rooms.getRoomList().size(); i++){
              Room room = rooms.getRoomList().get(i);
-             System.out.println("------------------------");
+           //  System.out.println("------------------------");
              //System.out.println("Name: "+room.getName()+" shortest distance: "+room.getShortestDistanceStart()+" previous room: "+room.getPreviousRoom().getName());
-             System.out.println("name: "+ room.getName());
-             System.out.println("distance "+room.getShortestDistanceStart());
-             if(room.getPreviousRoom()!=null) {
-                 System.out.println("previous " + room.getPreviousRoom().getName());
-             }
+//             System.out.println("name: "+ room.getName());
+//             System.out.println("distance "+room.getShortestDistanceStart());
+//             if(room.getPreviousRoom()!=null) {
+//                 System.out.println("previous " + room.getPreviousRoom().getName());
+//             }
          }
       //   ArrayList<Room> path = new ArrayList<>();
          String path = "";
@@ -91,9 +91,10 @@ public class Main {
         while(currentRoom.getPreviousRoom()!=null){
           //path.add(currentRoom.getPreviousRoom());
             path = currentRoom.getPreviousRoom().getName()+" - "+path;
-            System.out.println(path);
+           // System.out.println(path);
             currentRoom=currentRoom.getPreviousRoom();
         }
+        System.out.println(path);
 
     }
 
@@ -243,15 +244,6 @@ public class Main {
                         //numberOfR++;
                         roomsArray = chekFree(i, j, roomsArray);
 
-
-//                        if (numberOfR > Fnumber) {
-//                            for (int k = 0; k < roomsArray.length; k++) {
-//                                for (int y = 0; y < roomsArray[k].length; y++) {
-//                                    System.out.println("got here");
-//                                    roomsArray = chekFree(k, y, roomsArray);
-//                                }
-//                            }
-//                        }
                     }
                 }
             }
@@ -271,16 +263,6 @@ public class Main {
         }
         return rCounter;
     }
-
-//    public static void replaceF(String[][] roomsArray) {
-//        for (int i = 0; i < roomsArray.length; i++) {
-//            for (int j = 0; j < roomsArray[i].length; j++) {
-//                if (roomsArray[i][j].equals("F")) {
-//                    roomsArray[i][j] = "-";
-//                }
-//            }
-//        }
-//    }
 
     public static void printArray(String[][] roomsArray) {
 
@@ -472,10 +454,21 @@ public class Main {
         Item attackVines = new Item("grip vines", 10, 0, 50);
         Item grenade = new Item("grenade", 20, 0, 25);
         Item temporarySuperStrength = new Item("temporary super strength", 10, 0, 35);
+        Item slingShot = new Item("sling shot",7,0,17);
 
         //torture chamber weapons
         Item beatingStick = new Item("beating stick", 10, 0, 20);
         Item scythe = new Item("scythe", 15, 0, 20);
+        Item wip = new Item("wip", 10,0,30);
+        Item nails = new Item("nails",5,0,15);
+        Item waterBucket = new Item("water bucket",10,0,20);
+
+
+        ///science equipment
+        Item cyanide = new Item("cyanide",20,0,20);
+        Item microsCope = new Item("microscope",10,0,40);
+        Item gloves = new Item ("gloves",0,10,10);
+        Item ultraViolateFlashLight = new Item("ultra violate flashlight",0,0,20);
 
 
         //rooms
@@ -496,6 +489,8 @@ public class Main {
         Room finish = new Room("freedom");
         Room livingRoom = new Room("living room");
         Room tortureChamber = new Room("torture chamber");
+        Room scienceLab = new Room("science lab");
+
 
         RoomCollection rooms = new RoomCollection();
         rooms.addRoom(basement);
@@ -515,6 +510,7 @@ public class Main {
         rooms.addRoom(lavaRoom);
         rooms.addRoom(natureReserve);
         rooms.addRoom(tortureChamber);
+        rooms.addRoom(scienceLab);
 
 
         String[][] roomMap = makeMap(rooms.getRoomList().size());
@@ -626,6 +622,19 @@ public class Main {
         livingRoomMonster.addItem(taser);
 
         Character stretchingMonster = new Character(60, "stretch torturer", "monster", tortureChamber);
+        stretchingMonster.addItem(scythe);
+
+        Character dungeonMaster = new Character(100,"dungeon master","monster", tortureChamber);
+        tortureChamber.addCharacter(dungeonMaster);
+        dungeonMaster.addItem(wip);
+
+        Character henchMan =new Character(60, "henchman", "monster",tortureChamber);
+        henchMan.addItem(nails);
+        tortureChamber.addCharacter(henchMan);
+
+        Character scientist = new Character(80,"Alex","person",scienceLab);
+
+
 
         //basement settings
         basement.addItem(watterBottle);
@@ -667,11 +676,21 @@ public class Main {
         movieTheater.addCharacter(movieWatcher);
         movieTheater.addItem(popCorn);
         movieTheater.addItem(coke);
+        movieTheater.setMessage("Enjoy the movie!");
 
         // living room settings
         livingRoom.addItem(gun);
         livingRoom.addItem(toxicGas);
         livingRoom.addCharacter(livingRoomMonster);
+        livingRoom.setMessage("The grand living room. \nThe center of every home. ");
+
+        //science lab settings
+        scienceLab.addItem(microsCope);
+        microsCope.setMessage("look! do you see the ionic crystal latice structure");
+        scienceLab.addItem(cyanide);
+        scienceLab.addItem(gloves);
+        scienceLab.addItem(ultraViolateFlashLight);
+
 
         //game room settings
         gameRoom.addCharacter(gameRoomMonster);
@@ -704,11 +723,13 @@ public class Main {
         creepyLibrary.addItem(healingPotion);
         creepyLibrary.addItem(book);
         creepyLibrary.addCharacter(zombiLibrarian);
+        creepyLibrary.setMessage("Shhh! Only whispers are allowed here. \nIt’s almost completely dark, danger leaks close. \nFaint screams are heard. ");
 
         // nature reserve settings
         natureReserve.addCharacter(natureReserveMonster);
         natureReserve.addItem(strawBerries);
         natureReserve.addItem(pineapple);
+        natureReserve.setMessage("Everything is covered in green vines, various plants and flowers create a harmonious aroma.");
 
         //white room settings
         whiteRoom.addCharacter(invisibleMan);
@@ -718,6 +739,16 @@ public class Main {
         controlRoom.addItem(laptop);
         controlRoom.addItem(cellPhone);
         controlRoom.addItem(watterBottle);
+        controlRoom.setMessage("The center of technology. \nThe wires and flashing lights are quite overwhelming. \nBe careful not to accidentally unplug anything! ");
+
+        //torture chamber settings
+        tortureChamber.setMessage("Welcome to your doom! Prepare to be tortured.");
+        tortureChamber.addCharacter(stretchingMonster);
+        tortureChamber.addItem(beatingStick);
+        tortureChamber.addItem(bread);
+        tortureChamber.addItem(flashLight);
+        tortureChamber.addItem(taser);
+
 
         //lava room settings
         lavaRoom.addCharacter(lavaMonster);
@@ -780,6 +811,11 @@ public class Main {
                 } else {
                     player.setHealth(player.getHealth() - 7);
                 }
+            }
+
+            if(player.getRoom()==tortureChamber){
+                player.setHealth(player.getHealth()-5);
+                System.out.println("Health "+player.getHealth());
             }
 
             rooms.checkMonster();
@@ -979,6 +1015,22 @@ public class Main {
 
                 case "map":
                     printRoomArray(roomLayout);
+                    break;
+                case "help":
+                    System.out.println("Quit - quit the game\n" +
+                            "Look- look at the items in your room \n" +
+                            "Pocket - look at your item bag \n" +
+                            "Walk north, east, south, west -  walk to room in that direction \n" +
+                            "Collect + item name - pick up an item\n" +
+                            "Drop + item name - drop an item \n" +
+                            "Attack - attack a monster \n" +
+                            "Where - which room you are in \n" +
+                            "Character - see the character in the room \n" +
+                            "Eat - consume items with healing properties to gain health \n" +
+                            "Emoji - see  an emoji \n" +
+                            "Map - generate game map\n" +
+                            "Health - see how much health you have \n" +
+                            "Pets - check if you own any pets \n");
                     break;
 
 
