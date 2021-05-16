@@ -378,7 +378,7 @@ public class Main {
 
 
         Room basement = new Room("basement");
-        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a stairwell leading north.\nType look to find items available");
+        basement.setMessage("You are in a dimly lit basement of a large house.\nThere is a stairwell leading north.\nType look to find items available. Hint: collect the note");
         System.out.println(basement.getMessage());
 
         //items
@@ -639,11 +639,18 @@ public class Main {
         //basement settings
         basement.addItem(watterBottle);
         basement.addItem(note);
+        note.setMessage("Greetings player,\n" +
+                "You are about to embark on a great adventure. \nHow did you get to this random basement? you ask, \nI don’t know, you probably hit your head when you fell into some sink hole in the ground. Maybe this is all just happening in your mind. \nAnyway, I don’t know. Your goal is to get out of here, find without being killed by various dangers along the way. \nOk, that is all you will hear from me for now, if you need help just type “help”.\n" +
+                "Have fun!\n" +
+                " \n" +
+                "Credits: \n" +
+                "This game was created by Mia Schultink as semester project for computer applications in 2021. \n");
         basement.addItem(flashLight);
         basement.addItem(knife);
         basement.addItem(bread);
         basement.addCharacter(testAttackMonster);
         basement.addCharacter(cat);
+
 
         //kitchen settings
         kitchen.addItem(sword);
@@ -652,7 +659,7 @@ public class Main {
         kitchen.addCharacter(monster1);
 
         //dining room settings
-        diningRoom.setMessage("The dinning room, the great festive hall. The long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
+        diningRoom.setMessage("The dinning room, the great festive hall. \nThe long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
         diningRoom.addItem(pasta);
         diningRoom.addItem(fishDish);
         diningRoom.addCharacter(butler);
@@ -857,17 +864,24 @@ public class Main {
                     break;
 
                 case "walk":
-                    Room roomBefore = player.getRoom();
-                    rooms.walk(player, inputCommands[1]);
-                    Room roomAfter = player.getRoom();
-                    if (roomBefore != roomAfter) {
-                        System.out.println(player.getName() + " is in the " + player.getRoom().getName());
-                        if (player.getRoom().getMessage() != null) {
-                            System.out.println(player.getRoom().getMessage());
+                   // System.out.println(inputCommands.length);
+                    if(inputCommands.length<2){
+                        System.out.println("You need to go somewhere, try again.");
+                    }
+
+                    else {
+                        Room roomBefore = player.getRoom();
+                        rooms.walk(player, inputCommands[1]);
+                        Room roomAfter = player.getRoom();
+                        if (roomBefore != roomAfter) {
+                            System.out.println(player.getName() + " is in the " + player.getRoom().getName());
+                            if (player.getRoom().getMessage() != null) {
+                                System.out.println(player.getRoom().getMessage());
+                            }
+                            player.setScore(player.getScore() + 5);
+                        } else {
+                            System.out.println("You can't go that way");
                         }
-                        player.setScore(player.getScore() + 5);
-                    } else {
-                        System.out.println("You can't go that way");
                     }
                     break;
 
