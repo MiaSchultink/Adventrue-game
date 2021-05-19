@@ -116,7 +116,7 @@ public class ItemCollection {
             }
         }
         else{
-            System.out.println("No items in this room");
+            System.out.println("No items here");
         }
     }
 

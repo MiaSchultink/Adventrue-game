@@ -571,7 +571,7 @@ public class Main {
         Character player = new Character(100, name, "player", basement);
         player.setScore(0);
 
-        Character cat = new Character(50, "mittens", "pet", diningRoom);
+        Character cat = new Character(50, "mittens", "pet", kitchen);
         Character redFish = new Character(30, "bloody perana", "monster", fishTank);
         Character blueFish = new Character(30, "Anigma", "pet", fishTank);
         Character greenFish = new Character(30, "deep water tail trout", "pet", fishTank);
@@ -640,7 +640,7 @@ public class Main {
         basement.addItem(watterBottle);
         basement.addItem(note);
         note.setMessage("Greetings player,\n" +
-                "You are about to embark on a great adventure. \nHow did you get to this random basement? you ask, \nI don’t know, you probably hit your head when you fell into some sink hole in the ground. Maybe this is all just happening in your mind. \nAnyway, I don’t know. Your goal is to get out of here, find without being killed by various dangers along the way. \nOk, that is all you will hear from me for now, if you need help just type “help”.\n" +
+                "You are about to embark on a great adventure. \nHow did you get to this random basement? you ask, \nI don’t know, you probably hit your head when you fell into some sink hole in the ground. \nMaybe this is all just happening in your mind. \nAnyway, I don’t know. Your goal is to get out of here, find without being killed by various dangers along the way. \nOk, that is all you will hear from me for now, if you need help just type “help”.\n" +
                 "Have fun!\n" +
                 " \n" +
                 "Credits: \n" +
@@ -649,14 +649,15 @@ public class Main {
         basement.addItem(knife);
         basement.addItem(bread);
         basement.addCharacter(testAttackMonster);
-        basement.addCharacter(cat);
+       // basement.addCharacter(cat);
 
 
         //kitchen settings
         kitchen.addItem(sword);
         kitchen.addItem(diningRoomKey);
-        kitchen.setMessage("The scenic abandoned kitchen. There is a cat here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here.");
+        kitchen.setMessage("The scenic abandoned kitchen. There is a cat named mittens here, it has nice orange fur.\nIf you pet the cat he might become your friend.\nType look to see items available.\nWarning there is a monster here.");
         kitchen.addCharacter(monster1);
+        kitchen.addCharacter(cat);
 
         //dining room settings
         diningRoom.setMessage("The dinning room, the great festive hall. \nThe long table and leather coated chairs are as elegant as ever, the refinement in the carefully picked velvet certians is imminent.");
@@ -764,7 +765,7 @@ public class Main {
 
 
         //finish settings
-        finish.setMessage("Congratulation! \nYou made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. \nThere is an abandoned dog out here, perhaps you could take him on your future adventures.\nTake a deep breath of fresh air and celebrate! \nIt has been an honor helping you along your journey " + player.getName() + ". You have achieved great things " + "Your score is " + player.getScore() + ". \nThank you. Type 'end game' to end your journey");
+        finish.setMessage("Congratulation! \nYou made it out! The sun you have not seen in a while is shining brightly, the leaves on the trees are rustling slightly. \nThere is an abandoned dog out here, perhaps you could take him on your future adventures.\nTake a deep breath of fresh air and celebrate! \nA gold medal and an abandoned dog named Griffin are here. \nDo you want to take them along on your future adventures? \nIt has been an honor helping you along your journey " + player.getName() + ". You have achieved great things " + "Your score is " + player.getScore() + ". \nThank you. Type 'end' to end your journey.");
         finish.addCharacter(italianGreyhound);
         finish.addItem(gameMedal);
 
@@ -887,30 +888,40 @@ public class Main {
 
 
                 case "collect":
-                    Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
-                    if (item != null) {
-                        player.addItem(item);
-                        System.out.println("you have the " + item.getName());
-                        if (item.getMessage() != null) {
-                            System.out.println(item.getMessage());
+                    if(inputCommands.length<2){
+                        System.out.println("You must specify what you want to collect, try again");
+                    }
+                    else {
+                        Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
+                        if (item != null) {
+                            player.addItem(item);
+                            System.out.println("you have the " + item.getName());
+                            if (item.getMessage() != null) {
+                                System.out.println(item.getMessage());
+                            }
+                            player.setScore(player.getScore() + 10);
+                        } else {
+                            System.out.println("That item does not exist, or is already in your item bag");
                         }
-                        player.setScore(player.getScore() + 10);
-                    } else {
-                        System.out.println("That item does not exist, or is already in your item bag");
                     }
-                    break;
+                        break;
 
-                case "drop":
-                    Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
-                    if (itemRemoved != null) {
-                        player.removeItem(itemRemoved);
-                        System.out.println("you have dropped the " + itemRemoved.getName());
-                    }
+                        case "drop":
+                            if(inputCommands.length<2){
+                                System.out.println("You must specify what you want to drop");
+                            }
+                            else {
+                                Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
+                                if (itemRemoved != null) {
+                                    player.removeItem(itemRemoved);
+                                    System.out.println("you have dropped the " + itemRemoved.getName());
+                                }
+                            }
                     break;
 
 
                 case "attack":
-                    if (monster != null) {
+                    if ((monster != null)&&(monster.getHealth()>0)) {
                         System.out.println("Who do you want to attack");
                         System.out.println("Your options are: " + player.getRoom().getCharacters().typeCheck("monster").getName());
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
@@ -975,7 +986,8 @@ public class Main {
                     break;
 
                 case "pet":
-                    Character pet = player.getRoom().getCharacters().collectRequest(inputCommands[1]);
+                    //Character pet = player.getRoom().getCharacters().collectRequest(inputCommands[1]);
+                    Character pet = player.getRoom().getCharacters().petRequest(inputCommands[1]);
                     if ((pet != null) && (pet.getType().equals("pet"))) {
                         int scratchChances = random(0, 2);
                         if (scratchChances == 0) {
@@ -1080,8 +1092,9 @@ coordinatePath(player.getRoom(),rooms,finish);
                     running = false;
                     break;
 
-                case "end game":
+                case "end":
                     running = false;
+                    System.out.println("Your journey has ended");
                     break;
 
                 default:

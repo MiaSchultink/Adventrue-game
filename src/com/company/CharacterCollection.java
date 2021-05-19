@@ -9,6 +9,20 @@ public class CharacterCollection {
         this.characterList = new ArrayList<Character>();
     }
 
+    public Character petRequest(String petName){
+        Character possiblePet = new Character(0,"","",null);
+        for(int i=0; i< characterList.size(); i++){
+            Character character = characterList.get(i);
+            if((character.getType().equals("pet"))&&(character.getName().equals(petName))){
+               possiblePet=character;
+            }
+            else{
+                character=null;
+            }
+        }
+        return possiblePet;
+    }
+
 
     public Character collectRequest(String characterName){
         int index = -1;
