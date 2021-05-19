@@ -698,6 +698,7 @@ public class Main {
         scienceLab.addItem(cyanide);
         scienceLab.addItem(gloves);
         scienceLab.addItem(ultraViolateFlashLight);
+        scienceLab.addCharacter(scientist);
 
 
         //game room settings
