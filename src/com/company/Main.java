@@ -699,6 +699,8 @@ public class Main {
         scienceLab.addItem(gloves);
         scienceLab.addItem(ultraViolateFlashLight);
         scienceLab.addCharacter(scientist);
+        scientist.setMessage("Welcome to my lab! I am Alex, the chief researcher here, you are welcome here, but don't spill anything!");
+        scienceLab.setMessage("The best of our research is conducted here, from climate change solutions to genetic engineering.You can contact Alex if you like.");
 
 
         //game room settings
@@ -794,6 +796,14 @@ public class Main {
                 running = false;
                 System.out.println("Oh no looks like you have died");
             }
+
+            int attackChance = random(1,30);
+            if(attackChance<2){
+                player.setHealth(player.getHealth()-(monster.getPocket().getMonsterWeapon().getAttackDamage()));
+                System.out.println("Oh no the monster is attacking you, you might want to fight back");
+                System.out.println("health = "+player.getHealth());
+            }
+
 
             if (monster != null) {
                 if (monster.getHealth() <= 0) {
@@ -915,7 +925,11 @@ public class Main {
                                 Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
                                 if (itemRemoved != null) {
                                     player.removeItem(itemRemoved);
+                                    player.getRoom().addItem(itemRemoved);
                                     System.out.println("you have dropped the " + itemRemoved.getName());
+                                }
+                                else{
+                                    System.out.println("Did you spell it wrong? Do you own this item?");
                                 }
                             }
                     break;
@@ -934,6 +948,7 @@ public class Main {
                                 System.out.println("You can attack with:" + attackItemNames);
                             } else {
                                 System.out.println("You don't have any items you can use to attack");
+                                break;
                             }
 
                             String attackItemName = command.nextLine();
@@ -1007,15 +1022,20 @@ public class Main {
                     break;
 
                 case "contact":
-                    Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[1]);
-                    if (talkCharacter != null) {
-                        if (talkCharacter.getMessage() != null) {
-                            System.out.println(talkCharacter.getMessage());
+                    if(inputCommands.length<2){
+                        System.out.println("Specify who you would like to contact");
+                    }
+                    else {
+                        Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[1]);
+                        if (talkCharacter != null) {
+                            if (talkCharacter.getMessage() != null) {
+                                System.out.println(talkCharacter.getMessage());
+                            } else {
+                                System.out.println("I have nothing to say");
+                            }
                         } else {
-                            System.out.println("I have nothing to say");
+                            System.out.println("Sorry you can't talk to this person, try again");
                         }
-                    } else {
-                        System.out.println("Sorry you can't talk to this person");
                     }
                     break;
 
@@ -1053,6 +1073,7 @@ public class Main {
                             "Attack - attack a monster \n" +
                             "Where - which room you are in \n" +
                             "Character - see the character in the room \n" +
+                            "Contact +character name - talk to a character \n"+
                             "Eat - consume items with healing properties to gain health \n" +
                             "Emoji - see  an emoji \n" +
                             "Map - generate game map\n" +
@@ -1062,17 +1083,9 @@ public class Main {
 
 
                 case "path":
-                    //exitConditions(basement,finish);
-//                    ArrayList<Room> path = new ArrayList<>();
-//                    for(int i=0; i<10; i++) {
-//                        path.clear();
-//                        moveTo(player.getRoom(), path, finish);
-//                    }
-                   // testPath(basement, finish);
+                    coordinatePath(player.getRoom(),rooms,finish);
                     break;
-                case "exit":
-coordinatePath(player.getRoom(),rooms,finish);
-                    break;
+
 
                 case "pattern":
                     printArray(roomMap);

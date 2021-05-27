@@ -287,9 +287,9 @@ public class RoomCollection {
                     character.setRoom(possibleRoom);
                 }
                 break;
-            default:
-                System.out.println("I don't understand that direction");
-                break;
+//            default:
+//                System.out.println("I don't understand that direction");
+//                break;
         }
     }
 
