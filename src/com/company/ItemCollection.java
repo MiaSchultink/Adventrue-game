@@ -120,6 +120,14 @@ public class ItemCollection {
         }
     }
 
+    public int countBag(){
+        int counter =0;
+        for(int i=0; i<itemList.size(); i++){
+           counter++;
+        }
+        return counter;
+    }
+
 
     public void clean(){
         for(int i=0; i<itemList.size(); i++){

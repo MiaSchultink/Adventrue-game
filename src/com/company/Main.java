@@ -1,5 +1,7 @@
 package com.company;
 
+import jdk.jshell.spi.SPIResolutionException;
+
 import java.util.*;
 
 
@@ -20,84 +22,98 @@ public class Main {
         Room resultRoom = new Room("");
         int roomIndex = random(0, 4);
 
-       int counter = 0;
-       boolean finished = false;
-       while ((!finished)&&(counter<3)) {
-               roomIndex = (roomIndex + counter) % 4;
-               Room randomRoom = rooms[roomIndex];
-               if (randomRoom != null) {
-                   resultRoom = randomRoom;
-                  // System.out.println("at last room");
-                   finished=true;
-               }
+        int counter = 0;
+        boolean finished = false;
+        while ((!finished) && (counter < 3)) {
+            roomIndex = (roomIndex + counter) % 4;
+            Room randomRoom = rooms[roomIndex];
+            if (randomRoom != null) {
+                resultRoom = randomRoom;
+                // System.out.println("at last room");
+                finished = true;
+            }
 
-           counter++;
-       }
+            counter++;
+        }
         return resultRoom;
     }
 
 
-
-    public static void coordinatePath(Room startRoom, RoomCollection rooms, Room lastRoom){
+    public static void coordinatePath(Room startRoom, RoomCollection rooms, Room lastRoom) {
         Room currentRoom = new Room("");
-        currentRoom=startRoom;
+        currentRoom = startRoom;
         startRoom.setShortestDistanceFromStart(0);
         rooms.setDistanceFromStart(startRoom);
-       //rooms.distanceFromStart(currentRoom);
-       // rooms.previousRoom();
+      //  System.out.println("hi 1");
 
-         for( int t=0 ;t<rooms.getRoomList().size(); t++){
-             Room room = rooms.getRoomList().get(t);
-            // if(room!=startRoom){
-                 rooms.getUnvisitedRooms().add(room);
-                // System.out.println("added  to unvisited "+ room.getName());
-            // }
-         }
+        for (int t = 0; t < rooms.getRoomList().size(); t++) {
+            Room room = rooms.getRoomList().get(t);
+            rooms.getUnvisitedRooms().add(room);
 
-        // rooms.getVisitedRooms().add(startRoom);
-         while(!(rooms.getUnvisitedRooms().isEmpty())) {
-             currentRoom=rooms.getShortestDistanceFromStart();
-
-             ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
-             //System.out.println("size "+unvisitedNeighbors.size());
-
-             for (int i = 0; i < unvisitedNeighbors.size(); i++) {
-                 int distance = currentRoom.getShortestDistanceStart()+1;
-                 Room neighbor = unvisitedNeighbors.get(i);
-                 if(distance<neighbor.getShortestDistanceStart()){
-                     neighbor.setShortestDistanceFromStart(distance);
-                     neighbor.setPreviousRoom(currentRoom);
-                 }
-             }
-        //  int index=   rooms.getUnvisitedRooms().indexOf(currentRoom);
-            // rooms.getUnvisitedRooms().remove(index);
-             rooms.getUnvisitedRooms().remove(currentRoom);
-
-         }
-         for( int i=0; i<rooms.getRoomList().size(); i++){
-             Room room = rooms.getRoomList().get(i);
-           //  System.out.println("------------------------");
-             //System.out.println("Name: "+room.getName()+" shortest distance: "+room.getShortestDistanceStart()+" previous room: "+room.getPreviousRoom().getName());
-//             System.out.println("name: "+ room.getName());
-//             System.out.println("distance "+room.getShortestDistanceStart());
-//             if(room.getPreviousRoom()!=null) {
-//                 System.out.println("previous " + room.getPreviousRoom().getName());
-//             }
-         }
-      //   ArrayList<Room> path = new ArrayList<>();
-         String path = "";
-         currentRoom=lastRoom;
-         path = lastRoom.getName();
-        while(currentRoom.getPreviousRoom()!=null){
-          //path.add(currentRoom.getPreviousRoom());
-            path = currentRoom.getPreviousRoom().getName()+" - "+path;
-           // System.out.println(path);
-            currentRoom=currentRoom.getPreviousRoom();
         }
+        //System.out.println("Hi 2");
+
+
+        while (!(rooms.getUnvisitedRooms().isEmpty())) {
+
+            currentRoom = rooms.getShortestDistanceFromStart();
+
+            ArrayList<Room> unvisitedNeighbors = rooms.checkNeighbor(currentRoom);
+
+            for (int i = 0; i < unvisitedNeighbors.size(); i++) {
+                int distance = currentRoom.getShortestDistanceStart() + 1;
+                Room neighbor = unvisitedNeighbors.get(i);
+                if (distance < neighbor.getShortestDistanceStart()) {
+                    neighbor.setShortestDistanceFromStart(distance);
+                    neighbor.setPreviousRoom(currentRoom);
+                }
+            }
+
+            rooms.getUnvisitedRooms().remove(currentRoom);
+
+        }
+       // System.out.println("Hi 3");
+
+        String path = "";
+        currentRoom = lastRoom;
+        path = lastRoom.getName();
+        while (currentRoom.getPreviousRoom() != null) {
+            //System.out.println("previous room "+ currentRoom.getPreviousRoom().getName());
+            path = currentRoom.getPreviousRoom().getName() + " - " + path;
+            currentRoom = currentRoom.getPreviousRoom();
+        }
+
+      //  System.out.println("Hi 4");
         System.out.println(path);
 
-    }
 
+        // return path;
+
+////        System.out.println("hi");
+////        if(rooms.getUnvisitedRooms().isEmpty()){
+////            System.out.println("Nothing here");
+////        }
+//        else{
+//        for(int k=0; k<rooms.getUnvisitedRooms().size(); k++){
+//            System.out.println(rooms.getUnvisitedRooms().get(k).getName());
+//        }
+//        }
+
+//        for(int i=0; i<rooms.getUnvisitedRooms().size(); i++){
+//            Room room = rooms.getUnvisitedRooms().get(i);
+//           // if(room!= currentRoom){
+//                rooms.getUnvisitedRooms().add(room);
+//                //System.out.println(room.getName());
+//           // }
+//        }
+//        for(int i=0; i<rooms.getRoomList().size(); i++){
+//            Room room = rooms.getRoomList().get(i);
+//            rooms.getUnvisitedRooms().add(room);
+//            System.out.println(room.getName());
+//        }
+
+
+    }
 
 
     public static void rickRole() {
@@ -454,21 +470,21 @@ public class Main {
         Item attackVines = new Item("grip vines", 10, 0, 50);
         Item grenade = new Item("grenade", 20, 0, 25);
         Item temporarySuperStrength = new Item("temporary super strength", 10, 0, 35);
-        Item slingShot = new Item("sling shot",7,0,17);
+        Item slingShot = new Item("sling shot", 7, 0, 17);
 
         //torture chamber weapons
         Item beatingStick = new Item("beating stick", 10, 0, 20);
         Item scythe = new Item("scythe", 15, 0, 20);
-        Item wip = new Item("wip", 10,0,30);
-        Item nails = new Item("nails",5,0,15);
-        Item waterBucket = new Item("water bucket",10,0,20);
+        Item wip = new Item("wip", 10, 0, 30);
+        Item nails = new Item("nails", 5, 0, 15);
+        Item waterBucket = new Item("water bucket", 10, 0, 20);
 
 
         ///science equipment
-        Item cyanide = new Item("cyanide",20,0,20);
-        Item microsCope = new Item("microscope",10,0,40);
-        Item gloves = new Item ("gloves",0,10,10);
-        Item ultraViolateFlashLight = new Item("ultra violate flashlight",0,0,20);
+        Item cyanide = new Item("cyanide", 20, 0, 20);
+        Item microsCope = new Item("microscope", 10, 0, 40);
+        Item gloves = new Item("gloves", 0, 10, 10);
+        Item ultraViolateFlashLight = new Item("ultra violate flashlight", 0, 0, 20);
 
 
         //rooms
@@ -585,7 +601,7 @@ public class Main {
         Character monster1 = new Character(80, "the fanged man", "monster", kitchen);
         monster1.addItem(baseBallBat);
 
-        Character testAttackMonster = new Character(80, "test monster", "monster", basement);
+        Character testAttackMonster = new Character(80, "stick man", "monster", basement);
         testAttackMonster.addItem(rock);
 
         Character gameRoomMonster = new Character(100, "game gangster", "monster", gameRoom);
@@ -624,16 +640,15 @@ public class Main {
         Character stretchingMonster = new Character(60, "stretch torturer", "monster", tortureChamber);
         stretchingMonster.addItem(scythe);
 
-        Character dungeonMaster = new Character(100,"dungeon master","monster", tortureChamber);
+        Character dungeonMaster = new Character(100, "dungeon master", "monster", tortureChamber);
         tortureChamber.addCharacter(dungeonMaster);
         dungeonMaster.addItem(wip);
 
-        Character henchMan =new Character(60, "henchman", "monster",tortureChamber);
+        Character henchMan = new Character(60, "henchman", "monster", tortureChamber);
         henchMan.addItem(nails);
         tortureChamber.addCharacter(henchMan);
 
-        Character scientist = new Character(80,"Alex","person",scienceLab);
-
+        Character scientist = new Character(80, "Alex", "person", scienceLab);
 
 
         //basement settings
@@ -649,7 +664,7 @@ public class Main {
         basement.addItem(knife);
         basement.addItem(bread);
         basement.addCharacter(testAttackMonster);
-       // basement.addCharacter(cat);
+        // basement.addCharacter(cat);
 
 
         //kitchen settings
@@ -797,11 +812,11 @@ public class Main {
                 System.out.println("Oh no looks like you have died");
             }
 
-            int attackChance = random(1,30);
-            if(attackChance<2){
-                player.setHealth(player.getHealth()-(monster.getPocket().getMonsterWeapon().getAttackDamage()));
+            int attackChance = random(1, 30);
+            if (attackChance < 2) {
+                player.setHealth(player.getHealth() - (monster.getPocket().getMonsterWeapon().getAttackDamage()));
                 System.out.println("Oh no the monster is attacking you, you might want to fight back");
-                System.out.println("health = "+player.getHealth());
+                System.out.println("health = " + player.getHealth());
             }
 
 
@@ -832,9 +847,10 @@ public class Main {
                 }
             }
 
-            if(player.getRoom()==tortureChamber){
-                player.setHealth(player.getHealth()-5);
-                System.out.println("Health "+player.getHealth());
+
+            if (player.getRoom() == tortureChamber) {
+                player.setHealth(player.getHealth() - 5);
+                System.out.println("Health " + player.getHealth());
             }
 
             rooms.checkMonster();
@@ -876,12 +892,10 @@ public class Main {
                     break;
 
                 case "walk":
-                   // System.out.println(inputCommands.length);
-                    if(inputCommands.length<2){
+                    // System.out.println(inputCommands.length);
+                    if (inputCommands.length < 2) {
                         System.out.println("You need to go somewhere, try again.");
-                    }
-
-                    else {
+                    } else {
                         Room roomBefore = player.getRoom();
                         rooms.walk(player, inputCommands[1]);
                         Room roomAfter = player.getRoom();
@@ -899,10 +913,15 @@ public class Main {
 
 
                 case "collect":
-                    if(inputCommands.length<2){
+                    if (inputCommands.length < 2) {
                         System.out.println("You must specify what you want to collect, try again");
                     }
-                    else {
+
+                    int bagCapacity = player.getPocket().countBag();
+                    if (bagCapacity >= 10) {
+                        System.out.println("You have too many items! Drop some");
+                        break;
+                    } else {
                         Item item = player.getRoom().getItems().collectRequest(inputCommands[1]);
                         if (item != null) {
                             player.addItem(item);
@@ -915,28 +934,26 @@ public class Main {
                             System.out.println("That item does not exist, or is already in your item bag");
                         }
                     }
-                        break;
+                    break;
 
-                        case "drop":
-                            if(inputCommands.length<2){
-                                System.out.println("You must specify what you want to drop");
-                            }
-                            else {
-                                Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
-                                if (itemRemoved != null) {
-                                    player.removeItem(itemRemoved);
-                                    player.getRoom().addItem(itemRemoved);
-                                    System.out.println("you have dropped the " + itemRemoved.getName());
-                                }
-                                else{
-                                    System.out.println("Did you spell it wrong? Do you own this item?");
-                                }
-                            }
+                case "drop":
+                    if (inputCommands.length < 2) {
+                        System.out.println("You must specify what you want to drop");
+                    } else {
+                        Item itemRemoved = player.getPocket().collectRequest(inputCommands[1]);
+                        if (itemRemoved != null) {
+                            player.removeItem(itemRemoved);
+                            player.getRoom().addItem(itemRemoved);
+                            System.out.println("you have dropped the " + itemRemoved.getName());
+                        } else {
+                            System.out.println("Did you spell it wrong? Do you own this item?");
+                        }
+                    }
                     break;
 
 
                 case "attack":
-                    if ((monster != null)&&(monster.getHealth()>0)) {
+                    if ((monster != null) && (monster.getHealth() > 0)) {
                         System.out.println("Who do you want to attack");
                         System.out.println("Your options are: " + player.getRoom().getCharacters().typeCheck("monster").getName());
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
@@ -1022,10 +1039,9 @@ public class Main {
                     break;
 
                 case "contact":
-                    if(inputCommands.length<2){
+                    if (inputCommands.length < 2) {
                         System.out.println("Specify who you would like to contact");
-                    }
-                    else {
+                    } else {
                         Character talkCharacter = player.getRoom().getCharacters().talkRequest(inputCommands[1]);
                         if (talkCharacter != null) {
                             if (talkCharacter.getMessage() != null) {
@@ -1073,7 +1089,7 @@ public class Main {
                             "Attack - attack a monster \n" +
                             "Where - which room you are in \n" +
                             "Character - see the character in the room \n" +
-                            "Contact +character name - talk to a character \n"+
+                            "Contact +character name - talk to a character \n" +
                             "Eat - consume items with healing properties to gain health \n" +
                             "Emoji - see  an emoji \n" +
                             "Map - generate game map\n" +
@@ -1083,7 +1099,7 @@ public class Main {
 
 
                 case "path":
-                    coordinatePath(player.getRoom(),rooms,finish);
+                 coordinatePath(player.getRoom(), rooms, finish);
                     break;
 
 
@@ -1107,8 +1123,13 @@ public class Main {
                     break;
 
                 case "end":
-                    running = false;
-                    System.out.println("Your journey has ended");
+                    if(player.getRoom()==finish) {
+                        running = false;
+                        System.out.println("Your journey has ended");
+                    }
+                    else{
+                        System.out.println("You cannot end your journey yet only quit it");
+                    }
                     break;
 
                 default:
