@@ -1,6 +1,5 @@
 package com.company;
 
-import jdk.jshell.spi.SPIResolutionException;
 
 import java.util.*;
 
@@ -85,6 +84,11 @@ public class Main {
 
       //  System.out.println("Hi 4");
         System.out.println(path);
+        for(int i=0; i<rooms.getRoomList().size(); i++){
+            Room room = rooms.getRoomList().get(i);
+            rooms.getUnvisitedRooms().add(room);
+        }
+
 
 
         // return path;
