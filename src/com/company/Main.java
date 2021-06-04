@@ -43,14 +43,12 @@ public class Main {
         currentRoom = startRoom;
         startRoom.setShortestDistanceFromStart(0);
         rooms.setDistanceFromStart(startRoom);
-      //  System.out.println("hi 1");
 
         for (int t = 0; t < rooms.getRoomList().size(); t++) {
             Room room = rooms.getRoomList().get(t);
             rooms.getUnvisitedRooms().add(room);
 
         }
-        //System.out.println("Hi 2");
 
 
         while (!(rooms.getUnvisitedRooms().isEmpty())) {
@@ -71,50 +69,25 @@ public class Main {
             rooms.getUnvisitedRooms().remove(currentRoom);
 
         }
-       // System.out.println("Hi 3");
-
-        String path = "";
-        currentRoom = lastRoom;
-        path = lastRoom.getName();
-        while (currentRoom.getPreviousRoom() != null) {
-            //System.out.println("previous room "+ currentRoom.getPreviousRoom().getName());
-            path = currentRoom.getPreviousRoom().getName() + " - " + path;
-            currentRoom = currentRoom.getPreviousRoom();
-        }
-
-      //  System.out.println("Hi 4");
-        System.out.println(path);
         for(int i=0; i<rooms.getRoomList().size(); i++){
             Room room = rooms.getRoomList().get(i);
             rooms.getUnvisitedRooms().add(room);
         }
 
+        String path = "";
+        currentRoom = lastRoom;
+        path = lastRoom.getName();
+        while (currentRoom.getPreviousRoom() != null) {
+            System.out.println(currentRoom.getPreviousRoom().getName());
+            path = currentRoom.getPreviousRoom().getName() + " - " + path;
+            currentRoom = currentRoom.getPreviousRoom();
+        }
+       // currentRoom.setPreviousRoom(lastRoom.getPreviousRoom());
+
+        System.out.println(path);
 
 
-        // return path;
 
-////        System.out.println("hi");
-////        if(rooms.getUnvisitedRooms().isEmpty()){
-////            System.out.println("Nothing here");
-////        }
-//        else{
-//        for(int k=0; k<rooms.getUnvisitedRooms().size(); k++){
-//            System.out.println(rooms.getUnvisitedRooms().get(k).getName());
-//        }
-//        }
-
-//        for(int i=0; i<rooms.getUnvisitedRooms().size(); i++){
-//            Room room = rooms.getUnvisitedRooms().get(i);
-//           // if(room!= currentRoom){
-//                rooms.getUnvisitedRooms().add(room);
-//                //System.out.println(room.getName());
-//           // }
-//        }
-//        for(int i=0; i<rooms.getRoomList().size(); i++){
-//            Room room = rooms.getRoomList().get(i);
-//            rooms.getUnvisitedRooms().add(room);
-//            System.out.println(room.getName());
-//        }
 
 
     }
@@ -958,19 +931,33 @@ public class Main {
 
                 case "attack":
                     if ((monster != null) && (monster.getHealth() > 0)) {
+//                     Item possibleWeapon = player.getPocket().getPlayerWeapons();
+//                     if(possibleWeapon==null){
+//                         System.out.println("you need a weapon first!");
+//                         break;
+//                     }
+
+                        String attackItemNames = player.getPocket().getAttackItems();
+                        if (attackItemNames.equals("")) {
+                            System.out.println("You need a weapon to attack!");
+                            break;
+                        }
+
+
                         System.out.println("Who do you want to attack");
                         System.out.println("Your options are: " + player.getRoom().getCharacters().typeCheck("monster").getName());
+
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
                         if (possibleMonster != null) {
                             System.out.println("You are about to attack " + possibleMonster.getName());
-                            String attackItemNames = player.getPocket().getAttackItems();
-                            if (!attackItemNames.equals("")) {
+//                            String attackItemNames = player.getPocket().getAttackItems();
+//                            if (!attackItemNames.equals("")) {
                                 System.out.println("What do you want to attack with?");
                                 System.out.println("You can attack with:" + attackItemNames);
-                            } else {
-                                System.out.println("You don't have any items you can use to attack");
-                                break;
-                            }
+//                            } else {
+//                                System.out.println("You need a weapon to attack!");
+//                                break;
+//                            }
 
                             String attackItemName = command.nextLine();
                             boolean itemCheck = player.getPocket().attackRequest(attackItemName);
