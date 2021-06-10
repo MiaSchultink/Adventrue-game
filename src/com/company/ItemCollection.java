@@ -18,20 +18,6 @@ public class ItemCollection {
         this.itemList.remove(item);
     }
 
-    public Item getPlayerWeapons(){
-        Item weapon = new Item("",0,0,0);
-        for(int i=0; i<itemList.size(); i++){
-            Item item = itemList.get(i);
-            if(item.getAttackDamage()!=0){
-                weapon=item;
-            }
-            else{
-                weapon=null;
-            }
-        }
-        return weapon;
-    }
-
     public Item collectRequest(String itemName) {
         int index = -1;
         for (int i = 0; i < itemList.size(); i++) {

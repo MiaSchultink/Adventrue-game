@@ -87,9 +87,6 @@ public class Main {
         System.out.println(path);
 
 
-
-
-
     }
 
 
@@ -931,11 +928,6 @@ public class Main {
 
                 case "attack":
                     if ((monster != null) && (monster.getHealth() > 0)) {
-//                     Item possibleWeapon = player.getPocket().getPlayerWeapons();
-//                     if(possibleWeapon==null){
-//                         System.out.println("you need a weapon first!");
-//                         break;
-//                     }
 
                         String attackItemNames = player.getPocket().getAttackItems();
                         if (attackItemNames.equals("")) {
@@ -943,21 +935,14 @@ public class Main {
                             break;
                         }
 
-
                         System.out.println("Who do you want to attack");
                         System.out.println("Your options are: " + player.getRoom().getCharacters().typeCheck("monster").getName());
 
                         Character possibleMonster = player.getRoom().getCharacters().monsterAttackRequest(command.nextLine());
                         if (possibleMonster != null) {
                             System.out.println("You are about to attack " + possibleMonster.getName());
-//                            String attackItemNames = player.getPocket().getAttackItems();
-//                            if (!attackItemNames.equals("")) {
                                 System.out.println("What do you want to attack with?");
                                 System.out.println("You can attack with:" + attackItemNames);
-//                            } else {
-//                                System.out.println("You need a weapon to attack!");
-//                                break;
-//                            }
 
                             String attackItemName = command.nextLine();
                             boolean itemCheck = player.getPocket().attackRequest(attackItemName);
