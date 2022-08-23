@@ -1,4 +1,4 @@
-//main - running
+//main - running environment
 package com.company;
 
 public class Room {
