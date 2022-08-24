@@ -1,4 +1,4 @@
-# adventureGame2
+# Adventure Game
 
 This text based game will throw you back to the 1970's when games like Zork were all the rage. The game is a maze of different rooms from which 
 the player must escape. Along the way they will find monsters and obsticles meant to make thier adventure challenging and exciting. In this game, the connctions between
